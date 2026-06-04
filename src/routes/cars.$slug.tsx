@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, RotateCcw, Check, ChevronDown, Phone } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, Phone } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
+import { Car360Viewer } from "@/components/Car360Viewer";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
 
 export const Route = createFileRoute("/cars/$slug")({
@@ -69,7 +70,7 @@ const faqs = [
 
 function VehiclePage() {
   const car = Route.useLoaderData() as import("@/data/cars").Car;
-  const [rot, setRot] = useState(0);
+  
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const related = cars.filter((c) => c.brandSlug === car.brandSlug && c.slug !== car.slug).slice(0, 3);
   const gallery = [car.image, car.image, car.image, car.image];
@@ -106,19 +107,7 @@ function VehiclePage() {
           </div>
 
           {/* 360 viewer */}
-          <div className="glass mt-6 rounded-2xl p-6">
-            <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-widest text-gold">
-              <RotateCcw className="h-4 w-4" /> 360° Viewer
-            </div>
-            <img
-              src={car.image}
-              alt="360 view"
-              loading="lazy"
-              className="mx-auto"
-              style={{ transform: `rotateY(${rot}deg)` }}
-            />
-            <input type="range" min={-180} max={180} value={rot} onChange={(e) => setRot(Number(e.target.value))} className="mt-4 w-full accent-gold" />
-          </div>
+          <Car360Viewer image={car.image} title={car.title} />
         </div>
 
         {/* Details */}
