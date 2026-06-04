@@ -3,10 +3,10 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import {
   ArrowRight,
-  RotateCcw,
   ZoomIn,
   Compass,
   Move3d,
+  Hand,
   Phone,
   Mail,
   MapPin,
@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { Reveal, SectionHeading, CountUp } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
-import { CarConfigurator } from "@/components/CarConfigurator";
+import { VehicleShowcase } from "@/components/VehicleShowcase";
+
 import { BrandLogo } from "@/components/BrandLogo";
 import { brands, featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
 import { posts } from "@/data/blog";
@@ -223,26 +224,26 @@ function FeaturedSection() {
   );
 }
 
-/* SECTION 4 — 360 EXPERIENCE */
+/* SECTION 4 — REAL VEHICLE SHOWCASE */
 function ThreeSixtySection() {
   return (
     <section className="relative overflow-hidden py-24">
       <div className="absolute inset-0 bg-grain" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2">
         <Reveal>
-          <span className="text-xs uppercase tracking-luxury text-gold">Interactive Configurator</span>
+          <span className="text-xs uppercase tracking-luxury text-gold">Showroom Experience</span>
           <h2 className="mt-3 text-3xl md:text-4xl lg:text-5xl">
-            Spin, Configure & Explore in <span className="gold-gradient-text">360°</span>
+            Inspect Real Stock in a <span className="gold-gradient-text">Private Showroom</span>
           </h2>
           <p className="mt-4 max-w-md text-muted-foreground">
-            Place the car on the platform and spin it in real time. Change the exterior paint,
-            wheels, brake calipers and interior — a true luxury configurator, not a slideshow.
+            Browse genuine vehicles from our current inventory, presented on a dark stage with soft
+            spotlight lighting and a mirrored reflection. Real photography only — no rendered models.
           </p>
           <ul className="mt-8 space-y-4">
             {[
-              { Icon: RotateCcw, t: "Real Platform Spin", d: "Drag left and right to rotate the car" },
-              { Icon: Move3d, t: "Live Colour Studio", d: "Exterior, wheel, caliper & interior options" },
-              { Icon: ZoomIn, t: "High-Detail Presentation", d: "Reflections and lighting under the car" },
+              { Icon: Move3d, t: "Real Inventory", d: "Every car shown is genuine stock from our showroom" },
+              { Icon: Hand, t: "Drag to Browse", d: "Swipe left and right to move through vehicles" },
+              { Icon: ZoomIn, t: "Premium Presentation", d: "Spotlight, reflection and high-resolution imagery" },
             ].map(({ Icon, t, d }) => (
               <li key={t} className="flex gap-4">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold">
@@ -258,9 +259,10 @@ function ThreeSixtySection() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <CarConfigurator />
+          <VehicleShowcase />
         </Reveal>
       </div>
+
     </section>
   );
 }
