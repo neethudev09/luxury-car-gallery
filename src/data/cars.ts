@@ -428,6 +428,10 @@ export function formatPrice(aed: number) {
 export const fuelTypes = ["Petrol", "Hybrid", "Electric"];
 export const transmissions = ["Automatic", "Manual"];
 export const bodyTypes = ["Coupe", "Sedan", "SUV", "Convertible"];
+export const years = Array.from(new Set(cars.map((c) => c.year))).sort((a, b) => b - a);
+export const exteriorColours = Array.from(new Set(cars.map((c) => c.exteriorColour))).sort();
+export const interiorColours = Array.from(new Set(cars.map((c) => c.interiorColour))).sort();
+export const models = Array.from(new Set(cars.map((c) => c.model))).sort();
 
 export const WHATSAPP = "971500000000";
 export const PHONE = "+971 4 000 0000";
