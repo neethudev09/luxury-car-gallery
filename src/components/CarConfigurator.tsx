@@ -4,10 +4,10 @@ import { configurator, interiorConfig } from "@/data/cars";
 import porsche from "@/assets/car-porsche.jpg";
 
 /**
- * Luxury car configurator: drag-to-rotate platform spin, auto-rotate,
+ * Luxury home-page configurator: smooth drag/swipe turntable, auto-rotate,
  * floor reflection and live exterior / wheel / caliper / interior options.
- * The rotation uses 3D perspective so the car turns on its platform rather
- * than flipping a flat image.
+ * The vehicle uses a turntable yaw simulation instead of rotateY on the full
+ * photo, so it never collapses into the flat image panel shown before.
  */
 export function CarConfigurator() {
   const [rot, setRot] = useState(-22);
@@ -18,7 +18,8 @@ export function CarConfigurator() {
   const [caliper, setCaliper] = useState(configurator.calipers[0]);
   const [interior, setInterior] = useState(interiorConfig[0]);
 
-  const drag = useRef<{ startX: number; startRot: number } | null>(null);
+  const drag = useRef<{ startX: number; startRot: number; lastX: number; lastT: number } | null>(null);
+  const velocity = useRef(0);
 
   // Auto-rotate loop
   useEffect(() => {
@@ -35,14 +36,36 @@ export function CarConfigurator() {
     return () => cancelAnimationFrame(raf);
   }, [auto, dragging]);
 
+  // Momentum after the user releases drag/swipe.
+  useEffect(() => {
+    if (dragging || Math.abs(velocity.current) < 0.02) return;
+    let raf = 0;
+    const tick = () => {
+      velocity.current *= 0.94;
+      setRot((r) => r + velocity.current);
+      if (Math.abs(velocity.current) > 0.02) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [dragging]);
+
   const onPointerDown = (e: React.PointerEvent) => {
-    drag.current = { startX: e.clientX, startRot: rot };
+    setAuto(false);
+    velocity.current = 0;
+    drag.current = { startX: e.clientX, startRot: rot, lastX: e.clientX, lastT: performance.now() };
     setDragging(true);
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
   };
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!drag.current) return;
-    setRot(drag.current.startRot + (e.clientX - drag.current.startX) * 0.6);
+    const d = drag.current;
+    if (!d) return;
+    const now = performance.now();
+    const next = d.startRot + (e.clientX - d.startX) * 0.65;
+    const dt = now - d.lastT;
+    if (dt > 0) velocity.current = ((e.clientX - d.lastX) * 0.65 * 16) / dt;
+    d.lastX = e.clientX;
+    d.lastT = now;
+    setRot(next);
   };
   const onPointerUp = () => {
     drag.current = null;
@@ -50,8 +73,16 @@ export function CarConfigurator() {
   };
 
   const norm = ((rot % 360) + 360) % 360;
-  // Mirror the car to suggest the rear when rotated past 90°.
+  const rad = (norm * Math.PI) / 180;
+  const yaw = Math.sin(rad);
+  const side = Math.abs(yaw);
+  const rear = Math.max(0, -Math.cos(rad));
   const facing = norm > 90 && norm < 270 ? -1 : 1;
+  const vehicleScaleX = 1 - side * 0.38 - rear * 0.08;
+  const vehicleScaleY = 1 - side * 0.045;
+  const vehicleTranslateX = yaw * 7;
+  const vehicleSkewY = yaw * -3.5;
+  const vehicleFilter = `${paintFilter(ext.name)} brightness(${1.03 - rear * 0.1}) saturate(${1.08 + side * 0.08})`;
 
   return (
     <div className="glass relative overflow-hidden rounded-3xl p-6 shadow-luxury sm:p-8">
@@ -61,12 +92,13 @@ export function CarConfigurator() {
 
       {/* Stage */}
       <div
-        className="relative mx-auto flex h-64 cursor-grab touch-none select-none items-center justify-center active:cursor-grabbing sm:h-80"
-        style={{ perspective: "1400px" }}
+        className="relative mx-auto flex h-64 cursor-grab touch-none select-none items-center justify-center overflow-hidden active:cursor-grabbing sm:h-80"
+        style={{ perspective: "1200px" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
+        onPointerCancel={onPointerUp}
       >
         {/* Ambient glow tinted to exterior colour */}
         <div
@@ -74,25 +106,22 @@ export function CarConfigurator() {
           style={{ background: ext.hex, opacity: 0.18 }}
         />
 
-        {/* Car */}
+        {/* Car: turntable yaw simulation, not a rotating photo plane */}
         <div
-          className="relative z-10 w-[78%] will-change-transform"
+          className="relative z-10 w-[86%] will-change-transform"
           style={{
-            transform: `rotateY(${rot}deg)`,
-            transformStyle: "preserve-3d",
+            transform: `translateX(${vehicleTranslateX}%) scaleX(${vehicleScaleX * facing}) scaleY(${vehicleScaleY}) skewY(${vehicleSkewY}deg)`,
+            transformOrigin: yaw > 0 ? "58% 62%" : "42% 62%",
+            transition: dragging ? "none" : "transform 90ms linear, filter 90ms linear",
+            filter: `drop-shadow(${yaw * 18}px 28px 26px rgba(0,0,0,0.58)) ${vehicleFilter}`,
           }}
         >
-          <div style={{ transform: `scaleX(${facing})` }} className="relative">
+          <div className="relative">
             <img
               src={porsche}
               alt="Configure your luxury car in 360 degrees"
               draggable={false}
-              className="h-auto w-full object-contain drop-shadow-2xl"
-            />
-            {/* Exterior colour tint */}
-            <div
-              className="pointer-events-none absolute inset-0 mix-blend-color"
-              style={{ backgroundColor: ext.hex, opacity: 0.55 }}
+              className="h-auto w-full object-contain mix-blend-screen"
             />
             {/* Caliper accent dot */}
             <span
@@ -104,21 +133,24 @@ export function CarConfigurator() {
 
         {/* Reflection */}
         <div
-          className="pointer-events-none absolute left-1/2 top-[64%] w-[78%] -translate-x-1/2 opacity-25 blur-[2px]"
+          className="pointer-events-none absolute left-1/2 top-[65%] w-[86%] opacity-20 blur-[2px]"
           style={{
-            transform: `rotateY(${rot}deg) scaleY(-1)`,
+            transform: `translateX(-50%) translateX(${vehicleTranslateX}%) scaleX(${vehicleScaleX * facing}) scaleY(-0.48) skewY(${vehicleSkewY}deg)`,
+            transformOrigin: "50% 0%",
+            filter: vehicleFilter,
             maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)",
             WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)",
           }}
         >
-          <div style={{ transform: `scaleX(${facing})` }}>
-            <img src={porsche} alt="" draggable={false} className="h-auto w-full object-contain" />
-          </div>
+          <img src={porsche} alt="" draggable={false} className="h-auto w-full object-contain mix-blend-screen" />
         </div>
 
         {/* Platform */}
-        <div className="pointer-events-none absolute bottom-3 left-1/2 h-10 w-[70%] -translate-x-1/2 rounded-[50%] bg-gold/10 blur-md" />
-        <div className="pointer-events-none absolute bottom-5 left-1/2 h-1 w-[60%] -translate-x-1/2 rounded-[50%] bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+        <div className="pointer-events-none absolute bottom-3 left-1/2 h-12 w-[76%] -translate-x-1/2 rounded-[50%] bg-gold/10 blur-md" />
+        <div
+          className="pointer-events-none absolute bottom-6 left-1/2 h-16 w-[64%] -translate-x-1/2 rounded-[50%] border border-gold/25 bg-gradient-to-r from-transparent via-gold/10 to-transparent"
+          style={{ transform: `translateX(-50%) rotateX(72deg) rotateZ(${rot}deg) scaleX(${1 + side * 0.12})` }}
+        />
       </div>
 
       {/* Controls */}
