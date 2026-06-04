@@ -8,7 +8,7 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact Car Gallery Dubai | Luxury Car Showroom" },
-      { name: "description", content: "Get in touch with Car Gallery Dubai. Call, WhatsApp, email or visit our luxury car showroom on Sheikh Zayed Road, Dubai." },
+      { name: "description", content: "Get in touch with Car Gallery Dubai. Call, WhatsApp, email or visit our luxury car showroom at 87 4th St, Al Quoz Industrial Third, Dubai." },
       { property: "og:title", content: "Contact Car Gallery Dubai" },
     ],
     links: [{ rel: "canonical", href: "/contact" }],
@@ -30,7 +30,7 @@ function Contact() {
             {[
               { Icon: Phone, t: "Call", d: PHONE, href: `tel:${PHONE.replace(/\s/g, "")}` },
               { Icon: Mail, t: "Email", d: EMAIL, href: `mailto:${EMAIL}` },
-              { Icon: MapPin, t: "Showroom", d: "Sheikh Zayed Road, Al Quoz, Dubai", href: "#" },
+              { Icon: MapPin, t: "Showroom", d: "87 4th St - Al Qouz Ind.third - Al Quoz - Dubai", href: "#" },
             ].map(({ Icon, t, d, href }) => (
               <a key={t} href={href} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-gold">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/40 text-gold"><Icon className="h-5 w-5" /></span>

@@ -79,7 +79,7 @@ export function Footer() {
           <ul className="space-y-4 text-sm text-muted-foreground">
             <li className="flex gap-3">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-              <span>Sheikh Zayed Road, Al Quoz, Dubai, United Arab Emirates</span>
+              <span>87 4th St - Al Qouz Ind.third - Al Quoz - Dubai, UAE</span>
             </li>
             <li className="flex gap-3">
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
