@@ -105,16 +105,14 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5">
         {/* Logo */}
-        <Link to="/" className="group flex items-center gap-2" onMouseEnter={() => setOpen(null)}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors group-hover:bg-gold group-hover:text-primary-foreground">
-            <Car className="h-5 w-5" />
-          </span>
-          <span className="font-display text-xl leading-none tracking-tight">
-            Car Gallery
-            <span className="block text-[0.6rem] font-sans uppercase tracking-luxury text-gold">
-              Dubai
-            </span>
-          </span>
+        <Link to="/" className="group flex items-center gap-3" onMouseEnter={() => setOpen(null)}>
+          <img
+            src={lcgLogo.url}
+            alt="Luxury Car Gallery Dubai"
+            width={120}
+            height={90}
+            className="h-11 w-auto transition-transform duration-500 group-hover:scale-105"
+          />
         </Link>
 
         {/* Desktop nav */}
