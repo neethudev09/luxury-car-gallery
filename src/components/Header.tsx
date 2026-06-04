@@ -200,15 +200,15 @@ export function Header() {
             className="absolute inset-x-0 top-full hidden lg:block"
             onMouseEnter={() => enter(open)}
           >
-            <div className="mx-auto max-w-7xl px-5 pt-3">
-              <div className="glass-strong relative overflow-hidden rounded-2xl p-8 shadow-luxury">
-                <img
-                  src={showroom}
-                  alt=""
-                  aria-hidden
-                  className="pointer-events-none absolute -right-10 bottom-0 h-64 w-auto opacity-[0.06] grayscale"
-                />
-                <div className="gold-line absolute inset-x-8 top-0 h-px" />
+            <div className="glass-strong relative overflow-hidden border-y border-gold/15 shadow-luxury">
+              <img
+                src={showroom}
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.05] grayscale"
+              />
+              <div className="gold-line absolute inset-x-0 top-0 h-px" />
+              <div className="relative mx-auto max-w-7xl px-6 py-9">
                 {open === "cars" ? <CarsMega /> : <SimpleMega columns={menuFor(open)} />}
               </div>
             </div>
