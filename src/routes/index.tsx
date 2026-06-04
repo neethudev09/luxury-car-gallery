@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   ArrowRight,
   RotateCcw,
@@ -15,13 +15,13 @@ import {
 } from "lucide-react";
 import { Reveal, SectionHeading, CountUp } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
+import { CarConfigurator } from "@/components/CarConfigurator";
 import { BrandLogo } from "@/components/BrandLogo";
 import { brands, featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
 import { posts } from "@/data/blog";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 import sellImg from "@/assets/sell-your-car.jpg";
-import porsche from "@/assets/car-porsche.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
