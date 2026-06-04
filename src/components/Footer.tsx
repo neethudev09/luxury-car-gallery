@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Car, Mail, Phone, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
 import { brands, EMAIL, PHONE, whatsappLink } from "@/data/cars";
+import lcgLogo from "@/assets/lcg-logo.png.asset.json";
 
 export function Footer() {
   return (
@@ -8,16 +9,14 @@ export function Footer() {
       <div className="gold-line absolute inset-x-0 top-0 h-px" />
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Link to="/" className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/40 text-gold">
-              <Car className="h-5 w-5" />
-            </span>
-            <span className="font-display text-xl">
-              Car Gallery
-              <span className="block text-[0.6rem] font-sans uppercase tracking-luxury text-gold">
-                Dubai
-              </span>
-            </span>
+          <Link to="/" className="inline-flex items-center">
+            <img
+              src={lcgLogo.url}
+              alt="Car Gallery Dubai"
+              className="h-14 w-auto object-contain"
+              width={160}
+              height={56}
+            />
           </Link>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
             Dubai's premier destination for luxury cars and supercars. Curated inventory,
