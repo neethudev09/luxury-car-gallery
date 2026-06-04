@@ -70,7 +70,7 @@ const faqs = [
 
 function VehiclePage() {
   const car = Route.useLoaderData() as import("@/data/cars").Car;
-  const [rot, setRot] = useState(0);
+  
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const related = cars.filter((c) => c.brandSlug === car.brandSlug && c.slug !== car.slug).slice(0, 3);
   const gallery = [car.image, car.image, car.image, car.image];
