@@ -226,3 +226,12 @@ function SwatchRow({
     </div>
   );
 }
+
+function paintFilter(name: string) {
+  if (name.includes("Nero")) return "grayscale(0.75) brightness(0.42) contrast(1.35)";
+  if (name.includes("Pearl")) return "grayscale(0.35) brightness(1.28) saturate(0.72)";
+  if (name.includes("Silver")) return "grayscale(0.7) brightness(1.08) saturate(0.6)";
+  if (name.includes("Emerald")) return "hue-rotate(118deg) saturate(1.2) brightness(0.82)";
+  if (name.includes("Sapphire")) return "hue-rotate(205deg) saturate(1.24) brightness(0.78)";
+  return "hue-rotate(0deg) saturate(1.1) brightness(1.02)";
+}
