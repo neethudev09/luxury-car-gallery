@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShowroomRouteImport } from './routes/showroom'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as MediaRouteImport } from './routes/media'
@@ -21,6 +22,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShowroomRoute = ShowroomRouteImport.update({
   id: '/showroom',
   path: '/showroom',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
   '/showroom': typeof ShowroomRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
   '/showroom': typeof ShowroomRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
   '/showroom': typeof ShowroomRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/sell'
     | '/showroom'
+    | '/sitemap.xml'
     | '/brands/$brand'
     | '/cars/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/sell'
     | '/showroom'
+    | '/sitemap.xml'
     | '/brands/$brand'
     | '/cars/$slug'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/sell'
     | '/showroom'
+    | '/sitemap.xml'
     | '/brands/$brand'
     | '/cars/$slug'
   fileRoutesById: FileRoutesById
@@ -169,12 +181,20 @@ export interface RootRouteChildren {
   MediaRoute: typeof MediaRoute
   SellRoute: typeof SellRoute
   ShowroomRoute: typeof ShowroomRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BrandsBrandRoute: typeof BrandsBrandRoute
   CarsSlugRoute: typeof CarsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/showroom': {
       id: '/showroom'
       path: '/showroom'
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   MediaRoute: MediaRoute,
   SellRoute: SellRoute,
   ShowroomRoute: ShowroomRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   BrandsBrandRoute: BrandsBrandRoute,
   CarsSlugRoute: CarsSlugRoute,
 }
