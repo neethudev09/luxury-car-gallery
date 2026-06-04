@@ -13,6 +13,8 @@ import { Route as ShowroomRouteImport } from './routes/showroom'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 
@@ -36,6 +38,16 @@ const InventoryRoute = InventoryRouteImport.update({
   path: '/inventory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +61,8 @@ const CarsSlugRoute = CarsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
@@ -57,6 +71,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
@@ -66,6 +82,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
@@ -76,16 +94,28 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/blog'
     | '/inventory'
     | '/media'
     | '/sell'
     | '/showroom'
     | '/cars/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inventory' | '/media' | '/sell' | '/showroom' | '/cars/$slug'
+  to:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/inventory'
+    | '/media'
+    | '/sell'
+    | '/showroom'
+    | '/cars/$slug'
   id:
     | '__root__'
     | '/'
+    | '/about'
+    | '/blog'
     | '/inventory'
     | '/media'
     | '/sell'
@@ -95,6 +125,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRoute
   InventoryRoute: typeof InventoryRoute
   MediaRoute: typeof MediaRoute
   SellRoute: typeof SellRoute
@@ -132,6 +164,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InventoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -151,6 +197,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BlogRoute: BlogRoute,
   InventoryRoute: InventoryRoute,
   MediaRoute: MediaRoute,
   SellRoute: SellRoute,
