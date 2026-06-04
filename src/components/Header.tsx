@@ -7,12 +7,19 @@ import {
   Menu,
   X,
   ChevronDown,
-  Car,
   ArrowUpRight,
+  Tag,
+  Banknote,
+  GitCompare,
+  Compass,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { brands, whatsappLink, PHONE } from "@/data/cars";
+import { brands, featuredCars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
+import { BrandLogo } from "@/components/BrandLogo";
 import showroom from "@/assets/showroom-interior.jpg";
+import lcgLogo from "@/assets/lcg-logo.png.asset.json";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
@@ -98,16 +105,14 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5">
         {/* Logo */}
-        <Link to="/" className="group flex items-center gap-2" onMouseEnter={() => setOpen(null)}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors group-hover:bg-gold group-hover:text-primary-foreground">
-            <Car className="h-5 w-5" />
-          </span>
-          <span className="font-display text-xl leading-none tracking-tight">
-            Car Gallery
-            <span className="block text-[0.6rem] font-sans uppercase tracking-luxury text-gold">
-              Dubai
-            </span>
-          </span>
+        <Link to="/" className="group flex items-center gap-3" onMouseEnter={() => setOpen(null)}>
+          <img
+            src={lcgLogo.url}
+            alt="Luxury Car Gallery Dubai"
+            width={120}
+            height={90}
+            className="h-11 w-auto transition-transform duration-500 group-hover:scale-105"
+          />
         </Link>
 
         {/* Desktop nav */}
@@ -195,15 +200,15 @@ export function Header() {
             className="absolute inset-x-0 top-full hidden lg:block"
             onMouseEnter={() => enter(open)}
           >
-            <div className="mx-auto max-w-7xl px-5 pt-3">
-              <div className="glass-strong relative overflow-hidden rounded-2xl p-8 shadow-luxury">
-                <img
-                  src={showroom}
-                  alt=""
-                  aria-hidden
-                  className="pointer-events-none absolute -right-10 bottom-0 h-64 w-auto opacity-[0.06] grayscale"
-                />
-                <div className="gold-line absolute inset-x-8 top-0 h-px" />
+            <div className="glass-strong relative overflow-hidden border-y border-gold/15 shadow-luxury">
+              <img
+                src={showroom}
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.05] grayscale"
+              />
+              <div className="gold-line absolute inset-x-0 top-0 h-px" />
+              <div className="relative mx-auto max-w-7xl px-6 py-9">
                 {open === "cars" ? <CarsMega /> : <SimpleMega columns={menuFor(open)} />}
               </div>
             </div>
@@ -288,47 +293,86 @@ function SimpleMega({ columns }: { columns: MenuColumn[] }) {
 }
 
 function CarsMega() {
-  const explore = [
-    { label: "Cars For Sale", to: "/inventory" },
-    { label: "Car Specifications", to: "/inventory" },
-    { label: "Compare Models", to: "/inventory" },
-    { label: "Sell Your Car", to: "/sell" },
-  ];
+  const quickLinks = [
+    { label: "Cars For Sale", to: "/inventory", Icon: Tag },
+    { label: "Sell Your Car", to: "/sell", Icon: Banknote },
+    { label: "Compare Models", to: "/compare", Icon: GitCompare },
+    { label: "360 Showroom", to: "/showroom", Icon: Compass },
+    { label: "New Arrivals", to: "/inventory", Icon: Sparkles },
+  ] as const;
+  const feature = featuredCars[0];
+
   return (
     <div className="grid grid-cols-12 gap-8">
-      <div className="col-span-3 border-r border-border/60 pr-6">
-        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Explore Inventory</p>
+      {/* Quick links */}
+      <div className="col-span-2">
+        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Quick Links</p>
         <ul className="space-y-1">
-          {explore.map((l) => (
-            <li key={l.label}>
+          {quickLinks.map(({ label, to, Icon }) => (
+            <li key={label}>
               <Link
-                to={l.to}
-                className="group flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-secondary"
+                to={to}
+                className="group flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-foreground/85 transition-colors hover:bg-secondary hover:text-gold"
               >
-                {l.label}
-                <ArrowUpRight className="h-4 w-4 text-gold opacity-0 transition-opacity group-hover:opacity-100" />
+                <Icon className="h-4 w-4 text-gold" />
+                {label}
               </Link>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="col-span-5">
-        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Available Cars by Brand</p>
-        <div className="grid grid-cols-2 gap-1.5">
+      {/* Available */}
+      <div className="col-span-3 border-l border-border/60 pl-6">
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-xs uppercase tracking-luxury text-gold">Available Cars</p>
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+        </div>
+        <div className="space-y-0.5">
           {brands.map((b) => (
             <BrandRow key={b.slug} name={b.name} slug={b.slug} count={b.available} />
           ))}
         </div>
       </div>
 
-      <div className="col-span-4 border-l border-border/60 pl-6">
-        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Sold Cars by Brand</p>
-        <div className="grid grid-cols-2 gap-1.5">
-          {brands.slice(0, 8).map((b) => (
+      {/* Sold */}
+      <div className="col-span-3 border-l border-border/60 pl-6">
+        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Sold Cars</p>
+        <div className="space-y-0.5">
+          {brands.map((b) => (
             <BrandRow key={b.slug} name={b.name} slug={b.slug} count={b.sold} sold />
           ))}
         </div>
+      </div>
+
+      {/* Featured vehicle */}
+      <div className="col-span-4 border-l border-border/60 pl-6">
+        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Featured Vehicle</p>
+        {feature && (
+          <Link
+            to="/cars/$slug"
+            params={{ slug: feature.slug }}
+            className="group block overflow-hidden rounded-xl border border-border bg-card/60 transition-all hover:border-gold"
+          >
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <img
+                src={feature.image}
+                alt={feature.title}
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <span className="absolute left-3 top-3 rounded-full bg-gold px-2.5 py-0.5 text-[0.55rem] font-semibold uppercase tracking-widest text-primary-foreground">
+                Featured
+              </span>
+            </div>
+            <div className="p-4">
+              <p className="text-sm font-medium group-hover:text-gold">{feature.year} {feature.title}</p>
+              <div className="mt-1 flex items-center justify-between">
+                <span className="font-display text-gold">{formatPrice(feature.price)}</span>
+                <ArrowRight className="h-4 w-4 -translate-x-1 text-gold opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+              </div>
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -351,11 +395,9 @@ function BrandRow({
       params={{ brand: slug }}
       className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-secondary"
     >
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gold/30 text-[0.6rem] font-semibold text-gold">
-        {name.slice(0, 2).toUpperCase()}
-      </span>
+      <BrandLogo slug={slug} className="h-5 w-5 shrink-0 text-foreground/55 transition-colors group-hover:text-gold" />
       <span className="flex-1 truncate text-sm text-foreground/85 group-hover:text-gold">{name}</span>
-      <span className="text-xs text-muted-foreground">{count}{sold ? "" : ""}</span>
+      <span className={`text-xs ${sold ? "text-muted-foreground" : "text-gold/90"}`}>{count}</span>
     </Link>
   );
 }

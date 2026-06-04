@@ -56,13 +56,30 @@ export interface Car {
   bodyType: string;
   exteriorColour: string;
   interiorColour: string;
+  engine: string;
+  horsepower: number;
+  torque: number;
+  topSpeed: number;
+  accel: number;
   image: string;
   featured: boolean;
+  newArrival: boolean;
   sold: boolean;
   description: string;
   features: string[];
   specs: Record<string, string>;
 }
+
+const perf: Record<string, { engine: string; hp: number; tq: number; top: number; accel: number }> = {
+  ferrari: { engine: "3.9L Twin-Turbo V8", hp: 661, tq: 760, top: 330, accel: 3.0 },
+  lamborghini: { engine: "6.5L V12", hp: 730, tq: 720, top: 350, accel: 2.9 },
+  porsche: { engine: "3.8L Twin-Turbo Flat-6", hp: 641, tq: 800, top: 330, accel: 2.7 },
+  "rolls-royce": { engine: "6.75L Twin-Turbo V12", hp: 563, tq: 850, top: 250, accel: 4.8 },
+  bentley: { engine: "6.0L Twin-Turbo W12", hp: 626, tq: 900, top: 333, accel: 3.6 },
+  "mercedes-benz": { engine: "4.0L Twin-Turbo V8", hp: 577, tq: 700, top: 318, accel: 3.5 },
+  mclaren: { engine: "4.0L Twin-Turbo V8", hp: 710, tq: 770, top: 341, accel: 2.8 },
+  "aston-martin": { engine: "5.2L Twin-Turbo V12", hp: 630, tq: 700, top: 322, accel: 3.7 },
+};
 
 const fmtFeatures = [
   "Carbon Ceramic Brakes",
@@ -75,20 +92,10 @@ const fmtFeatures = [
   "Carbon Fibre Interior Pack",
 ];
 
-function makeSpecs(c: Partial<Car>): Record<string, string> {
-  return {
-    Engine: "Twin-Turbo V8",
-    Power: "640 bhp",
-    "0–100 km/h": "3.2s",
-    "Top Speed": "330 km/h",
-    Drivetrain: "All-Wheel Drive",
-    Doors: "2",
-    Seats: "2",
-    "Body Type": c.bodyType || "Coupe",
-  };
-}
 
-const base: Omit<Car, "specs">[] = [
+type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpeed" | "accel" | "newArrival">;
+
+const base: CarBase[] = [
   {
     slug: "ferrari-488-gtb-2022",
     title: "Ferrari 488 GTB",
@@ -343,7 +350,70 @@ const base: Omit<Car, "specs">[] = [
   },
 ];
 
-export const cars: Car[] = base.map((c) => ({ ...c, specs: makeSpecs(c) }));
+export const cars: Car[] = base.map((c) => {
+  const p = perf[c.brandSlug] ?? { engine: "V8", hp: 600, tq: 700, top: 320, accel: 3.4 };
+  const enriched: Omit<Car, "specs"> = {
+    ...c,
+    engine: p.engine,
+    horsepower: p.hp,
+    torque: p.tq,
+    topSpeed: p.top,
+    accel: p.accel,
+    newArrival: c.year >= 2023 && !c.sold,
+  };
+  return {
+    ...enriched,
+    specs: {
+      Engine: p.engine,
+      Power: `${p.hp} bhp`,
+      Torque: `${p.tq} Nm`,
+      "0–100 km/h": `${p.accel}s`,
+      "Top Speed": `${p.top} km/h`,
+      Drivetrain: "All-Wheel Drive",
+      Transmission: c.transmission,
+      "Body Type": c.bodyType,
+    },
+  };
+});
+
+export interface Testimonial {
+  name: string;
+  location: string;
+  car: string;
+  rating: number;
+  quote: string;
+}
+
+export const testimonials: Testimonial[] = [
+  { name: "Khalid Al Maktoum", location: "Dubai, UAE", car: "Ferrari 488 GTB", rating: 5, quote: "An impeccable experience from start to finish. The car was exactly as presented and the handover was flawless." },
+  { name: "James Whitmore", location: "London, UK", car: "Rolls-Royce Ghost", rating: 5, quote: "They sourced and exported my Ghost to the UK seamlessly. White-glove service throughout — truly world-class." },
+  { name: "Sofia Rossi", location: "Milan, Italy", car: "Lamborghini Urus S", rating: 5, quote: "The most discreet and professional dealership I've dealt with. The 360 viewer made buying remotely effortless." },
+  { name: "Ahmed Hassan", location: "Abu Dhabi, UAE", car: "McLaren 720S", rating: 5, quote: "Outstanding inventory and honest pricing. My 720S was delivered to my door in pristine condition." },
+];
+
+export const recentSales = cars.filter((c) => c.sold);
+
+export const configurator = {
+  exterior: [
+    { name: "Rosso Corsa", hex: "#c8102e" },
+    { name: "Nero Stealth", hex: "#0d0d0d" },
+    { name: "Bianco Avus", hex: "#f2f2f2" },
+    { name: "GT Silver", hex: "#c7ccce" },
+    { name: "Verde British", hex: "#1f4f3a" },
+    { name: "Blu Pozzi", hex: "#1b3a6b" },
+  ],
+  wheels: [
+    { name: "Forged Diamond", hex: "#1a1a1a" },
+    { name: "Polished Silver", hex: "#d6d6d6" },
+    { name: "Satin Bronze", hex: "#8a6a3b" },
+  ],
+  calipers: [
+    { name: "Gold", hex: "#c9a84c" },
+    { name: "Red", hex: "#c8102e" },
+    { name: "Yellow", hex: "#f4c20d" },
+    { name: "Black", hex: "#111111" },
+  ],
+};
 
 export const featuredCars = cars.filter((c) => c.featured && !c.sold);
 
@@ -358,6 +428,10 @@ export function formatPrice(aed: number) {
 export const fuelTypes = ["Petrol", "Hybrid", "Electric"];
 export const transmissions = ["Automatic", "Manual"];
 export const bodyTypes = ["Coupe", "Sedan", "SUV", "Convertible"];
+export const years = Array.from(new Set(cars.map((c) => c.year))).sort((a, b) => b - a);
+export const exteriorColours = Array.from(new Set(cars.map((c) => c.exteriorColour))).sort();
+export const interiorColours = Array.from(new Set(cars.map((c) => c.interiorColour))).sort();
+export const models = Array.from(new Set(cars.map((c) => c.model))).sort();
 
 export const WHATSAPP = "971500000000";
 export const PHONE = "+971 4 000 0000";

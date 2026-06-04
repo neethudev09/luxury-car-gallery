@@ -15,6 +15,7 @@ import { Route as SellRouteImport } from './routes/sell'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
@@ -50,6 +51,11 @@ const InventoryRoute = InventoryRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/blog': typeof BlogRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/blog': typeof BlogRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/blog': typeof BlogRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/blog'
+    | '/compare'
     | '/contact'
     | '/inventory'
     | '/media'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/blog'
+    | '/compare'
     | '/contact'
     | '/inventory'
     | '/media'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/blog'
+    | '/compare'
     | '/contact'
     | '/inventory'
     | '/media'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
   BlogRoute: typeof BlogRoute
+  CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
   InventoryRoute: typeof InventoryRoute
   MediaRoute: typeof MediaRoute
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
   BlogRoute: BlogRoute,
+  CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
   InventoryRoute: InventoryRoute,
   MediaRoute: MediaRoute,
@@ -292,13 +313,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
