@@ -6,7 +6,7 @@
 
 type EmblemProps = { className?: string };
 
-const emblems: Record<string, (p: EmblemProps) => JSX.Element> = {
+const emblems: Record<string, (p: EmblemProps) => React.ReactElement> = {
   // Shield crest
   ferrari: ({ className }) => (
     <svg viewBox="0 0 48 48" className={className} fill="none" stroke="currentColor" strokeWidth="1.6">
