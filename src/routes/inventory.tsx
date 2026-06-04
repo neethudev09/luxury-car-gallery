@@ -22,14 +22,15 @@ interface InventorySearch {
 }
 
 export const Route = createFileRoute("/inventory")({
-  validateSearch: (search: Record<string, unknown>): InventorySearch => ({
-    brand: typeof search.brand === "string" ? search.brand : undefined,
-    status: (["available", "sold", "featured", "latest"] as const).includes(
-      search.status as Status,
-    )
-      ? (search.status as Status)
-      : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): InventorySearch => {
+    const validStatuses = ["available", "sold", "featured", "latest"];
+    return {
+      brand: typeof search.brand === "string" ? search.brand : undefined,
+      status: validStatuses.includes(search.status as string)
+        ? (search.status as Status)
+        : undefined,
+    };
+  },
   head: () => ({
     meta: [
       { title: "Luxury Car Inventory For Sale in Dubai | Car Gallery Dubai" },
