@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, RotateCcw, Check, ChevronDown, Phone } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, Phone } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
+import { Car360Viewer } from "@/components/Car360Viewer";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
 
 export const Route = createFileRoute("/cars/$slug")({
