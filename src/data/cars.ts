@@ -105,7 +105,9 @@ function makeSpecs(c: Partial<Car>): Record<string, string> {
   };
 }
 
-const base: Omit<Car, "specs">[] = [
+type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpeed" | "accel" | "newArrival">;
+
+const base: CarBase[] = [
   {
     slug: "ferrari-488-gtb-2022",
     title: "Ferrari 488 GTB",
@@ -360,7 +362,70 @@ const base: Omit<Car, "specs">[] = [
   },
 ];
 
-export const cars: Car[] = base.map((c) => ({ ...c, specs: makeSpecs(c) }));
+export const cars: Car[] = base.map((c) => {
+  const p = perf[c.brandSlug] ?? { engine: "V8", hp: 600, tq: 700, top: 320, accel: 3.4 };
+  const enriched: Omit<Car, "specs"> = {
+    ...c,
+    engine: p.engine,
+    horsepower: p.hp,
+    torque: p.tq,
+    topSpeed: p.top,
+    accel: p.accel,
+    newArrival: c.year >= 2023 && !c.sold,
+  };
+  return {
+    ...enriched,
+    specs: {
+      Engine: p.engine,
+      Power: `${p.hp} bhp`,
+      Torque: `${p.tq} Nm`,
+      "0–100 km/h": `${p.accel}s`,
+      "Top Speed": `${p.top} km/h`,
+      Drivetrain: "All-Wheel Drive",
+      Transmission: c.transmission,
+      "Body Type": c.bodyType,
+    },
+  };
+});
+
+export interface Testimonial {
+  name: string;
+  location: string;
+  car: string;
+  rating: number;
+  quote: string;
+}
+
+export const testimonials: Testimonial[] = [
+  { name: "Khalid Al Maktoum", location: "Dubai, UAE", car: "Ferrari 488 GTB", rating: 5, quote: "An impeccable experience from start to finish. The car was exactly as presented and the handover was flawless." },
+  { name: "James Whitmore", location: "London, UK", car: "Rolls-Royce Ghost", rating: 5, quote: "They sourced and exported my Ghost to the UK seamlessly. White-glove service throughout — truly world-class." },
+  { name: "Sofia Rossi", location: "Milan, Italy", car: "Lamborghini Urus S", rating: 5, quote: "The most discreet and professional dealership I've dealt with. The 360 viewer made buying remotely effortless." },
+  { name: "Ahmed Hassan", location: "Abu Dhabi, UAE", car: "McLaren 720S", rating: 5, quote: "Outstanding inventory and honest pricing. My 720S was delivered to my door in pristine condition." },
+];
+
+export const recentSales = cars.filter((c) => c.sold);
+
+export const configurator = {
+  exterior: [
+    { name: "Rosso Corsa", hex: "#c8102e" },
+    { name: "Nero Stealth", hex: "#0d0d0d" },
+    { name: "Bianco Avus", hex: "#f2f2f2" },
+    { name: "GT Silver", hex: "#c7ccce" },
+    { name: "Verde British", hex: "#1f4f3a" },
+    { name: "Blu Pozzi", hex: "#1b3a6b" },
+  ],
+  wheels: [
+    { name: "Forged Diamond", hex: "#1a1a1a" },
+    { name: "Polished Silver", hex: "#d6d6d6" },
+    { name: "Satin Bronze", hex: "#8a6a3b" },
+  ],
+  calipers: [
+    { name: "Gold", hex: "#c9a84c" },
+    { name: "Red", hex: "#c8102e" },
+    { name: "Yellow", hex: "#f4c20d" },
+    { name: "Black", hex: "#111111" },
+  ],
+};
 
 export const featuredCars = cars.filter((c) => c.featured && !c.sold);
 
