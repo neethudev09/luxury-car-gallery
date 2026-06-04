@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
@@ -22,31 +23,40 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CarsSlugRoute = CarsSlugRouteImport.update({
+  id: '/cars/$slug',
+  path: '/cars/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRoute
+  '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRoute
+  '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRoute
+  '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/inventory'
+  fullPaths: '/' | '/inventory' | '/cars/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inventory'
-  id: '__root__' | '/' | '/inventory'
+  to: '/' | '/inventory' | '/cars/$slug'
+  id: '__root__' | '/' | '/inventory' | '/cars/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   InventoryRoute: typeof InventoryRoute
+  CarsSlugRoute: typeof CarsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cars/$slug': {
+      id: '/cars/$slug'
+      path: '/cars/$slug'
+      fullPath: '/cars/$slug'
+      preLoaderRoute: typeof CarsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   InventoryRoute: InventoryRoute,
+  CarsSlugRoute: CarsSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
