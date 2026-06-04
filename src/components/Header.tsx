@@ -8,15 +8,33 @@ import {
   X,
   ChevronDown,
   ArrowUpRight,
+  ArrowRight,
   Tag,
   Banknote,
   GitCompare,
   Compass,
   Sparkles,
-  ArrowRight,
+  Images,
+  Play,
+  RotateCcw,
+  Newspaper,
+  BookOpen,
+  TrendingUp,
+  Building2,
+  Briefcase,
+  ShieldCheck,
+  Mail,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { brands, featuredCars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
+import {
+  brands,
+  featuredCars,
+  carForBrand,
+  formatPrice,
+  whatsappLink,
+  PHONE,
+} from "@/data/cars";
+import { posts } from "@/data/blog";
 import { BrandLogo } from "@/components/BrandLogo";
 import showroom from "@/assets/showroom-interior.jpg";
 import lcgLogo from "@/assets/lcg-logo.png.asset.json";
@@ -26,47 +44,6 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
     <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.83 9.83 0 001.999 5.928l-.999 3.648 3.49-.875zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
   </svg>
 );
-
-interface MenuColumn {
-  heading: string;
-  links: { label: string; to: string }[];
-}
-
-const mediaMenu: MenuColumn[] = [
-  {
-    heading: "Media",
-    links: [
-      { label: "Image Gallery", to: "/media" },
-      { label: "Video Gallery", to: "/media" },
-      { label: "360° Car Views", to: "/media" },
-      { label: "360° Showroom Tour", to: "/showroom" },
-    ],
-  },
-];
-
-const newsMenu: MenuColumn[] = [
-  {
-    heading: "Editorial",
-    links: [
-      { label: "News", to: "/blog" },
-      { label: "Blog", to: "/blog" },
-      { label: "Buying Guides", to: "/blog" },
-      { label: "Market Updates", to: "/blog" },
-    ],
-  },
-];
-
-const aboutMenu: MenuColumn[] = [
-  {
-    heading: "The Gallery",
-    links: [
-      { label: "About Us", to: "/about" },
-      { label: "Showroom", to: "/showroom" },
-      { label: "Why Choose Us", to: "/about" },
-      { label: "Careers", to: "/about" },
-    ],
-  },
-];
 
 const navItems = [
   { label: "Cars", key: "cars" },
@@ -104,7 +81,6 @@ export function Header() {
       onMouseLeave={leave}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5">
-        {/* Logo */}
         <Link to="/" className="group flex items-center gap-3" onMouseEnter={() => setOpen(null)}>
           <img
             src={lcgLogo.url}
@@ -115,7 +91,6 @@ export function Header() {
           />
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden items-center gap-1 lg:flex">
           {navItems.map((item) => (
             <button
@@ -140,7 +115,6 @@ export function Header() {
           </Link>
         </nav>
 
-        {/* Actions */}
         <div className="flex items-center gap-1.5">
           <Link
             to="/inventory"
@@ -209,7 +183,10 @@ export function Header() {
               />
               <div className="gold-line absolute inset-x-0 top-0 h-px" />
               <div className="relative mx-auto max-w-7xl px-6 py-9">
-                {open === "cars" ? <CarsMega /> : <SimpleMega columns={menuFor(open)} />}
+                {open === "cars" && <CarsMega onNavigate={() => setOpen(null)} />}
+                {open === "media" && <MediaMega />}
+                {open === "news" && <NewsMega />}
+                {open === "about" && <AboutMega />}
               </div>
             </div>
           </motion.div>
@@ -241,12 +218,6 @@ export function Header() {
   );
 }
 
-function menuFor(key: string): MenuColumn[] {
-  if (key === "media") return mediaMenu;
-  if (key === "news") return newsMenu;
-  return aboutMenu;
-}
-
 function MobileLink({
   to,
   children,
@@ -267,51 +238,67 @@ function MobileLink({
   );
 }
 
-function SimpleMega({ columns }: { columns: MenuColumn[] }) {
-  return (
-    <div className="grid grid-cols-2 gap-8">
-      {columns.map((col) => (
-        <div key={col.heading}>
-          <p className="mb-4 text-xs uppercase tracking-luxury text-gold">{col.heading}</p>
-          <ul className="space-y-1">
-            {col.links.map((l) => (
-              <li key={l.label}>
-                <Link
-                  to={l.to}
-                  className="group flex items-center justify-between rounded-lg px-3 py-2.5 font-display text-lg transition-colors hover:bg-secondary"
-                >
-                  {l.label}
-                  <ArrowUpRight className="h-4 w-4 -translate-x-1 text-gold opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-}
+/* ---------------- CARS MEGA (dynamic featured panel) ---------------- */
+function CarsMega({ onNavigate }: { onNavigate: () => void }) {
+  const [active, setActive] = useState(brands[0].slug);
+  const brand = brands.find((b) => b.slug === active) ?? brands[0];
+  const feature = carForBrand(active) ?? featuredCars[0];
 
-function CarsMega() {
   const quickLinks = [
-    { label: "Cars For Sale", to: "/inventory", Icon: Tag },
-    { label: "Sell Your Car", to: "/sell", Icon: Banknote },
-    { label: "Compare Models", to: "/compare", Icon: GitCompare },
-    { label: "360 Showroom", to: "/showroom", Icon: Compass },
+    { label: "All Cars For Sale", to: "/inventory", Icon: Tag },
     { label: "New Arrivals", to: "/inventory", Icon: Sparkles },
+    { label: "Compare Models", to: "/compare", Icon: GitCompare },
+    { label: "360° Showroom", to: "/showroom", Icon: Compass },
+    { label: "Sell Your Car", to: "/sell", Icon: Banknote },
   ] as const;
-  const feature = featuredCars[0];
 
   return (
     <div className="grid grid-cols-12 gap-8">
+      {/* Brand list */}
+      <div className="col-span-5">
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-xs uppercase tracking-luxury text-gold">Shop By Brand</p>
+          <span className="text-[0.6rem] uppercase tracking-widest text-muted-foreground">
+            Available / Sold
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-1">
+          {brands.map((b) => (
+            <Link
+              key={b.slug}
+              to="/inventory"
+              search={{ brand: b.slug }}
+              onClick={onNavigate}
+              onMouseEnter={() => setActive(b.slug)}
+              className={`group flex items-center gap-2.5 rounded-lg px-2.5 py-2 transition-colors ${
+                active === b.slug ? "bg-secondary" : "hover:bg-secondary/60"
+              }`}
+            >
+              <BrandLogo
+                slug={b.slug}
+                className={`h-5 w-5 shrink-0 transition-colors ${
+                  active === b.slug ? "text-gold" : "text-foreground/55 group-hover:text-gold"
+                }`}
+              />
+              <span className="flex-1 truncate text-sm text-foreground/85 group-hover:text-gold">
+                {b.name}
+              </span>
+              <span className="text-xs text-gold/90">{b.available}</span>
+              <span className="text-[0.7rem] text-muted-foreground">/ {b.sold}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Quick links */}
-      <div className="col-span-2">
+      <div className="col-span-3 border-l border-border/60 pl-6">
         <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Quick Links</p>
         <ul className="space-y-1">
           {quickLinks.map(({ label, to, Icon }) => (
             <li key={label}>
               <Link
                 to={to}
+                onClick={onNavigate}
                 className="group flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-foreground/85 transition-colors hover:bg-secondary hover:text-gold"
               >
                 <Icon className="h-4 w-4 text-gold" />
@@ -322,82 +309,206 @@ function CarsMega() {
         </ul>
       </div>
 
-      {/* Available */}
-      <div className="col-span-3 border-l border-border/60 pl-6">
-        <div className="mb-4 flex items-center justify-between">
-          <p className="text-xs uppercase tracking-luxury text-gold">Available Cars</p>
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-        </div>
-        <div className="space-y-0.5">
-          {brands.map((b) => (
-            <BrandRow key={b.slug} name={b.name} slug={b.slug} count={b.available} />
-          ))}
-        </div>
-      </div>
-
-      {/* Sold */}
-      <div className="col-span-3 border-l border-border/60 pl-6">
-        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Sold Cars</p>
-        <div className="space-y-0.5">
-          {brands.map((b) => (
-            <BrandRow key={b.slug} name={b.name} slug={b.slug} count={b.sold} sold />
-          ))}
-        </div>
-      </div>
-
-      {/* Featured vehicle */}
+      {/* Dynamic brand feature panel */}
       <div className="col-span-4 border-l border-border/60 pl-6">
-        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">Featured Vehicle</p>
-        {feature && (
-          <Link
-            to="/cars/$slug"
-            params={{ slug: feature.slug }}
-            className="group block overflow-hidden rounded-xl border border-border bg-card/60 transition-all hover:border-gold"
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22 }}
           >
-            <div className="relative aspect-[16/10] overflow-hidden">
-              <img
-                src={feature.image}
-                alt={feature.title}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <span className="absolute left-3 top-3 rounded-full bg-gold px-2.5 py-0.5 text-[0.55rem] font-semibold uppercase tracking-widest text-primary-foreground">
-                Featured
+            <div className="mb-3 flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/30">
+                <BrandLogo slug={brand.slug} className="h-6 w-6 text-gold" />
               </span>
-            </div>
-            <div className="p-4">
-              <p className="text-sm font-medium group-hover:text-gold">{feature.year} {feature.title}</p>
-              <div className="mt-1 flex items-center justify-between">
-                <span className="font-display text-gold">{formatPrice(feature.price)}</span>
-                <ArrowRight className="h-4 w-4 -translate-x-1 text-gold opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+              <div>
+                <p className="font-display text-lg leading-none">{brand.name}</p>
+                <p className="mt-1 text-[0.7rem] uppercase tracking-widest text-muted-foreground">
+                  <span className="text-emerald-400">{brand.available} available</span> ·{" "}
+                  {brand.sold} sold
+                </p>
               </div>
             </div>
-          </Link>
-        )}
+
+            {feature && (
+              <Link
+                to="/cars/$slug"
+                params={{ slug: feature.slug }}
+                onClick={onNavigate}
+                className="group block overflow-hidden rounded-xl border border-border bg-card/60 transition-all hover:border-gold"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={feature.image}
+                    alt={feature.title}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-gold px-2.5 py-0.5 text-[0.55rem] font-semibold uppercase tracking-widest text-primary-foreground">
+                    Featured
+                  </span>
+                </div>
+                <div className="p-3">
+                  <p className="text-sm font-medium group-hover:text-gold">
+                    {feature.year} {feature.title}
+                  </p>
+                  <div className="mt-1 flex items-center justify-between">
+                    <span className="font-display text-gold">{formatPrice(feature.price)}</span>
+                    <ArrowRight className="h-4 w-4 -translate-x-1 text-gold opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                  </div>
+                </div>
+              </Link>
+            )}
+
+            <Link
+              to="/inventory"
+              search={{ brand: brand.slug }}
+              onClick={onNavigate}
+              className="mt-3 flex items-center justify-center gap-2 rounded-full border border-gold/50 py-2.5 text-xs font-medium uppercase tracking-widest text-gold transition-colors hover:bg-gold/10"
+            >
+              View All {brand.name} <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
 }
 
-function BrandRow({
-  name,
-  slug,
-  count,
-  sold,
+/* ---------------- GENERIC PREMIUM MEGA ---------------- */
+interface MegaLink {
+  label: string;
+  desc: string;
+  to: string;
+  Icon: React.ComponentType<{ className?: string }>;
+}
+
+function LinkMega({
+  eyebrow,
+  links,
+  feature,
 }: {
-  name: string;
-  slug: string;
-  count: number;
-  sold?: boolean;
+  eyebrow: string;
+  links: MegaLink[];
+  feature: { eyebrow: string; title: string; desc: string; image: string; to: string; cta: string };
 }) {
   return (
-    <Link
-      to="/brands/$brand"
-      params={{ brand: slug }}
-      className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-secondary"
-    >
-      <BrandLogo slug={slug} className="h-5 w-5 shrink-0 text-foreground/55 transition-colors group-hover:text-gold" />
-      <span className="flex-1 truncate text-sm text-foreground/85 group-hover:text-gold">{name}</span>
-      <span className={`text-xs ${sold ? "text-muted-foreground" : "text-gold/90"}`}>{count}</span>
-    </Link>
+    <div className="grid grid-cols-12 gap-8">
+      <div className="col-span-7">
+        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">{eyebrow}</p>
+        <div className="grid grid-cols-2 gap-2">
+          {links.map((l) => (
+            <Link
+              key={l.label}
+              to={l.to}
+              className="group flex items-start gap-3 rounded-xl border border-transparent px-3 py-3 transition-colors hover:border-gold/30 hover:bg-secondary"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/30 text-gold transition-colors group-hover:bg-gold group-hover:text-primary-foreground">
+                <l.Icon className="h-5 w-5" />
+              </span>
+              <span>
+                <span className="flex items-center gap-1 font-display text-base group-hover:text-gold">
+                  {l.label}
+                  <ArrowUpRight className="h-3.5 w-3.5 -translate-x-1 text-gold opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                </span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">{l.desc}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="col-span-5 border-l border-border/60 pl-6">
+        <p className="mb-4 text-xs uppercase tracking-luxury text-gold">{feature.eyebrow}</p>
+        <Link
+          to={feature.to}
+          className="group block overflow-hidden rounded-xl border border-border bg-card/60 transition-all hover:border-gold"
+        >
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <img
+              src={feature.image}
+              alt={feature.title}
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          </div>
+          <div className="p-4">
+            <p className="font-display text-lg group-hover:text-gold">{feature.title}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{feature.desc}</p>
+            <span className="mt-3 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-gold">
+              {feature.cta} <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function MediaMega() {
+  return (
+    <LinkMega
+      eyebrow="Media & Experiences"
+      links={[
+        { label: "Image Gallery", desc: "High-resolution photography", to: "/media", Icon: Images },
+        { label: "Video Gallery", desc: "Cinematic vehicle films", to: "/media", Icon: Play },
+        { label: "360° Car Views", desc: "Spin & inspect every angle", to: "/media", Icon: RotateCcw },
+        { label: "360° Showroom Tour", desc: "Walk our Dubai floor", to: "/showroom", Icon: Compass },
+      ]}
+      feature={{
+        eyebrow: "Latest Showroom",
+        title: "Step Inside The Gallery",
+        desc: "Immersive 360° walkthrough of our latest arrivals.",
+        image: showroom,
+        to: "/showroom",
+        cta: "Start Tour",
+      }}
+    />
+  );
+}
+
+function NewsMega() {
+  const latest = posts[0];
+  return (
+    <LinkMega
+      eyebrow="Editorial"
+      links={[
+        { label: "News", desc: "Dubai automotive headlines", to: "/blog", Icon: Newspaper },
+        { label: "Blog", desc: "Stories from the showroom", to: "/blog", Icon: BookOpen },
+        { label: "Buying Guides", desc: "Buy smarter in the UAE", to: "/blog", Icon: ShieldCheck },
+        { label: "Market Updates", desc: "Values & trends", to: "/blog", Icon: TrendingUp },
+      ]}
+      feature={{
+        eyebrow: "Latest Article",
+        title: latest.title,
+        desc: latest.excerpt,
+        image: latest.image,
+        to: "/blog",
+        cta: "Read Article",
+      }}
+    />
+  );
+}
+
+function AboutMega() {
+  return (
+    <LinkMega
+      eyebrow="The Gallery"
+      links={[
+        { label: "About Car Gallery Dubai", desc: "Our story & ethos", to: "/about", Icon: Building2 },
+        { label: "Why Choose Us", desc: "Trust, discretion, expertise", to: "/about", Icon: ShieldCheck },
+        { label: "Showroom", desc: "Visit us in Dubai", to: "/showroom", Icon: Compass },
+        { label: "Careers", desc: "Join the team", to: "/about", Icon: Briefcase },
+        { label: "Contact", desc: "Speak to a specialist", to: "/contact", Icon: Mail },
+      ]}
+      feature={{
+        eyebrow: "Our Showroom",
+        title: "A Benchmark In Luxury Retail",
+        desc: "15 years sourcing the world's finest cars with white-glove service.",
+        image: showroom,
+        to: "/about",
+        cta: "Discover More",
+      }}
+    />
   );
 }

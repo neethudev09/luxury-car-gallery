@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   ArrowRight,
   RotateCcw,
@@ -15,13 +15,13 @@ import {
 } from "lucide-react";
 import { Reveal, SectionHeading, CountUp } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
+import { CarConfigurator } from "@/components/CarConfigurator";
 import { BrandLogo } from "@/components/BrandLogo";
 import { brands, featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
 import { posts } from "@/data/blog";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 import sellImg from "@/assets/sell-your-car.jpg";
-import porsche from "@/assets/car-porsche.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -221,25 +221,24 @@ function FeaturedSection() {
 
 /* SECTION 4 — 360 EXPERIENCE */
 function ThreeSixtySection() {
-  const [rot, setRot] = useState(0);
   return (
     <section className="relative overflow-hidden py-24">
       <div className="absolute inset-0 bg-grain" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2">
         <Reveal>
-          <span className="text-xs uppercase tracking-luxury text-gold">Interactive Experience</span>
+          <span className="text-xs uppercase tracking-luxury text-gold">Interactive Configurator</span>
           <h2 className="mt-3 text-3xl md:text-4xl lg:text-5xl">
-            Explore Every Detail in <span className="gold-gradient-text">360°</span>
+            Spin, Configure & Explore in <span className="gold-gradient-text">360°</span>
           </h2>
           <p className="mt-4 max-w-md text-muted-foreground">
-            Rotate, zoom and inspect every contour of our vehicles from the comfort of your home.
-            A truly immersive way to experience automotive perfection before you visit.
+            Place the car on the platform and spin it in real time. Change the exterior paint,
+            wheels, brake calipers and interior — a true luxury configurator, not a slideshow.
           </p>
           <ul className="mt-8 space-y-4">
             {[
-              { Icon: RotateCcw, t: "Full 360° Rotation", d: "Drag to spin the vehicle in real time" },
-              { Icon: ZoomIn, t: "High-Detail Zoom", d: "Inspect paint, wheels and badging" },
-              { Icon: Move3d, t: "Exterior Walkaround", d: "Every angle, beautifully presented" },
+              { Icon: RotateCcw, t: "Real Platform Spin", d: "Drag left and right to rotate the car" },
+              { Icon: Move3d, t: "Live Colour Studio", d: "Exterior, wheel, caliper & interior options" },
+              { Icon: ZoomIn, t: "High-Detail Presentation", d: "Reflections and lighting under the car" },
             ].map(({ Icon, t, d }) => (
               <li key={t} className="flex gap-4">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold">
@@ -255,38 +254,13 @@ function ThreeSixtySection() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="glass relative overflow-hidden rounded-3xl p-8 shadow-luxury">
-            <div className="absolute right-5 top-5 flex items-center gap-1.5 rounded-full glass-strong px-3 py-1 text-[0.6rem] uppercase tracking-widest text-gold">
-              <RotateCcw className="h-3 w-3" /> 360° View
-            </div>
-            <img
-              src={porsche}
-              alt="360 degree car viewer"
-              loading="lazy"
-              width={1024}
-              height={768}
-              className="mx-auto select-none transition-transform duration-150"
-              style={{ transform: `rotateY(${rot}deg) scale(${1 + Math.abs(Math.sin((rot * Math.PI) / 180)) * 0.04})` }}
-              draggable={false}
-            />
-            <input
-              type="range"
-              min={-180}
-              max={180}
-              value={rot}
-              onChange={(e) => setRot(Number(e.target.value))}
-              className="mt-6 w-full accent-gold"
-              aria-label="Rotate vehicle"
-            />
-            <p className="mt-2 text-center text-xs text-muted-foreground">
-              Drag the slider to rotate
-            </p>
-          </div>
+          <CarConfigurator />
         </Reveal>
       </div>
     </section>
   );
 }
+
 
 /* SECTION 5 — SHOWROOM */
 function ShowroomSection() {
