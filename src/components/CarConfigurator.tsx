@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { RotateCcw, Pause, Play, Hand } from "lucide-react";
 import { configurator, interiorConfig } from "@/data/cars";
-import porsche from "@/assets/car-porsche.jpg";
 
 /**
  * Luxury home-page configurator: smooth drag/swipe turntable, auto-rotate,
@@ -73,16 +72,8 @@ export function CarConfigurator() {
   };
 
   const norm = ((rot % 360) + 360) % 360;
-  const rad = (norm * Math.PI) / 180;
-  const yaw = Math.sin(rad);
+  const yaw = Math.sin((norm * Math.PI) / 180);
   const side = Math.abs(yaw);
-  const rear = Math.max(0, -Math.cos(rad));
-  const facing = norm > 90 && norm < 270 ? -1 : 1;
-  const vehicleScaleX = 1 - side * 0.38 - rear * 0.08;
-  const vehicleScaleY = 1 - side * 0.045;
-  const vehicleTranslateX = yaw * 7;
-  const vehicleSkewY = yaw * -3.5;
-  const vehicleFilter = `${paintFilter(ext.name)} brightness(${1.03 - rear * 0.1}) saturate(${1.08 + side * 0.08})`;
 
   return (
     <div className="glass relative overflow-hidden rounded-3xl p-6 shadow-luxury sm:p-8">
@@ -106,44 +97,14 @@ export function CarConfigurator() {
           style={{ background: ext.hex, opacity: 0.18 }}
         />
 
-        {/* Car: turntable yaw simulation, not a rotating photo plane */}
-        <div
-          className="relative z-10 w-[86%] will-change-transform"
-          style={{
-            transform: `translateX(${vehicleTranslateX}%) scaleX(${vehicleScaleX * facing}) scaleY(${vehicleScaleY}) skewY(${vehicleSkewY}deg)`,
-            transformOrigin: yaw > 0 ? "58% 62%" : "42% 62%",
-            transition: dragging ? "none" : "transform 90ms linear, filter 90ms linear",
-            filter: `drop-shadow(${yaw * 18}px 28px 26px rgba(0,0,0,0.58)) ${vehicleFilter}`,
-          }}
-        >
-          <div className="relative">
-            <img
-              src={porsche}
-              alt="Configure your luxury car in 360 degrees"
-              draggable={false}
-              className="h-auto w-full object-contain mix-blend-screen"
-            />
-            {/* Caliper accent dot */}
-            <span
-              className="pointer-events-none absolute bottom-[26%] left-[24%] h-2.5 w-2.5 rounded-full ring-2 ring-background"
-              style={{ backgroundColor: caliper.hex }}
-            />
-          </div>
-        </div>
-
-        {/* Reflection */}
-        <div
-          className="pointer-events-none absolute left-1/2 top-[65%] w-[86%] opacity-20 blur-[2px]"
-          style={{
-            transform: `translateX(-50%) translateX(${vehicleTranslateX}%) scaleX(${vehicleScaleX * facing}) scaleY(-0.48) skewY(${vehicleSkewY}deg)`,
-            transformOrigin: "50% 0%",
-            filter: vehicleFilter,
-            maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)",
-            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)",
-          }}
-        >
-          <img src={porsche} alt="" draggable={false} className="h-auto w-full object-contain mix-blend-screen" />
-        </div>
+        <CarModel
+          rotation={rot}
+          paint={ext.hex}
+          wheel={wheel.hex}
+          caliper={caliper.hex}
+          interior={interior.hex}
+          dragging={dragging}
+        />
 
         {/* Platform */}
         <div className="pointer-events-none absolute bottom-3 left-1/2 h-12 w-[76%] -translate-x-1/2 rounded-[50%] bg-gold/10 blur-md" />
