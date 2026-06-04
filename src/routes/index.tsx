@@ -168,20 +168,22 @@ function BrandsSection() {
         subtitle="From Maranello to Goodwood — we source, certify and present the most coveted automobiles on earth."
         align="center"
       />
-      <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {brands.slice(0, 10).map((b, i) => (
-          <Reveal key={b.slug} delay={i * 0.05}>
+      <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        {brands.map((b, i) => (
+          <Reveal key={b.slug} delay={i * 0.04}>
             <Link
               to="/brands/$brand"
               params={{ brand: b.slug }}
-              className="group flex aspect-[3/2] flex-col items-center justify-center rounded-xl border border-border bg-card transition-all duration-500 hover:border-gold hover:shadow-gold"
+              className="group flex aspect-[3/2] flex-col items-center justify-center gap-3 rounded-xl border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-gold hover:shadow-gold"
             >
-              <span className="font-display text-3xl text-foreground/60 transition-colors group-hover:text-gold">
-                {b.name.slice(0, 2).toUpperCase()}
-              </span>
-              <span className="mt-1 text-xs uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-foreground">
+              <BrandLogo
+                slug={b.slug}
+                className="h-10 w-10 text-foreground/55 transition-all duration-500 group-hover:scale-110 group-hover:text-gold"
+              />
+              <span className="text-xs uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-foreground">
                 {b.name}
               </span>
+              <span className="text-[0.6rem] uppercase tracking-widest text-gold/70">{b.available} available</span>
             </Link>
           </Reveal>
         ))}
