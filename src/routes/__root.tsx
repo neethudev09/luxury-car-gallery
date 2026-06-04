@@ -13,6 +13,8 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CompareProvider } from "@/lib/compare";
+import { CompareBar } from "@/components/CompareBar";
 
 function NotFoundComponent() {
   return (
