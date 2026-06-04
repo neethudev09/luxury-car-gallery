@@ -106,19 +106,7 @@ function VehiclePage() {
           </div>
 
           {/* 360 viewer */}
-          <div className="glass mt-6 rounded-2xl p-6">
-            <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-widest text-gold">
-              <RotateCcw className="h-4 w-4" /> 360° Viewer
-            </div>
-            <img
-              src={car.image}
-              alt="360 view"
-              loading="lazy"
-              className="mx-auto"
-              style={{ transform: `rotateY(${rot}deg)` }}
-            />
-            <input type="range" min={-180} max={180} value={rot} onChange={(e) => setRot(Number(e.target.value))} className="mt-4 w-full accent-gold" />
-          </div>
+          <Car360Viewer image={car.image} title={car.title} />
         </div>
 
         {/* Details */}
