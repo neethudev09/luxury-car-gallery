@@ -19,6 +19,7 @@ import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
+import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
 
 const ShowroomRoute = ShowroomRouteImport.update({
   id: '/showroom',
@@ -70,6 +71,11 @@ const CarsSlugRoute = CarsSlugRouteImport.update({
   path: '/cars/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandsBrandRoute = BrandsBrandRouteImport.update({
+  id: '/brands/$brand',
+  path: '/brands/$brand',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
   '/showroom': typeof ShowroomRoute
+  '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
   '/showroom': typeof ShowroomRoute
+  '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
   '/showroom': typeof ShowroomRoute
+  '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/sell'
     | '/showroom'
+    | '/brands/$brand'
     | '/cars/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/sell'
     | '/showroom'
+    | '/brands/$brand'
     | '/cars/$slug'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/sell'
     | '/showroom'
+    | '/brands/$brand'
     | '/cars/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   MediaRoute: typeof MediaRoute
   SellRoute: typeof SellRoute
   ShowroomRoute: typeof ShowroomRoute
+  BrandsBrandRoute: typeof BrandsBrandRoute
   CarsSlugRoute: typeof CarsSlugRoute
 }
 
@@ -232,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CarsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brands/$brand': {
+      id: '/brands/$brand'
+      path: '/brands/$brand'
+      fullPath: '/brands/$brand'
+      preLoaderRoute: typeof BrandsBrandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   MediaRoute: MediaRoute,
   SellRoute: SellRoute,
   ShowroomRoute: ShowroomRoute,
+  BrandsBrandRoute: BrandsBrandRoute,
   CarsSlugRoute: CarsSlugRoute,
 }
 export const routeTree = rootRouteImport
