@@ -56,13 +56,30 @@ export interface Car {
   bodyType: string;
   exteriorColour: string;
   interiorColour: string;
+  engine: string;
+  horsepower: number;
+  torque: number;
+  topSpeed: number;
+  accel: number;
   image: string;
   featured: boolean;
+  newArrival: boolean;
   sold: boolean;
   description: string;
   features: string[];
   specs: Record<string, string>;
 }
+
+const perf: Record<string, { engine: string; hp: number; tq: number; top: number; accel: number }> = {
+  ferrari: { engine: "3.9L Twin-Turbo V8", hp: 661, tq: 760, top: 330, accel: 3.0 },
+  lamborghini: { engine: "6.5L V12", hp: 730, tq: 720, top: 350, accel: 2.9 },
+  porsche: { engine: "3.8L Twin-Turbo Flat-6", hp: 641, tq: 800, top: 330, accel: 2.7 },
+  "rolls-royce": { engine: "6.75L Twin-Turbo V12", hp: 563, tq: 850, top: 250, accel: 4.8 },
+  bentley: { engine: "6.0L Twin-Turbo W12", hp: 626, tq: 900, top: 333, accel: 3.6 },
+  "mercedes-benz": { engine: "4.0L Twin-Turbo V8", hp: 577, tq: 700, top: 318, accel: 3.5 },
+  mclaren: { engine: "4.0L Twin-Turbo V8", hp: 710, tq: 770, top: 341, accel: 2.8 },
+  "aston-martin": { engine: "5.2L Twin-Turbo V12", hp: 630, tq: 700, top: 322, accel: 3.7 },
+};
 
 const fmtFeatures = [
   "Carbon Ceramic Brakes",
