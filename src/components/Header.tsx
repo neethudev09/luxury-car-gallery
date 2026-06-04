@@ -7,12 +7,19 @@ import {
   Menu,
   X,
   ChevronDown,
-  Car,
   ArrowUpRight,
+  Tag,
+  Banknote,
+  GitCompare,
+  Compass,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { brands, whatsappLink, PHONE } from "@/data/cars";
+import { brands, featuredCars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
+import { BrandLogo } from "@/components/BrandLogo";
 import showroom from "@/assets/showroom-interior.jpg";
+import lcgLogo from "@/assets/lcg-logo.png.asset.json";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
