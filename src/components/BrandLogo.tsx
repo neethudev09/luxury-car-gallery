@@ -1,3 +1,4 @@
+import type React from "react";
 /**
  * Stylized, original geometric crest emblems for each marque.
  * These are NOT reproductions of the brands' trademarked logos —
