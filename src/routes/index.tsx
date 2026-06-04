@@ -7,6 +7,7 @@ import {
   ZoomIn,
   Compass,
   Move3d,
+  Hand,
   Phone,
   Mail,
   MapPin,
@@ -15,7 +16,8 @@ import {
 } from "lucide-react";
 import { Reveal, SectionHeading, CountUp } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
-import { CarConfigurator } from "@/components/CarConfigurator";
+import { VehicleShowcase } from "@/components/VehicleShowcase";
+
 import { BrandLogo } from "@/components/BrandLogo";
 import { brands, featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
 import { posts } from "@/data/blog";
