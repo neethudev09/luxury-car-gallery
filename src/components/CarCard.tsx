@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Gauge, Fuel, Settings2, Calendar, Eye } from "lucide-react";
+import { Gauge, Fuel, Settings2, Calendar, Eye, GitCompare, Heart, Zap, Cog } from "lucide-react";
 import type { Car } from "@/data/cars";
 import { formatPrice, whatsappLink } from "@/data/cars";
+import { BrandLogo } from "@/components/BrandLogo";
+import { useCompare } from "@/lib/compare";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
@@ -10,6 +12,10 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 export function CarCard({ car }: { car: Car }) {
+  const { toggleCompare, toggleSaved, isCompared, isSaved } = useCompare();
+  const compared = isCompared(car.slug);
+  const saved = isSaved(car.slug);
+
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-luxury hover-lift">
       <Link to="/cars/$slug" params={{ slug: car.slug }} className="block">
@@ -23,10 +29,17 @@ export function CarCard({ car }: { car: Car }) {
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card via-card/10 to-transparent" />
-          <div className="absolute left-4 top-4 flex gap-2">
+
+          {/* Badges */}
+          <div className="absolute left-4 top-4 flex flex-wrap gap-2">
             {car.featured && !car.sold && (
               <span className="rounded-full bg-gold px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-primary-foreground">
                 Featured
+              </span>
+            )}
+            {car.newArrival && (
+              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-white">
+                New Arrival
               </span>
             )}
             {car.sold && (
@@ -35,9 +48,18 @@ export function CarCard({ car }: { car: Car }) {
               </span>
             )}
           </div>
-          <span className="absolute bottom-4 right-4 flex translate-y-3 items-center gap-1.5 rounded-full glass px-3 py-1.5 text-xs opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-            <Eye className="h-3.5 w-3.5 text-gold" /> Quick View
+
+          {/* Brand logo */}
+          <span className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full glass text-gold">
+            <BrandLogo slug={car.brandSlug} className="h-5 w-5" />
           </span>
+
+          {/* Hover reveal: extra spec strip */}
+          <div className="absolute inset-x-0 bottom-0 flex translate-y-full items-center justify-around gap-2 glass px-3 py-2.5 text-[0.65rem] text-foreground/90 transition-transform duration-500 group-hover:translate-y-0">
+            <span className="flex items-center gap-1"><Zap className="h-3.5 w-3.5 text-gold" /> {car.horsepower} bhp</span>
+            <span className="flex items-center gap-1"><Cog className="h-3.5 w-3.5 text-gold" /> {car.engine.split(" ").slice(-1)}</span>
+            <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5 text-gold" /> Quick View</span>
+          </div>
         </div>
       </Link>
 
@@ -69,16 +91,36 @@ export function CarCard({ car }: { car: Car }) {
             <p className="text-[0.65rem] uppercase tracking-widest text-muted-foreground">Price</p>
             <p className="font-display text-lg text-gold">{formatPrice(car.price)}</p>
           </div>
-          <a
-            href={whatsappLink(`I'm interested in the ${car.year} ${car.title}.`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors hover:bg-gold hover:text-primary-foreground"
-            aria-label="WhatsApp enquiry"
-          >
-            <WhatsAppIcon className="h-5 w-5" />
-          </a>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => toggleSaved(car.slug)}
+              aria-label="Save vehicle"
+              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                saved ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
+              }`}
+            >
+              <Heart className={`h-4.5 w-4.5 ${saved ? "fill-gold" : ""}`} />
+            </button>
+            <button
+              onClick={() => toggleCompare(car.slug)}
+              aria-label="Compare vehicle"
+              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                compared ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
+              }`}
+            >
+              <GitCompare className="h-4.5 w-4.5" />
+            </button>
+            <a
+              href={whatsappLink(`I'm interested in the ${car.year} ${car.title}.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors hover:bg-gold hover:text-primary-foreground"
+              aria-label="WhatsApp enquiry"
+            >
+              <WhatsAppIcon className="h-5 w-5" />
+            </a>
+          </div>
         </div>
       </div>
     </article>
