@@ -1,18 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { CarCard } from "@/components/CarCard";
 import { Reveal } from "@/components/Reveal";
-import { cars, brands, fuelTypes, transmissions, bodyTypes } from "@/data/cars";
+import {
+  cars,
+  brands,
+  fuelTypes,
+  transmissions,
+  bodyTypes,
+  years,
+  models,
+  exteriorColours,
+  interiorColours,
+} from "@/data/cars";
+
+interface InventorySearch {
+  brand?: string;
+  status?: Status;
+}
 
 export const Route = createFileRoute("/inventory")({
+  validateSearch: (search: Record<string, unknown>): InventorySearch => ({
+    brand: typeof search.brand === "string" ? search.brand : undefined,
+    status: (["available", "sold", "featured", "latest"] as const).includes(
+      search.status as Status,
+    )
+      ? (search.status as Status)
+      : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Luxury Car Inventory For Sale in Dubai | Car Gallery Dubai" },
       {
         name: "description",
         content:
-          "Browse our full inventory of luxury cars and supercars for sale in Dubai. Filter by brand, price, year, mileage, fuel type and more.",
+          "Browse our full inventory of luxury cars and supercars for sale in Dubai. Filter by brand, model, price, year, mileage, fuel type, colour and more.",
       },
       { property: "og:title", content: "Luxury Car Inventory | Car Gallery Dubai" },
     ],
@@ -21,31 +45,49 @@ export const Route = createFileRoute("/inventory")({
   component: Inventory,
 });
 
-type Status = "all" | "available" | "sold" | "featured";
+type Status = "all" | "available" | "sold" | "featured" | "latest";
 
 function Inventory() {
+  const search = Route.useSearch();
   const [q, setQ] = useState("");
   const [brand, setBrand] = useState("all");
+  const [model, setModel] = useState("all");
   const [fuel, setFuel] = useState("all");
   const [trans, setTrans] = useState("all");
   const [body, setBody] = useState("all");
+  const [year, setYear] = useState("all");
+  const [ext, setExt] = useState("all");
+  const [int, setInt] = useState("all");
   const [status, setStatus] = useState<Status>("all");
   const [maxPrice, setMaxPrice] = useState(2000000);
+  const [maxMileage, setMaxMileage] = useState(20000);
   const [sort, setSort] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
+
+  // Apply incoming URL params (e.g. from the mega menu).
+  useEffect(() => {
+    if (search.brand) setBrand(search.brand);
+    if (search.status) setStatus(search.status);
+  }, [search.brand, search.status]);
 
   const filtered = useMemo(() => {
     let list = cars.filter((c) => {
       if (q && !`${c.title} ${c.brand} ${c.model}`.toLowerCase().includes(q.toLowerCase()))
         return false;
       if (brand !== "all" && c.brandSlug !== brand) return false;
+      if (model !== "all" && c.model !== model) return false;
       if (fuel !== "all" && c.fuel !== fuel) return false;
       if (trans !== "all" && c.transmission !== trans) return false;
       if (body !== "all" && c.bodyType !== body) return false;
+      if (year !== "all" && String(c.year) !== year) return false;
+      if (ext !== "all" && c.exteriorColour !== ext) return false;
+      if (int !== "all" && c.interiorColour !== int) return false;
       if (status === "available" && c.sold) return false;
       if (status === "sold" && !c.sold) return false;
       if (status === "featured" && !c.featured) return false;
+      if (status === "latest" && !c.newArrival) return false;
       if (c.price > maxPrice) return false;
+      if (c.mileage > maxMileage) return false;
       return true;
     });
     list = [...list].sort((a, b) => {
@@ -55,21 +97,143 @@ function Inventory() {
       return b.year - a.year;
     });
     return list;
-  }, [q, brand, fuel, trans, body, status, maxPrice, sort]);
+  }, [q, brand, model, fuel, trans, body, year, ext, int, status, maxPrice, maxMileage, sort]);
 
   const reset = () => {
     setQ("");
     setBrand("all");
+    setModel("all");
     setFuel("all");
     setTrans("all");
     setBody("all");
+    setYear("all");
+    setExt("all");
+    setInt("all");
     setStatus("all");
     setMaxPrice(2000000);
+    setMaxMileage(20000);
   };
+
+  const FilterPanel = (
+    <div className="space-y-1">
+      <FilterGroup label="Status">
+        <div className="flex flex-wrap gap-2">
+          {(
+            [
+              { v: "all", l: "All" },
+              { v: "available", l: "Available" },
+              { v: "sold", l: "Sold" },
+              { v: "featured", l: "Featured" },
+              { v: "latest", l: "Latest Arrivals" },
+            ] as { v: Status; l: string }[]
+          ).map((s) => (
+            <button
+              key={s.v}
+              onClick={() => setStatus(s.v)}
+              className={`rounded-full px-3 py-1.5 text-xs uppercase tracking-widest transition-colors ${
+                status === s.v
+                  ? "bg-gold text-primary-foreground"
+                  : "border border-border text-muted-foreground hover:border-gold"
+              }`}
+            >
+              {s.l}
+            </button>
+          ))}
+        </div>
+      </FilterGroup>
+
+      <FilterGroup label="Brand">
+        <Select
+          value={brand}
+          onChange={setBrand}
+          options={[{ v: "all", l: "All Brands" }, ...brands.map((b) => ({ v: b.slug, l: b.name }))]}
+        />
+      </FilterGroup>
+
+      <FilterGroup label="Model">
+        <Select
+          value={model}
+          onChange={setModel}
+          options={[{ v: "all", l: "Any Model" }, ...models.map((m) => ({ v: m, l: m }))]}
+        />
+      </FilterGroup>
+
+      <FilterGroup label={`Max Price: AED ${maxPrice.toLocaleString()}`}>
+        <input
+          type="range"
+          min={500000}
+          max={2000000}
+          step={50000}
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(Number(e.target.value))}
+          className="w-full accent-gold"
+        />
+      </FilterGroup>
+
+      <FilterGroup label={`Max Mileage: ${maxMileage.toLocaleString()} km`}>
+        <input
+          type="range"
+          min={2000}
+          max={20000}
+          step={500}
+          value={maxMileage}
+          onChange={(e) => setMaxMileage(Number(e.target.value))}
+          className="w-full accent-gold"
+        />
+      </FilterGroup>
+
+      <FilterGroup label="Year">
+        <Select
+          value={year}
+          onChange={setYear}
+          options={[{ v: "all", l: "Any Year" }, ...years.map((y) => ({ v: String(y), l: String(y) }))]}
+        />
+      </FilterGroup>
+
+      <FilterGroup label="Body Type">
+        <Select
+          value={body}
+          onChange={setBody}
+          options={[{ v: "all", l: "Any" }, ...bodyTypes.map((t) => ({ v: t, l: t }))]}
+        />
+      </FilterGroup>
+
+      <FilterGroup label="Transmission">
+        <Select
+          value={trans}
+          onChange={setTrans}
+          options={[{ v: "all", l: "Any" }, ...transmissions.map((t) => ({ v: t, l: t }))]}
+        />
+      </FilterGroup>
+
+      <FilterGroup label="Fuel Type">
+        <Select
+          value={fuel}
+          onChange={setFuel}
+          options={[{ v: "all", l: "Any" }, ...fuelTypes.map((f) => ({ v: f, l: f }))]}
+        />
+      </FilterGroup>
+
+      <FilterGroup label="Exterior Colour">
+        <Select
+          value={ext}
+          onChange={setExt}
+          options={[{ v: "all", l: "Any" }, ...exteriorColours.map((c) => ({ v: c, l: c }))]}
+        />
+      </FilterGroup>
+
+      <FilterGroup label="Interior Colour">
+        <Select
+          value={int}
+          onChange={setInt}
+          options={[{ v: "all", l: "Any" }, ...interiorColours.map((c) => ({ v: c, l: c }))]}
+        />
+      </FilterGroup>
+    </div>
+  );
 
   return (
     <div className="pt-28">
-      {/* Page header */}
       <div className="border-b border-border/60 bg-grain">
         <div className="mx-auto max-w-7xl px-5 py-12">
           <span className="text-xs uppercase tracking-luxury text-gold">Inventory</span>
@@ -81,70 +245,16 @@ function Inventory() {
       </div>
 
       <div className="mx-auto flex max-w-7xl gap-8 px-5 py-10">
-        {/* Filters sidebar */}
-        <aside
-          className={`${
-            showFilters ? "fixed inset-0 z-50 overflow-y-auto bg-background p-5" : "hidden"
-          } lg:static lg:block lg:w-72 lg:shrink-0 lg:bg-transparent lg:p-0`}
-        >
+        {/* Desktop filters sidebar */}
+        <aside className="hidden lg:block lg:w-72 lg:shrink-0">
           <div className="glass sticky top-28 rounded-2xl p-6">
-            <div className="mb-5 flex items-center justify-between">
+            <div className="mb-2 flex items-center justify-between">
               <h2 className="text-lg">Filters</h2>
-              <div className="flex items-center gap-3">
-                <button onClick={reset} className="text-xs uppercase tracking-widest text-gold">
-                  Reset
-                </button>
-                <button onClick={() => setShowFilters(false)} className="lg:hidden">
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
+              <button onClick={reset} className="text-xs uppercase tracking-widest text-gold">
+                Reset
+              </button>
             </div>
-
-            <FilterGroup label="Status">
-              <div className="flex flex-wrap gap-2">
-                {(["all", "available", "sold", "featured"] as Status[]).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setStatus(s)}
-                    className={`rounded-full px-3 py-1.5 text-xs uppercase tracking-widest transition-colors ${
-                      status === s
-                        ? "bg-gold text-primary-foreground"
-                        : "border border-border text-muted-foreground hover:border-gold"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </FilterGroup>
-
-            <FilterGroup label="Brand">
-              <Select value={brand} onChange={setBrand} options={[{ v: "all", l: "All Brands" }, ...brands.map((b) => ({ v: b.slug, l: b.name }))]} />
-            </FilterGroup>
-
-            <FilterGroup label={`Max Price: AED ${maxPrice.toLocaleString()}`}>
-              <input
-                type="range"
-                min={500000}
-                max={2000000}
-                step={50000}
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-gold"
-              />
-            </FilterGroup>
-
-            <FilterGroup label="Fuel Type">
-              <Select value={fuel} onChange={setFuel} options={[{ v: "all", l: "Any" }, ...fuelTypes.map((f) => ({ v: f, l: f }))]} />
-            </FilterGroup>
-
-            <FilterGroup label="Transmission">
-              <Select value={trans} onChange={setTrans} options={[{ v: "all", l: "Any" }, ...transmissions.map((t) => ({ v: t, l: t }))]} />
-            </FilterGroup>
-
-            <FilterGroup label="Body Type">
-              <Select value={body} onChange={setBody} options={[{ v: "all", l: "Any" }, ...bodyTypes.map((t) => ({ v: t, l: t }))]} />
-            </FilterGroup>
+            {FilterPanel}
           </div>
         </aside>
 
@@ -198,6 +308,47 @@ function Inventory() {
           )}
         </div>
       </div>
+
+      {/* Mobile slide-out filter panel */}
+      <AnimatePresence>
+        {showFilters && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowFilters(false)}
+              className="fixed inset-0 z-50 bg-background/70 backdrop-blur-sm lg:hidden"
+            />
+            <motion.aside
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 320, damping: 36 }}
+              className="glass-strong fixed inset-y-0 right-0 z-50 w-[88%] max-w-sm overflow-y-auto p-6 shadow-luxury lg:hidden"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg">Filters</h2>
+                <div className="flex items-center gap-3">
+                  <button onClick={reset} className="text-xs uppercase tracking-widest text-gold">
+                    Reset
+                  </button>
+                  <button onClick={() => setShowFilters(false)} aria-label="Close filters">
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+              {FilterPanel}
+              <button
+                onClick={() => setShowFilters(false)}
+                className="mt-6 w-full rounded-full bg-gold py-3 text-xs font-medium uppercase tracking-widest text-primary-foreground"
+              >
+                Show {filtered.length} Vehicles
+              </button>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
