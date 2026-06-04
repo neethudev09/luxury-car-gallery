@@ -480,7 +480,7 @@ function ContactSection() {
       d: "Chat with a specialist",
       href: whatsappLink("Hello Car Gallery Dubai"),
     },
-    { Icon: MapPin, t: "Visit Showroom", d: "Al Quoz, Dubai", href: "/contact" },
+{ Icon: MapPin, t: "Visit Showroom", d: "Al Quoz, Dubai", href: "/contact" },
   ];
   return (
     <section className="mx-auto max-w-7xl px-5 py-24">

@@ -454,9 +454,9 @@ export const exteriorColours = Array.from(new Set(cars.map((c) => c.exteriorColo
 export const interiorColours = Array.from(new Set(cars.map((c) => c.interiorColour))).sort();
 export const models = Array.from(new Set(cars.map((c) => c.model))).sort();
 
-export const WHATSAPP = "971500000000";
-export const PHONE = "+971 4 000 0000";
-export const EMAIL = "sales@cargallerydubai.com";
+export const WHATSAPP = "971542570181";
+export const PHONE = "+971 54 257 0181";
+export const EMAIL = "info@cargallerydubai.com";
 
 export function whatsappLink(message: string) {
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
