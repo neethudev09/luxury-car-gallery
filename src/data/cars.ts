@@ -421,6 +421,27 @@ export function getCar(slug: string) {
   return cars.find((c) => c.slug === slug);
 }
 
+export const interiorConfig = [
+  { name: "Nero", hex: "#161616" },
+  { name: "Cuoio Tan", hex: "#a9794a" },
+  { name: "Rosso", hex: "#6f1d22" },
+  { name: "Bianco Pearl", hex: "#e7e2d8" },
+  { name: "Cobalt", hex: "#1c2f52" },
+];
+
+/** Best featured (or any) car for a given brand slug — used by the mega menu. */
+export function carForBrand(slug: string): Car | undefined {
+  return (
+    cars.find((c) => c.brandSlug === slug && c.featured && !c.sold) ??
+    cars.find((c) => c.brandSlug === slug && !c.sold) ??
+    cars.find((c) => c.brandSlug === slug)
+  );
+}
+
+export function getBrand(slug: string) {
+  return brands.find((b) => b.slug === slug);
+}
+
 export function formatPrice(aed: number) {
   return "AED " + aed.toLocaleString("en-US");
 }
