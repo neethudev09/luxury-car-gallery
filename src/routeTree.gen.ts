@@ -13,7 +13,9 @@ import { Route as ShowroomRouteImport } from './routes/showroom'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
@@ -38,9 +40,19 @@ const InventoryRoute = InventoryRouteImport.update({
   path: '/inventory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -62,7 +74,9 @@ const CarsSlugRoute = CarsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
@@ -72,7 +86,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
@@ -83,7 +99,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/media': typeof MediaRoute
   '/sell': typeof SellRoute
@@ -95,7 +113,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/blog'
+    | '/contact'
     | '/inventory'
     | '/media'
     | '/sell'
@@ -105,7 +125,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/blog'
+    | '/contact'
     | '/inventory'
     | '/media'
     | '/sell'
@@ -115,7 +137,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
     | '/blog'
+    | '/contact'
     | '/inventory'
     | '/media'
     | '/sell'
@@ -126,7 +150,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   BlogRoute: typeof BlogRoute
+  ContactRoute: typeof ContactRoute
   InventoryRoute: typeof InventoryRoute
   MediaRoute: typeof MediaRoute
   SellRoute: typeof SellRoute
@@ -164,11 +190,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InventoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -198,7 +238,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   BlogRoute: BlogRoute,
+  ContactRoute: ContactRoute,
   InventoryRoute: InventoryRoute,
   MediaRoute: MediaRoute,
   SellRoute: SellRoute,
