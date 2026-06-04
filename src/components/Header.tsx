@@ -85,9 +85,11 @@ export function Header() {
           <img
             src={lcgLogo.url}
             alt="Luxury Car Gallery Dubai"
-            width={120}
-            height={90}
-            className="h-11 w-auto transition-transform duration-500 group-hover:scale-105"
+            width={180}
+            height={135}
+            className={`w-auto transition-all duration-500 group-hover:scale-105 ${
+              scrolled ? "h-14" : "h-20"
+            }`}
           />
         </Link>
 

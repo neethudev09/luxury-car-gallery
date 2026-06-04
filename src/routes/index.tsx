@@ -20,6 +20,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { brands, featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
 import { posts } from "@/data/blog";
 import heroShowroom from "@/assets/hero-showroom.jpg";
+import heroVideo from "@/assets/hero-video.mp4.asset.json";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 import sellImg from "@/assets/sell-your-car.jpg";
 
@@ -73,16 +74,19 @@ function Hero() {
 
   return (
     <section ref={ref} className="relative flex min-h-screen items-center overflow-hidden">
-      <motion.img
+      <motion.video
         style={{ y }}
-        src={heroShowroom}
-        alt="Luxury car showroom in Dubai"
-        width={1920}
-        height={1080}
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster={heroShowroom}
         className="absolute inset-0 h-[120%] w-full object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-background/20" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
+      >
+        <source src={heroVideo.url} type="video/mp4" />
+      </motion.video>
+      <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
       <motion.div style={{ opacity }} className="relative mx-auto w-full max-w-7xl px-5 pt-24">
         <motion.span
