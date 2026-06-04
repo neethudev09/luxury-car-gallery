@@ -92,18 +92,6 @@ const fmtFeatures = [
   "Carbon Fibre Interior Pack",
 ];
 
-function makeSpecs(c: Partial<Car>): Record<string, string> {
-  return {
-    Engine: "Twin-Turbo V8",
-    Power: "640 bhp",
-    "0–100 km/h": "3.2s",
-    "Top Speed": "330 km/h",
-    Drivetrain: "All-Wheel Drive",
-    Doors: "2",
-    Seats: "2",
-    "Body Type": c.bodyType || "Coupe",
-  };
-}
 
 type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpeed" | "accel" | "newArrival">;
 
