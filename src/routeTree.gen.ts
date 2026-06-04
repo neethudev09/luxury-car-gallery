@@ -9,14 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ShowroomRouteImport } from './routes/showroom'
 import { Route as SellRouteImport } from './routes/sell'
+import { Route as MediaRouteImport } from './routes/media'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 
+const ShowroomRoute = ShowroomRouteImport.update({
+  id: '/showroom',
+  path: '/showroom',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SellRoute = SellRouteImport.update({
   id: '/sell',
   path: '/sell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MediaRoute = MediaRouteImport.update({
+  id: '/media',
+  path: '/media',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InventoryRoute = InventoryRouteImport.update({
@@ -38,44 +50,79 @@ const CarsSlugRoute = CarsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRoute
+  '/media': typeof MediaRoute
   '/sell': typeof SellRoute
+  '/showroom': typeof ShowroomRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRoute
+  '/media': typeof MediaRoute
   '/sell': typeof SellRoute
+  '/showroom': typeof ShowroomRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRoute
+  '/media': typeof MediaRoute
   '/sell': typeof SellRoute
+  '/showroom': typeof ShowroomRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/inventory' | '/sell' | '/cars/$slug'
+  fullPaths:
+    | '/'
+    | '/inventory'
+    | '/media'
+    | '/sell'
+    | '/showroom'
+    | '/cars/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inventory' | '/sell' | '/cars/$slug'
-  id: '__root__' | '/' | '/inventory' | '/sell' | '/cars/$slug'
+  to: '/' | '/inventory' | '/media' | '/sell' | '/showroom' | '/cars/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/inventory'
+    | '/media'
+    | '/sell'
+    | '/showroom'
+    | '/cars/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   InventoryRoute: typeof InventoryRoute
+  MediaRoute: typeof MediaRoute
   SellRoute: typeof SellRoute
+  ShowroomRoute: typeof ShowroomRoute
   CarsSlugRoute: typeof CarsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/showroom': {
+      id: '/showroom'
+      path: '/showroom'
+      fullPath: '/showroom'
+      preLoaderRoute: typeof ShowroomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sell': {
       id: '/sell'
       path: '/sell'
       fullPath: '/sell'
       preLoaderRoute: typeof SellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/media': {
+      id: '/media'
+      path: '/media'
+      fullPath: '/media'
+      preLoaderRoute: typeof MediaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inventory': {
@@ -105,7 +152,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   InventoryRoute: InventoryRoute,
+  MediaRoute: MediaRoute,
   SellRoute: SellRoute,
+  ShowroomRoute: ShowroomRoute,
   CarsSlugRoute: CarsSlugRoute,
 }
 export const routeTree = rootRouteImport
