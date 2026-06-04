@@ -29,7 +29,7 @@ function Showroom() {
       <div className="mx-auto max-w-7xl px-5 py-10">
         <span className="text-xs uppercase tracking-luxury text-gold">Showroom</span>
         <h1 className="mt-3 text-4xl md:text-5xl">The Car Gallery Experience</h1>
-        <p className="mt-3 max-w-2xl text-muted-foreground">A 12,000 sq ft temple to automotive excellence on Sheikh Zayed Road.</p>
+        <p className="mt-3 max-w-2xl text-muted-foreground">A 12,000 sq ft temple to automotive excellence in Al Quoz Industrial Third, Dubai.</p>
       </div>
 
       <div className="mx-auto max-w-7xl px-5">
