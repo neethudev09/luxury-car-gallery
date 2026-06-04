@@ -67,7 +67,7 @@ export function VehicleShowcase() {
           src={car.image}
           alt={`${car.title} — real stock vehicle`}
           draggable={false}
-          className="animate-fade-in relative z-10 max-h-[78%] w-[86%] object-contain drop-shadow-2xl"
+          className="relative z-10 max-h-[78%] w-[86%] object-contain drop-shadow-2xl"
         />
 
         {/* Reflection */}
