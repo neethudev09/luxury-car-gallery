@@ -139,6 +139,10 @@ function VehiclePage() {
               <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="flex items-center justify-center gap-2 rounded-full border border-border py-3.5 text-center text-sm uppercase tracking-widest transition-colors hover:border-gold"><Phone className="h-4 w-4" /> Call</a>
             </div>
           </div>
+
+          <div className="mt-8">
+            <FinanceCalculator price={car.price} />
+          </div>
         </div>
       </div>
 
