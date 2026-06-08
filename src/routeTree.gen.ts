@@ -29,6 +29,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminVehiclesIndexRouteImport } from './routes/_authenticated/admin.vehicles.index'
 import { Route as AuthenticatedAdminPagesIndexRouteImport } from './routes/_authenticated/admin.pages.index'
 import { Route as AuthenticatedAdminMediaIndexRouteImport } from './routes/_authenticated/admin.media.index'
+import { Route as AuthenticatedAdminGalleriesIndexRouteImport } from './routes/_authenticated/admin.galleries.index'
 import { Route as AuthenticatedAdminFaqsIndexRouteImport } from './routes/_authenticated/admin.faqs.index'
 import { Route as AuthenticatedAdminBrandsIndexRouteImport } from './routes/_authenticated/admin.brands.index'
 import { Route as AuthenticatedAdminBlogIndexRouteImport } from './routes/_authenticated/admin.blog.index'
@@ -136,6 +137,12 @@ const AuthenticatedAdminMediaIndexRoute =
     path: '/media/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminGalleriesIndexRoute =
+  AuthenticatedAdminGalleriesIndexRouteImport.update({
+    id: '/galleries/',
+    path: '/galleries/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminFaqsIndexRoute =
   AuthenticatedAdminFaqsIndexRouteImport.update({
     id: '/faqs/',
@@ -182,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/brands/': typeof AuthenticatedAdminBrandsIndexRoute
   '/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
+  '/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
   '/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
   '/admin/pages/': typeof AuthenticatedAdminPagesIndexRoute
   '/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
@@ -206,6 +214,7 @@ export interface FileRoutesByTo {
   '/admin/blog': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/brands': typeof AuthenticatedAdminBrandsIndexRoute
   '/admin/faqs': typeof AuthenticatedAdminFaqsIndexRoute
+  '/admin/galleries': typeof AuthenticatedAdminGalleriesIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaIndexRoute
   '/admin/pages': typeof AuthenticatedAdminPagesIndexRoute
   '/admin/vehicles': typeof AuthenticatedAdminVehiclesIndexRoute
@@ -233,6 +242,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/_authenticated/admin/brands/': typeof AuthenticatedAdminBrandsIndexRoute
   '/_authenticated/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
+  '/_authenticated/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
   '/_authenticated/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
   '/_authenticated/admin/pages/': typeof AuthenticatedAdminPagesIndexRoute
   '/_authenticated/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
@@ -260,6 +270,7 @@ export interface FileRouteTypes {
     | '/admin/blog/'
     | '/admin/brands/'
     | '/admin/faqs/'
+    | '/admin/galleries/'
     | '/admin/media/'
     | '/admin/pages/'
     | '/admin/vehicles/'
@@ -284,6 +295,7 @@ export interface FileRouteTypes {
     | '/admin/blog'
     | '/admin/brands'
     | '/admin/faqs'
+    | '/admin/galleries'
     | '/admin/media'
     | '/admin/pages'
     | '/admin/vehicles'
@@ -310,6 +322,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/blog/'
     | '/_authenticated/admin/brands/'
     | '/_authenticated/admin/faqs/'
+    | '/_authenticated/admin/galleries/'
     | '/_authenticated/admin/media/'
     | '/_authenticated/admin/pages/'
     | '/_authenticated/admin/vehicles/'
@@ -475,6 +488,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminMediaIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/galleries/': {
+      id: '/_authenticated/admin/galleries/'
+      path: '/galleries'
+      fullPath: '/admin/galleries/'
+      preLoaderRoute: typeof AuthenticatedAdminGalleriesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/faqs/': {
       id: '/_authenticated/admin/faqs/'
       path: '/faqs'
@@ -512,6 +532,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBlogIndexRoute: typeof AuthenticatedAdminBlogIndexRoute
   AuthenticatedAdminBrandsIndexRoute: typeof AuthenticatedAdminBrandsIndexRoute
   AuthenticatedAdminFaqsIndexRoute: typeof AuthenticatedAdminFaqsIndexRoute
+  AuthenticatedAdminGalleriesIndexRoute: typeof AuthenticatedAdminGalleriesIndexRoute
   AuthenticatedAdminMediaIndexRoute: typeof AuthenticatedAdminMediaIndexRoute
   AuthenticatedAdminPagesIndexRoute: typeof AuthenticatedAdminPagesIndexRoute
   AuthenticatedAdminVehiclesIndexRoute: typeof AuthenticatedAdminVehiclesIndexRoute
@@ -523,6 +544,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBlogIndexRoute: AuthenticatedAdminBlogIndexRoute,
   AuthenticatedAdminBrandsIndexRoute: AuthenticatedAdminBrandsIndexRoute,
   AuthenticatedAdminFaqsIndexRoute: AuthenticatedAdminFaqsIndexRoute,
+  AuthenticatedAdminGalleriesIndexRoute: AuthenticatedAdminGalleriesIndexRoute,
   AuthenticatedAdminMediaIndexRoute: AuthenticatedAdminMediaIndexRoute,
   AuthenticatedAdminPagesIndexRoute: AuthenticatedAdminPagesIndexRoute,
   AuthenticatedAdminVehiclesIndexRoute: AuthenticatedAdminVehiclesIndexRoute,
