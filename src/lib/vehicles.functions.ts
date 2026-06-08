@@ -135,9 +135,10 @@ export const toggleVehicleFlag = createServerFn({ method: "POST" })
   )
   .handler(async ({ context, data }) => {
     const { supabase } = context;
+    const update: Record<string, boolean> = { [data.field]: data.value };
     const { error } = await supabase
       .from("vehicles")
-      .update({ [data.field]: data.value })
+      .update(update)
       .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
