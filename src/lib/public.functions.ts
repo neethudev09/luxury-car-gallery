@@ -75,9 +75,10 @@ export const getPublicPage = createServerFn({ method: "GET" })
 export const getPublicSettings = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data } = await supabaseAdmin.from("site_settings").select("key,value");
-  const map: Record<string, Record<string, unknown>> = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const map: Record<string, any> = {};
   (data ?? []).forEach((r) => {
-    map[r.key as string] = (r.value as Record<string, unknown>) ?? {};
+    map[r.key as string] = r.value ?? {};
   });
   return { settings: map };
 });
