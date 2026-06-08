@@ -4,6 +4,7 @@ import { ArrowLeft, Check, ChevronDown, Phone } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
 import { Car360Viewer } from "@/components/Car360Viewer";
+import { FinanceCalculator } from "@/components/FinanceCalculator";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
 
 export const Route = createFileRoute("/cars/$slug")({
