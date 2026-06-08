@@ -1,6 +1,25 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { LayoutDashboard, Car, LogOut, ShieldAlert } from "lucide-react";
+import {
+  LayoutDashboard,
+  Car,
+  LogOut,
+  ShieldAlert,
+  Tag,
+  Images,
+  GalleryHorizontalEnd,
+  FileText,
+  Newspaper,
+  HelpCircle,
+  Inbox,
+  Banknote,
+  Home,
+  Menu as MenuIcon,
+  PanelBottom,
+  Search,
+  Users,
+  Settings as SettingsIcon,
+} from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyAccess } from "@/lib/vehicles.functions";
@@ -13,7 +32,22 @@ export const Route = createFileRoute("/_authenticated/admin")({
 const nav = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/vehicles", label: "Vehicles", icon: Car, exact: false },
+  { to: "/admin/brands", label: "Brands", icon: Tag, exact: false },
+  { to: "/admin/media", label: "Media Library", icon: Images, exact: false },
+  { to: "/admin/galleries", label: "Galleries", icon: GalleryHorizontalEnd, exact: false },
+  { to: "/admin/pages", label: "Pages", icon: FileText, exact: false },
+  { to: "/admin/blog", label: "Blog Posts", icon: Newspaper, exact: false },
+  { to: "/admin/faqs", label: "FAQs", icon: HelpCircle, exact: false },
+  { to: "/admin/enquiries", label: "Enquiries", icon: Inbox, exact: false },
+  { to: "/admin/sell", label: "Sell Submissions", icon: Banknote, exact: false },
+  { to: "/admin/homepage", label: "Homepage Editor", icon: Home, exact: false },
+  { to: "/admin/menus", label: "Menu Manager", icon: MenuIcon, exact: false },
+  { to: "/admin/footer", label: "Footer Editor", icon: PanelBottom, exact: false },
+  { to: "/admin/seo", label: "SEO Settings", icon: Search, exact: false },
+  { to: "/admin/users", label: "Users", icon: Users, exact: false },
+  { to: "/admin/settings", label: "Settings", icon: SettingsIcon, exact: false },
 ];
+
 
 function AdminLayout() {
   const navigate = useNavigate();
