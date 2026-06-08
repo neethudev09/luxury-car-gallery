@@ -27,6 +27,7 @@ import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminVehiclesIndexRouteImport } from './routes/_authenticated/admin.vehicles.index'
+import { Route as AuthenticatedAdminUsersIndexRouteImport } from './routes/_authenticated/admin.users.index'
 import { Route as AuthenticatedAdminSettingsIndexRouteImport } from './routes/_authenticated/admin.settings.index'
 import { Route as AuthenticatedAdminSeoIndexRouteImport } from './routes/_authenticated/admin.seo.index'
 import { Route as AuthenticatedAdminSellIndexRouteImport } from './routes/_authenticated/admin.sell.index'
@@ -130,6 +131,12 @@ const AuthenticatedAdminVehiclesIndexRoute =
   AuthenticatedAdminVehiclesIndexRouteImport.update({
     id: '/vehicles/',
     path: '/vehicles/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminUsersIndexRoute =
+  AuthenticatedAdminUsersIndexRouteImport.update({
+    id: '/users/',
+    path: '/users/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminSettingsIndexRoute =
@@ -248,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/admin/sell/': typeof AuthenticatedAdminSellIndexRoute
   '/admin/seo/': typeof AuthenticatedAdminSeoIndexRoute
   '/admin/settings/': typeof AuthenticatedAdminSettingsIndexRoute
+  '/admin/users/': typeof AuthenticatedAdminUsersIndexRoute
   '/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -280,6 +288,7 @@ export interface FileRoutesByTo {
   '/admin/sell': typeof AuthenticatedAdminSellIndexRoute
   '/admin/seo': typeof AuthenticatedAdminSeoIndexRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsIndexRoute
+  '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
   '/admin/vehicles': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesById {
@@ -315,6 +324,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/sell/': typeof AuthenticatedAdminSellIndexRoute
   '/_authenticated/admin/seo/': typeof AuthenticatedAdminSeoIndexRoute
   '/_authenticated/admin/settings/': typeof AuthenticatedAdminSettingsIndexRoute
+  '/_authenticated/admin/users/': typeof AuthenticatedAdminUsersIndexRoute
   '/_authenticated/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRouteTypes {
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/admin/sell/'
     | '/admin/seo/'
     | '/admin/settings/'
+    | '/admin/users/'
     | '/admin/vehicles/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -382,6 +393,7 @@ export interface FileRouteTypes {
     | '/admin/sell'
     | '/admin/seo'
     | '/admin/settings'
+    | '/admin/users'
     | '/admin/vehicles'
   id:
     | '__root__'
@@ -416,6 +428,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/sell/'
     | '/_authenticated/admin/seo/'
     | '/_authenticated/admin/settings/'
+    | '/_authenticated/admin/users/'
     | '/_authenticated/admin/vehicles/'
   fileRoutesById: FileRoutesById
 }
@@ -565,6 +578,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminVehiclesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/users/': {
+      id: '/_authenticated/admin/users/'
+      path: '/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/settings/': {
       id: '/_authenticated/admin/settings/'
       path: '/settings'
@@ -682,6 +702,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminSellIndexRoute: typeof AuthenticatedAdminSellIndexRoute
   AuthenticatedAdminSeoIndexRoute: typeof AuthenticatedAdminSeoIndexRoute
   AuthenticatedAdminSettingsIndexRoute: typeof AuthenticatedAdminSettingsIndexRoute
+  AuthenticatedAdminUsersIndexRoute: typeof AuthenticatedAdminUsersIndexRoute
   AuthenticatedAdminVehiclesIndexRoute: typeof AuthenticatedAdminVehiclesIndexRoute
 }
 
@@ -701,6 +722,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminSellIndexRoute: AuthenticatedAdminSellIndexRoute,
   AuthenticatedAdminSeoIndexRoute: AuthenticatedAdminSeoIndexRoute,
   AuthenticatedAdminSettingsIndexRoute: AuthenticatedAdminSettingsIndexRoute,
+  AuthenticatedAdminUsersIndexRoute: AuthenticatedAdminUsersIndexRoute,
   AuthenticatedAdminVehiclesIndexRoute: AuthenticatedAdminVehiclesIndexRoute,
 }
 
