@@ -94,9 +94,15 @@ export function ResourceManager<T extends { id?: string }>({
   toForm,
 }: ResourceManagerProps<T>) {
   const qc = useQueryClient();
-  const list = useServerFn(fetchList as never);
-  const saveFn = useServerFn(save as never);
-  const removeFn = useServerFn(remove as never);
+  const list = useServerFn(fetchList as never) as unknown as () => Promise<
+    Record<string, unknown>
+  >;
+  const saveFn = useServerFn(save as never) as unknown as (a: {
+    data: Record<string, unknown>;
+  }) => Promise<unknown>;
+  const removeFn = useServerFn(remove as never) as unknown as (a: {
+    data: { id: string };
+  }) => Promise<unknown>;
 
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
