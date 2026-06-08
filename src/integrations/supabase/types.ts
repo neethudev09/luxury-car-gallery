@@ -14,16 +14,211 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vehicles: {
+        Row: {
+          accel: number | null
+          availability: string
+          body_type: string | null
+          brand: string
+          brand_slug: string
+          canonical_url: string | null
+          created_at: string
+          description: string | null
+          detail_gallery: Json
+          drive_type: string | null
+          engine: string | null
+          exterior_colour: string | null
+          exterior_gallery: Json
+          faqs: Json
+          featured: boolean
+          features: Json
+          fuel: string | null
+          gallery: Json
+          horsepower: number | null
+          id: string
+          image: string | null
+          interior_colour: string | null
+          interior_gallery: Json
+          meta_description: string | null
+          mileage: number | null
+          model: string | null
+          new_arrival: boolean
+          noindex: boolean
+          og_image: string | null
+          price: number | null
+          published: boolean
+          seo_title: string | null
+          sequence_360: Json
+          slug: string
+          sold: boolean
+          sort_order: number
+          specs: Json
+          title: string
+          top_speed: number | null
+          torque: number | null
+          transmission: string | null
+          updated_at: string
+          video_url: string | null
+          wheel_gallery: Json
+          year: number | null
+        }
+        Insert: {
+          accel?: number | null
+          availability?: string
+          body_type?: string | null
+          brand: string
+          brand_slug: string
+          canonical_url?: string | null
+          created_at?: string
+          description?: string | null
+          detail_gallery?: Json
+          drive_type?: string | null
+          engine?: string | null
+          exterior_colour?: string | null
+          exterior_gallery?: Json
+          faqs?: Json
+          featured?: boolean
+          features?: Json
+          fuel?: string | null
+          gallery?: Json
+          horsepower?: number | null
+          id?: string
+          image?: string | null
+          interior_colour?: string | null
+          interior_gallery?: Json
+          meta_description?: string | null
+          mileage?: number | null
+          model?: string | null
+          new_arrival?: boolean
+          noindex?: boolean
+          og_image?: string | null
+          price?: number | null
+          published?: boolean
+          seo_title?: string | null
+          sequence_360?: Json
+          slug: string
+          sold?: boolean
+          sort_order?: number
+          specs?: Json
+          title: string
+          top_speed?: number | null
+          torque?: number | null
+          transmission?: string | null
+          updated_at?: string
+          video_url?: string | null
+          wheel_gallery?: Json
+          year?: number | null
+        }
+        Update: {
+          accel?: number | null
+          availability?: string
+          body_type?: string | null
+          brand?: string
+          brand_slug?: string
+          canonical_url?: string | null
+          created_at?: string
+          description?: string | null
+          detail_gallery?: Json
+          drive_type?: string | null
+          engine?: string | null
+          exterior_colour?: string | null
+          exterior_gallery?: Json
+          faqs?: Json
+          featured?: boolean
+          features?: Json
+          fuel?: string | null
+          gallery?: Json
+          horsepower?: number | null
+          id?: string
+          image?: string | null
+          interior_colour?: string | null
+          interior_gallery?: Json
+          meta_description?: string | null
+          mileage?: number | null
+          model?: string | null
+          new_arrival?: boolean
+          noindex?: boolean
+          og_image?: string | null
+          price?: number | null
+          published?: boolean
+          seo_title?: string | null
+          sequence_360?: Json
+          slug?: string
+          sold?: boolean
+          sort_order?: number
+          specs?: Json
+          title?: string
+          top_speed?: number | null
+          torque?: number | null
+          transmission?: string | null
+          updated_at?: string
+          video_url?: string | null
+          wheel_gallery?: Json
+          year?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "manager" | "editor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +345,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "manager", "editor"],
+    },
   },
 } as const
