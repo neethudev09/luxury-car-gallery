@@ -54,7 +54,7 @@ function GalleriesPage() {
   const remove = useServerFn(deleteGallery);
 
   const { data, isLoading } = useQuery({ queryKey: ["galleries"], queryFn: () => list() });
-  const galleries = (data?.galleries ?? []) as Gallery[];
+  const galleries = (data?.galleries ?? []) as unknown as Gallery[];
 
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
