@@ -135,7 +135,9 @@ export const toggleVehicleFlag = createServerFn({ method: "POST" })
   )
   .handler(async ({ context, data }) => {
     const { supabase } = context;
-    const update: Record<string, boolean> = { [data.field]: data.value };
+    const update: import("@/integrations/supabase/types").TablesUpdate<"vehicles"> = {
+      [data.field]: data.value,
+    };
     const { error } = await supabase
       .from("vehicles")
       .update(update)
