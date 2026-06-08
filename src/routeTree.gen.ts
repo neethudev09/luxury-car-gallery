@@ -27,10 +27,12 @@ import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminVehiclesIndexRouteImport } from './routes/_authenticated/admin.vehicles.index'
+import { Route as AuthenticatedAdminSellIndexRouteImport } from './routes/_authenticated/admin.sell.index'
 import { Route as AuthenticatedAdminPagesIndexRouteImport } from './routes/_authenticated/admin.pages.index'
 import { Route as AuthenticatedAdminMediaIndexRouteImport } from './routes/_authenticated/admin.media.index'
 import { Route as AuthenticatedAdminGalleriesIndexRouteImport } from './routes/_authenticated/admin.galleries.index'
 import { Route as AuthenticatedAdminFaqsIndexRouteImport } from './routes/_authenticated/admin.faqs.index'
+import { Route as AuthenticatedAdminEnquiriesIndexRouteImport } from './routes/_authenticated/admin.enquiries.index'
 import { Route as AuthenticatedAdminBrandsIndexRouteImport } from './routes/_authenticated/admin.brands.index'
 import { Route as AuthenticatedAdminBlogIndexRouteImport } from './routes/_authenticated/admin.blog.index'
 import { Route as AuthenticatedAdminVehiclesIdRouteImport } from './routes/_authenticated/admin.vehicles.$id'
@@ -125,6 +127,12 @@ const AuthenticatedAdminVehiclesIndexRoute =
     path: '/vehicles/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminSellIndexRoute =
+  AuthenticatedAdminSellIndexRouteImport.update({
+    id: '/sell/',
+    path: '/sell/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminPagesIndexRoute =
   AuthenticatedAdminPagesIndexRouteImport.update({
     id: '/pages/',
@@ -147,6 +155,12 @@ const AuthenticatedAdminFaqsIndexRoute =
   AuthenticatedAdminFaqsIndexRouteImport.update({
     id: '/faqs/',
     path: '/faqs/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminEnquiriesIndexRoute =
+  AuthenticatedAdminEnquiriesIndexRouteImport.update({
+    id: '/enquiries/',
+    path: '/enquiries/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminBrandsIndexRoute =
@@ -188,10 +202,12 @@ export interface FileRoutesByFullPath {
   '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/brands/': typeof AuthenticatedAdminBrandsIndexRoute
+  '/admin/enquiries/': typeof AuthenticatedAdminEnquiriesIndexRoute
   '/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
   '/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
   '/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
   '/admin/pages/': typeof AuthenticatedAdminPagesIndexRoute
+  '/admin/sell/': typeof AuthenticatedAdminSellIndexRoute
   '/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -213,10 +229,12 @@ export interface FileRoutesByTo {
   '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/admin/blog': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/brands': typeof AuthenticatedAdminBrandsIndexRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesIndexRoute
   '/admin/faqs': typeof AuthenticatedAdminFaqsIndexRoute
   '/admin/galleries': typeof AuthenticatedAdminGalleriesIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaIndexRoute
   '/admin/pages': typeof AuthenticatedAdminPagesIndexRoute
+  '/admin/sell': typeof AuthenticatedAdminSellIndexRoute
   '/admin/vehicles': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesById {
@@ -241,10 +259,12 @@ export interface FileRoutesById {
   '/_authenticated/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/_authenticated/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/_authenticated/admin/brands/': typeof AuthenticatedAdminBrandsIndexRoute
+  '/_authenticated/admin/enquiries/': typeof AuthenticatedAdminEnquiriesIndexRoute
   '/_authenticated/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
   '/_authenticated/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
   '/_authenticated/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
   '/_authenticated/admin/pages/': typeof AuthenticatedAdminPagesIndexRoute
+  '/_authenticated/admin/sell/': typeof AuthenticatedAdminSellIndexRoute
   '/_authenticated/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRouteTypes {
@@ -269,10 +289,12 @@ export interface FileRouteTypes {
     | '/admin/vehicles/$id'
     | '/admin/blog/'
     | '/admin/brands/'
+    | '/admin/enquiries/'
     | '/admin/faqs/'
     | '/admin/galleries/'
     | '/admin/media/'
     | '/admin/pages/'
+    | '/admin/sell/'
     | '/admin/vehicles/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -294,10 +316,12 @@ export interface FileRouteTypes {
     | '/admin/vehicles/$id'
     | '/admin/blog'
     | '/admin/brands'
+    | '/admin/enquiries'
     | '/admin/faqs'
     | '/admin/galleries'
     | '/admin/media'
     | '/admin/pages'
+    | '/admin/sell'
     | '/admin/vehicles'
   id:
     | '__root__'
@@ -321,10 +345,12 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/vehicles/$id'
     | '/_authenticated/admin/blog/'
     | '/_authenticated/admin/brands/'
+    | '/_authenticated/admin/enquiries/'
     | '/_authenticated/admin/faqs/'
     | '/_authenticated/admin/galleries/'
     | '/_authenticated/admin/media/'
     | '/_authenticated/admin/pages/'
+    | '/_authenticated/admin/sell/'
     | '/_authenticated/admin/vehicles/'
   fileRoutesById: FileRoutesById
 }
@@ -474,6 +500,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminVehiclesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/sell/': {
+      id: '/_authenticated/admin/sell/'
+      path: '/sell'
+      fullPath: '/admin/sell/'
+      preLoaderRoute: typeof AuthenticatedAdminSellIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/pages/': {
       id: '/_authenticated/admin/pages/'
       path: '/pages'
@@ -500,6 +533,13 @@ declare module '@tanstack/react-router' {
       path: '/faqs'
       fullPath: '/admin/faqs/'
       preLoaderRoute: typeof AuthenticatedAdminFaqsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/enquiries/': {
+      id: '/_authenticated/admin/enquiries/'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries/'
+      preLoaderRoute: typeof AuthenticatedAdminEnquiriesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/brands/': {
@@ -531,10 +571,12 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminVehiclesIdRoute: typeof AuthenticatedAdminVehiclesIdRoute
   AuthenticatedAdminBlogIndexRoute: typeof AuthenticatedAdminBlogIndexRoute
   AuthenticatedAdminBrandsIndexRoute: typeof AuthenticatedAdminBrandsIndexRoute
+  AuthenticatedAdminEnquiriesIndexRoute: typeof AuthenticatedAdminEnquiriesIndexRoute
   AuthenticatedAdminFaqsIndexRoute: typeof AuthenticatedAdminFaqsIndexRoute
   AuthenticatedAdminGalleriesIndexRoute: typeof AuthenticatedAdminGalleriesIndexRoute
   AuthenticatedAdminMediaIndexRoute: typeof AuthenticatedAdminMediaIndexRoute
   AuthenticatedAdminPagesIndexRoute: typeof AuthenticatedAdminPagesIndexRoute
+  AuthenticatedAdminSellIndexRoute: typeof AuthenticatedAdminSellIndexRoute
   AuthenticatedAdminVehiclesIndexRoute: typeof AuthenticatedAdminVehiclesIndexRoute
 }
 
@@ -543,10 +585,12 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminVehiclesIdRoute: AuthenticatedAdminVehiclesIdRoute,
   AuthenticatedAdminBlogIndexRoute: AuthenticatedAdminBlogIndexRoute,
   AuthenticatedAdminBrandsIndexRoute: AuthenticatedAdminBrandsIndexRoute,
+  AuthenticatedAdminEnquiriesIndexRoute: AuthenticatedAdminEnquiriesIndexRoute,
   AuthenticatedAdminFaqsIndexRoute: AuthenticatedAdminFaqsIndexRoute,
   AuthenticatedAdminGalleriesIndexRoute: AuthenticatedAdminGalleriesIndexRoute,
   AuthenticatedAdminMediaIndexRoute: AuthenticatedAdminMediaIndexRoute,
   AuthenticatedAdminPagesIndexRoute: AuthenticatedAdminPagesIndexRoute,
+  AuthenticatedAdminSellIndexRoute: AuthenticatedAdminSellIndexRoute,
   AuthenticatedAdminVehiclesIndexRoute: AuthenticatedAdminVehiclesIndexRoute,
 }
 
