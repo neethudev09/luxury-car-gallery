@@ -28,7 +28,9 @@ export function Footer() {
     ? `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hello Car Gallery Dubai")}`
     : whatsappLink("Hello Car Gallery Dubai");
 
+  return (
     <footer className="relative mt-24 border-t border-border/60 bg-charcoal">
+
       <div className="gold-line absolute inset-x-0 top-0 h-px" />
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div>
