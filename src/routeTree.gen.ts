@@ -27,6 +27,20 @@ import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminVehiclesIndexRouteImport } from './routes/_authenticated/admin.vehicles.index'
+import { Route as AuthenticatedAdminUsersIndexRouteImport } from './routes/_authenticated/admin.users.index'
+import { Route as AuthenticatedAdminSettingsIndexRouteImport } from './routes/_authenticated/admin.settings.index'
+import { Route as AuthenticatedAdminSeoIndexRouteImport } from './routes/_authenticated/admin.seo.index'
+import { Route as AuthenticatedAdminSellIndexRouteImport } from './routes/_authenticated/admin.sell.index'
+import { Route as AuthenticatedAdminPagesIndexRouteImport } from './routes/_authenticated/admin.pages.index'
+import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_authenticated/admin.menus.index'
+import { Route as AuthenticatedAdminMediaIndexRouteImport } from './routes/_authenticated/admin.media.index'
+import { Route as AuthenticatedAdminHomepageIndexRouteImport } from './routes/_authenticated/admin.homepage.index'
+import { Route as AuthenticatedAdminGalleriesIndexRouteImport } from './routes/_authenticated/admin.galleries.index'
+import { Route as AuthenticatedAdminFooterIndexRouteImport } from './routes/_authenticated/admin.footer.index'
+import { Route as AuthenticatedAdminFaqsIndexRouteImport } from './routes/_authenticated/admin.faqs.index'
+import { Route as AuthenticatedAdminEnquiriesIndexRouteImport } from './routes/_authenticated/admin.enquiries.index'
+import { Route as AuthenticatedAdminBrandsIndexRouteImport } from './routes/_authenticated/admin.brands.index'
+import { Route as AuthenticatedAdminBlogIndexRouteImport } from './routes/_authenticated/admin.blog.index'
 import { Route as AuthenticatedAdminVehiclesIdRouteImport } from './routes/_authenticated/admin.vehicles.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -119,6 +133,90 @@ const AuthenticatedAdminVehiclesIndexRoute =
     path: '/vehicles/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminUsersIndexRoute =
+  AuthenticatedAdminUsersIndexRouteImport.update({
+    id: '/users/',
+    path: '/users/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSettingsIndexRoute =
+  AuthenticatedAdminSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSeoIndexRoute =
+  AuthenticatedAdminSeoIndexRouteImport.update({
+    id: '/seo/',
+    path: '/seo/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSellIndexRoute =
+  AuthenticatedAdminSellIndexRouteImport.update({
+    id: '/sell/',
+    path: '/sell/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPagesIndexRoute =
+  AuthenticatedAdminPagesIndexRouteImport.update({
+    id: '/pages/',
+    path: '/pages/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminMenusIndexRoute =
+  AuthenticatedAdminMenusIndexRouteImport.update({
+    id: '/menus/',
+    path: '/menus/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminMediaIndexRoute =
+  AuthenticatedAdminMediaIndexRouteImport.update({
+    id: '/media/',
+    path: '/media/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminHomepageIndexRoute =
+  AuthenticatedAdminHomepageIndexRouteImport.update({
+    id: '/homepage/',
+    path: '/homepage/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminGalleriesIndexRoute =
+  AuthenticatedAdminGalleriesIndexRouteImport.update({
+    id: '/galleries/',
+    path: '/galleries/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminFooterIndexRoute =
+  AuthenticatedAdminFooterIndexRouteImport.update({
+    id: '/footer/',
+    path: '/footer/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminFaqsIndexRoute =
+  AuthenticatedAdminFaqsIndexRouteImport.update({
+    id: '/faqs/',
+    path: '/faqs/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminEnquiriesIndexRoute =
+  AuthenticatedAdminEnquiriesIndexRouteImport.update({
+    id: '/enquiries/',
+    path: '/enquiries/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBrandsIndexRoute =
+  AuthenticatedAdminBrandsIndexRouteImport.update({
+    id: '/brands/',
+    path: '/brands/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBlogIndexRoute =
+  AuthenticatedAdminBlogIndexRouteImport.update({
+    id: '/blog/',
+    path: '/blog/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminVehiclesIdRoute =
   AuthenticatedAdminVehiclesIdRouteImport.update({
     id: '/vehicles/$id',
@@ -144,6 +242,20 @@ export interface FileRoutesByFullPath {
   '/cars/$slug': typeof CarsSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
+  '/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
+  '/admin/brands/': typeof AuthenticatedAdminBrandsIndexRoute
+  '/admin/enquiries/': typeof AuthenticatedAdminEnquiriesIndexRoute
+  '/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
+  '/admin/footer/': typeof AuthenticatedAdminFooterIndexRoute
+  '/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
+  '/admin/homepage/': typeof AuthenticatedAdminHomepageIndexRoute
+  '/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
+  '/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
+  '/admin/pages/': typeof AuthenticatedAdminPagesIndexRoute
+  '/admin/sell/': typeof AuthenticatedAdminSellIndexRoute
+  '/admin/seo/': typeof AuthenticatedAdminSeoIndexRoute
+  '/admin/settings/': typeof AuthenticatedAdminSettingsIndexRoute
+  '/admin/users/': typeof AuthenticatedAdminUsersIndexRoute
   '/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -163,6 +275,20 @@ export interface FileRoutesByTo {
   '/cars/$slug': typeof CarsSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
+  '/admin/blog': typeof AuthenticatedAdminBlogIndexRoute
+  '/admin/brands': typeof AuthenticatedAdminBrandsIndexRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesIndexRoute
+  '/admin/faqs': typeof AuthenticatedAdminFaqsIndexRoute
+  '/admin/footer': typeof AuthenticatedAdminFooterIndexRoute
+  '/admin/galleries': typeof AuthenticatedAdminGalleriesIndexRoute
+  '/admin/homepage': typeof AuthenticatedAdminHomepageIndexRoute
+  '/admin/media': typeof AuthenticatedAdminMediaIndexRoute
+  '/admin/menus': typeof AuthenticatedAdminMenusIndexRoute
+  '/admin/pages': typeof AuthenticatedAdminPagesIndexRoute
+  '/admin/sell': typeof AuthenticatedAdminSellIndexRoute
+  '/admin/seo': typeof AuthenticatedAdminSeoIndexRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsIndexRoute
+  '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
   '/admin/vehicles': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesById {
@@ -185,6 +311,20 @@ export interface FileRoutesById {
   '/cars/$slug': typeof CarsSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
+  '/_authenticated/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
+  '/_authenticated/admin/brands/': typeof AuthenticatedAdminBrandsIndexRoute
+  '/_authenticated/admin/enquiries/': typeof AuthenticatedAdminEnquiriesIndexRoute
+  '/_authenticated/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
+  '/_authenticated/admin/footer/': typeof AuthenticatedAdminFooterIndexRoute
+  '/_authenticated/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
+  '/_authenticated/admin/homepage/': typeof AuthenticatedAdminHomepageIndexRoute
+  '/_authenticated/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
+  '/_authenticated/admin/menus/': typeof AuthenticatedAdminMenusIndexRoute
+  '/_authenticated/admin/pages/': typeof AuthenticatedAdminPagesIndexRoute
+  '/_authenticated/admin/sell/': typeof AuthenticatedAdminSellIndexRoute
+  '/_authenticated/admin/seo/': typeof AuthenticatedAdminSeoIndexRoute
+  '/_authenticated/admin/settings/': typeof AuthenticatedAdminSettingsIndexRoute
+  '/_authenticated/admin/users/': typeof AuthenticatedAdminUsersIndexRoute
   '/_authenticated/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRouteTypes {
@@ -207,6 +347,20 @@ export interface FileRouteTypes {
     | '/cars/$slug'
     | '/admin/'
     | '/admin/vehicles/$id'
+    | '/admin/blog/'
+    | '/admin/brands/'
+    | '/admin/enquiries/'
+    | '/admin/faqs/'
+    | '/admin/footer/'
+    | '/admin/galleries/'
+    | '/admin/homepage/'
+    | '/admin/media/'
+    | '/admin/menus/'
+    | '/admin/pages/'
+    | '/admin/sell/'
+    | '/admin/seo/'
+    | '/admin/settings/'
+    | '/admin/users/'
     | '/admin/vehicles/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -226,6 +380,20 @@ export interface FileRouteTypes {
     | '/cars/$slug'
     | '/admin'
     | '/admin/vehicles/$id'
+    | '/admin/blog'
+    | '/admin/brands'
+    | '/admin/enquiries'
+    | '/admin/faqs'
+    | '/admin/footer'
+    | '/admin/galleries'
+    | '/admin/homepage'
+    | '/admin/media'
+    | '/admin/menus'
+    | '/admin/pages'
+    | '/admin/sell'
+    | '/admin/seo'
+    | '/admin/settings'
+    | '/admin/users'
     | '/admin/vehicles'
   id:
     | '__root__'
@@ -247,6 +415,20 @@ export interface FileRouteTypes {
     | '/cars/$slug'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/vehicles/$id'
+    | '/_authenticated/admin/blog/'
+    | '/_authenticated/admin/brands/'
+    | '/_authenticated/admin/enquiries/'
+    | '/_authenticated/admin/faqs/'
+    | '/_authenticated/admin/footer/'
+    | '/_authenticated/admin/galleries/'
+    | '/_authenticated/admin/homepage/'
+    | '/_authenticated/admin/media/'
+    | '/_authenticated/admin/menus/'
+    | '/_authenticated/admin/pages/'
+    | '/_authenticated/admin/sell/'
+    | '/_authenticated/admin/seo/'
+    | '/_authenticated/admin/settings/'
+    | '/_authenticated/admin/users/'
     | '/_authenticated/admin/vehicles/'
   fileRoutesById: FileRoutesById
 }
@@ -396,6 +578,104 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminVehiclesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/users/': {
+      id: '/_authenticated/admin/users/'
+      path: '/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/settings/': {
+      id: '/_authenticated/admin/settings/'
+      path: '/settings'
+      fullPath: '/admin/settings/'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/seo/': {
+      id: '/_authenticated/admin/seo/'
+      path: '/seo'
+      fullPath: '/admin/seo/'
+      preLoaderRoute: typeof AuthenticatedAdminSeoIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/sell/': {
+      id: '/_authenticated/admin/sell/'
+      path: '/sell'
+      fullPath: '/admin/sell/'
+      preLoaderRoute: typeof AuthenticatedAdminSellIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/pages/': {
+      id: '/_authenticated/admin/pages/'
+      path: '/pages'
+      fullPath: '/admin/pages/'
+      preLoaderRoute: typeof AuthenticatedAdminPagesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/menus/': {
+      id: '/_authenticated/admin/menus/'
+      path: '/menus'
+      fullPath: '/admin/menus/'
+      preLoaderRoute: typeof AuthenticatedAdminMenusIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/media/': {
+      id: '/_authenticated/admin/media/'
+      path: '/media'
+      fullPath: '/admin/media/'
+      preLoaderRoute: typeof AuthenticatedAdminMediaIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/homepage/': {
+      id: '/_authenticated/admin/homepage/'
+      path: '/homepage'
+      fullPath: '/admin/homepage/'
+      preLoaderRoute: typeof AuthenticatedAdminHomepageIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/galleries/': {
+      id: '/_authenticated/admin/galleries/'
+      path: '/galleries'
+      fullPath: '/admin/galleries/'
+      preLoaderRoute: typeof AuthenticatedAdminGalleriesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/footer/': {
+      id: '/_authenticated/admin/footer/'
+      path: '/footer'
+      fullPath: '/admin/footer/'
+      preLoaderRoute: typeof AuthenticatedAdminFooterIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/faqs/': {
+      id: '/_authenticated/admin/faqs/'
+      path: '/faqs'
+      fullPath: '/admin/faqs/'
+      preLoaderRoute: typeof AuthenticatedAdminFaqsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/enquiries/': {
+      id: '/_authenticated/admin/enquiries/'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries/'
+      preLoaderRoute: typeof AuthenticatedAdminEnquiriesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/brands/': {
+      id: '/_authenticated/admin/brands/'
+      path: '/brands'
+      fullPath: '/admin/brands/'
+      preLoaderRoute: typeof AuthenticatedAdminBrandsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/blog/': {
+      id: '/_authenticated/admin/blog/'
+      path: '/blog'
+      fullPath: '/admin/blog/'
+      preLoaderRoute: typeof AuthenticatedAdminBlogIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/vehicles/$id': {
       id: '/_authenticated/admin/vehicles/$id'
       path: '/vehicles/$id'
@@ -409,12 +689,40 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminVehiclesIdRoute: typeof AuthenticatedAdminVehiclesIdRoute
+  AuthenticatedAdminBlogIndexRoute: typeof AuthenticatedAdminBlogIndexRoute
+  AuthenticatedAdminBrandsIndexRoute: typeof AuthenticatedAdminBrandsIndexRoute
+  AuthenticatedAdminEnquiriesIndexRoute: typeof AuthenticatedAdminEnquiriesIndexRoute
+  AuthenticatedAdminFaqsIndexRoute: typeof AuthenticatedAdminFaqsIndexRoute
+  AuthenticatedAdminFooterIndexRoute: typeof AuthenticatedAdminFooterIndexRoute
+  AuthenticatedAdminGalleriesIndexRoute: typeof AuthenticatedAdminGalleriesIndexRoute
+  AuthenticatedAdminHomepageIndexRoute: typeof AuthenticatedAdminHomepageIndexRoute
+  AuthenticatedAdminMediaIndexRoute: typeof AuthenticatedAdminMediaIndexRoute
+  AuthenticatedAdminMenusIndexRoute: typeof AuthenticatedAdminMenusIndexRoute
+  AuthenticatedAdminPagesIndexRoute: typeof AuthenticatedAdminPagesIndexRoute
+  AuthenticatedAdminSellIndexRoute: typeof AuthenticatedAdminSellIndexRoute
+  AuthenticatedAdminSeoIndexRoute: typeof AuthenticatedAdminSeoIndexRoute
+  AuthenticatedAdminSettingsIndexRoute: typeof AuthenticatedAdminSettingsIndexRoute
+  AuthenticatedAdminUsersIndexRoute: typeof AuthenticatedAdminUsersIndexRoute
   AuthenticatedAdminVehiclesIndexRoute: typeof AuthenticatedAdminVehiclesIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedAdminVehiclesIdRoute: AuthenticatedAdminVehiclesIdRoute,
+  AuthenticatedAdminBlogIndexRoute: AuthenticatedAdminBlogIndexRoute,
+  AuthenticatedAdminBrandsIndexRoute: AuthenticatedAdminBrandsIndexRoute,
+  AuthenticatedAdminEnquiriesIndexRoute: AuthenticatedAdminEnquiriesIndexRoute,
+  AuthenticatedAdminFaqsIndexRoute: AuthenticatedAdminFaqsIndexRoute,
+  AuthenticatedAdminFooterIndexRoute: AuthenticatedAdminFooterIndexRoute,
+  AuthenticatedAdminGalleriesIndexRoute: AuthenticatedAdminGalleriesIndexRoute,
+  AuthenticatedAdminHomepageIndexRoute: AuthenticatedAdminHomepageIndexRoute,
+  AuthenticatedAdminMediaIndexRoute: AuthenticatedAdminMediaIndexRoute,
+  AuthenticatedAdminMenusIndexRoute: AuthenticatedAdminMenusIndexRoute,
+  AuthenticatedAdminPagesIndexRoute: AuthenticatedAdminPagesIndexRoute,
+  AuthenticatedAdminSellIndexRoute: AuthenticatedAdminSellIndexRoute,
+  AuthenticatedAdminSeoIndexRoute: AuthenticatedAdminSeoIndexRoute,
+  AuthenticatedAdminSettingsIndexRoute: AuthenticatedAdminSettingsIndexRoute,
+  AuthenticatedAdminUsersIndexRoute: AuthenticatedAdminUsersIndexRoute,
   AuthenticatedAdminVehiclesIndexRoute: AuthenticatedAdminVehiclesIndexRoute,
 }
 
