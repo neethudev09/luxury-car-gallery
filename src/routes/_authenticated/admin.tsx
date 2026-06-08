@@ -107,14 +107,14 @@ function AdminLayout() {
         </nav>
       </aside>
 
-      <main className="flex-1 p-5 md:p-8">
-        <div className="mb-4 flex gap-2 md:hidden">
+      <main className="min-w-0 flex-1 p-5 md:p-8">
+        <div className="mb-4 flex gap-2 overflow-x-auto pb-2 md:hidden">
           {nav.map((item) => (
-            <Link key={item.to} to={item.to} className="rounded-md border border-border px-3 py-1.5 text-sm">
+            <Link key={item.to} to={item.to} className="whitespace-nowrap rounded-md border border-border px-3 py-1.5 text-sm">
               {item.label}
             </Link>
           ))}
-          <button onClick={signOut} className="rounded-md border border-border px-3 py-1.5 text-sm">Sign out</button>
+          <button onClick={signOut} className="whitespace-nowrap rounded-md border border-border px-3 py-1.5 text-sm">Sign out</button>
         </div>
         <Outlet />
       </main>
