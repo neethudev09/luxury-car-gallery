@@ -27,6 +27,7 @@ import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminVehiclesIndexRouteImport } from './routes/_authenticated/admin.vehicles.index'
+import { Route as AuthenticatedAdminVehiclesIdRouteImport } from './routes/_authenticated/admin.vehicles.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -118,6 +119,12 @@ const AuthenticatedAdminVehiclesIndexRoute =
     path: '/vehicles/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminVehiclesIdRoute =
+  AuthenticatedAdminVehiclesIdRouteImport.update({
+    id: '/vehicles/$id',
+    path: '/vehicles/$id',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -154,6 +162,7 @@ export interface FileRoutesByTo {
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/admin/vehicles': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRoutesById {
@@ -175,6 +184,7 @@ export interface FileRoutesById {
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/_authenticated/admin/vehicles/': typeof AuthenticatedAdminVehiclesIndexRoute
 }
 export interface FileRouteTypes {
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
     | '/brands/$brand'
     | '/cars/$slug'
     | '/admin/'
+    | '/admin/vehicles/$id'
     | '/admin/vehicles/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/brands/$brand'
     | '/cars/$slug'
     | '/admin'
+    | '/admin/vehicles/$id'
     | '/admin/vehicles'
   id:
     | '__root__'
@@ -234,6 +246,7 @@ export interface FileRouteTypes {
     | '/brands/$brand'
     | '/cars/$slug'
     | '/_authenticated/admin/'
+    | '/_authenticated/admin/vehicles/$id'
     | '/_authenticated/admin/vehicles/'
   fileRoutesById: FileRoutesById
 }
@@ -383,16 +396,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminVehiclesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/vehicles/$id': {
+      id: '/_authenticated/admin/vehicles/$id'
+      path: '/vehicles/$id'
+      fullPath: '/admin/vehicles/$id'
+      preLoaderRoute: typeof AuthenticatedAdminVehiclesIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminVehiclesIdRoute: typeof AuthenticatedAdminVehiclesIdRoute
   AuthenticatedAdminVehiclesIndexRoute: typeof AuthenticatedAdminVehiclesIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminVehiclesIdRoute: AuthenticatedAdminVehiclesIdRoute,
   AuthenticatedAdminVehiclesIndexRoute: AuthenticatedAdminVehiclesIndexRoute,
 }
 

@@ -15,6 +15,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CompareProvider } from "@/lib/compare";
 import { CompareBar } from "@/components/CompareBar";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -157,6 +158,7 @@ function RootComponent() {
           </main>
           <Footer />
           <CompareBar />
+          <Toaster />
         </div>
       </CompareProvider>
     </QueryClientProvider>
