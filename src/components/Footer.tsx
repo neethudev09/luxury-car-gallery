@@ -104,23 +104,23 @@ export function Footer() {
           <ul className="space-y-4 text-sm text-muted-foreground">
             <li className="flex gap-3">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-              <span>87 4th St - Al Qouz Ind.third - Al Quoz - Dubai, UAE</span>
+              <span>{address}</span>
             </li>
             <li className="flex gap-3">
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-              <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="hover:text-gold">
-                {PHONE}
+              <a href={`tel:${phone.replace(/\s/g, "")}`} className="hover:text-gold">
+                {phone}
               </a>
             </li>
             <li className="flex gap-3">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-              <a href={`mailto:${EMAIL}`} className="hover:text-gold">
-                {EMAIL}
+              <a href={`mailto:${email}`} className="hover:text-gold">
+                {email}
               </a>
             </li>
           </ul>
           <a
-            href={whatsappLink("Hello Car Gallery Dubai")}
+            href={waHref}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-flex rounded-full bg-gold px-5 py-2.5 text-xs font-medium uppercase tracking-widest text-primary-foreground transition-transform hover:scale-105"
