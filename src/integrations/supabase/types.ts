@@ -73,6 +73,7 @@ export type Database = {
       }
       brands: {
         Row: {
+          available: number
           country: string | null
           created_at: string
           description: string | null
@@ -85,10 +86,12 @@ export type Database = {
           published: boolean
           seo_title: string | null
           slug: string
+          sold: number
           sort_order: number
           updated_at: string
         }
         Insert: {
+          available?: number
           country?: string | null
           created_at?: string
           description?: string | null
@@ -101,10 +104,12 @@ export type Database = {
           published?: boolean
           seo_title?: string | null
           slug: string
+          sold?: number
           sort_order?: number
           updated_at?: string
         }
         Update: {
+          available?: number
           country?: string | null
           created_at?: string
           description?: string | null
@@ -117,6 +122,7 @@ export type Database = {
           published?: boolean
           seo_title?: string | null
           slug?: string
+          sold?: number
           sort_order?: number
           updated_at?: string
         }

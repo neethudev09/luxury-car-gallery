@@ -1,0 +1,3 @@
+ALTER TABLE public.brands
+  ADD COLUMN IF NOT EXISTS available integer NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS sold integer NOT NULL DEFAULT 0;
