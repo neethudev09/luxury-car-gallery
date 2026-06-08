@@ -26,8 +26,18 @@ function formatDate(d: string | null) {
   return new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
+type Post = {
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  category: string | null;
+  cover_image: string | null;
+  author: string | null;
+  published_at: string | null;
+};
+
 function Blog() {
-  const { posts } = Route.useLoaderData();
+  const { posts } = Route.useLoaderData() as { posts: Post[] };
   const [cat, setCat] = useState("All");
   const categories = useMemo(
     () => Array.from(new Set(posts.map((p) => p.category).filter(Boolean))) as string[],
