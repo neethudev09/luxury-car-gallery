@@ -80,9 +80,9 @@ function AdminLayout() {
 
   return (
     <div className="flex min-h-screen pt-20">
-      <aside className="hidden w-60 shrink-0 border-r border-border bg-card/40 p-4 md:block">
-        <div className="mb-6 px-2 text-xs uppercase tracking-widest text-muted-foreground">Admin</div>
-        <nav className="space-y-1">
+      <aside className="sticky top-20 hidden h-[calc(100vh-5rem)] w-60 shrink-0 overflow-y-auto border-r border-border bg-card/40 p-4 md:block">
+        <div className="mb-4 px-2 text-xs uppercase tracking-widest text-muted-foreground">Admin</div>
+        <nav className="space-y-0.5">
           {nav.map((item) => {
             const active = item.exact ? path === item.to : path.startsWith(item.to);
             return (
@@ -93,19 +93,20 @@ function AdminLayout() {
                   active ? "bg-primary text-primary-foreground" : "hover:bg-muted"
                 }`}
               >
-                <item.icon className="h-4 w-4" />
+                <item.icon className="h-4 w-4 shrink-0" />
                 {item.label}
               </Link>
             );
           })}
+          <button
+            onClick={signOut}
+            className="mt-4 flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted"
+          >
+            <LogOut className="h-4 w-4" /> Sign out
+          </button>
         </nav>
-        <button
-          onClick={signOut}
-          className="mt-6 flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted"
-        >
-          <LogOut className="h-4 w-4" /> Sign out
-        </button>
       </aside>
+
       <main className="flex-1 p-5 md:p-8">
         <div className="mb-4 flex gap-2 md:hidden">
           {nav.map((item) => (
