@@ -4,6 +4,7 @@ import { ArrowLeft, Check, ChevronDown, Phone } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
 import { Car360Viewer } from "@/components/Car360Viewer";
+import { FinanceCalculator } from "@/components/FinanceCalculator";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
 
 export const Route = createFileRoute("/cars/$slug")({
@@ -137,6 +138,10 @@ function VehiclePage() {
               <Link to="/sell" className="rounded-full border border-gold/50 py-3.5 text-center text-sm uppercase tracking-widest transition-colors hover:bg-gold/10">Finance Enquiry</Link>
               <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="flex items-center justify-center gap-2 rounded-full border border-border py-3.5 text-center text-sm uppercase tracking-widest transition-colors hover:border-gold"><Phone className="h-4 w-4" /> Call</a>
             </div>
+          </div>
+
+          <div className="mt-8">
+            <FinanceCalculator price={car.price} />
           </div>
         </div>
       </div>
