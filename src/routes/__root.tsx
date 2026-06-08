@@ -158,6 +158,7 @@ function RootComponent() {
           </main>
           <Footer />
           <CompareBar />
+          <Toaster />
         </div>
       </CompareProvider>
     </QueryClientProvider>
