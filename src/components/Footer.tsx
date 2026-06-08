@@ -1,10 +1,33 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
-import { brands, EMAIL, PHONE, whatsappLink } from "@/data/cars";
+import { useQuery } from "@tanstack/react-query";
+import { brands as staticBrands, EMAIL, PHONE, whatsappLink } from "@/data/cars";
+import { getPublicBrands, getPublicSettings } from "@/lib/public.functions";
 import lcgLogo from "@/assets/lcg-logo.png.asset.json";
 
 export function Footer() {
-  return (
+  const { data: brandData } = useQuery({
+    queryKey: ["public-brands"],
+    queryFn: () => getPublicBrands(),
+    staleTime: 5 * 60_000,
+  });
+  const { data: settingsData } = useQuery({
+    queryKey: ["public-settings"],
+    queryFn: () => getPublicSettings(),
+    staleTime: 5 * 60_000,
+  });
+
+  const brands =
+    brandData?.brands && brandData.brands.length > 0 ? brandData.brands : staticBrands;
+  const footer = (settingsData?.settings?.footer ?? {}) as Record<string, string>;
+  const phone = footer.phone || PHONE;
+  const email = footer.email || EMAIL;
+  const address = footer.address || "87 4th St - Al Qouz Ind.third - Al Quoz - Dubai, UAE";
+  const whatsapp = footer.whatsapp;
+  const waHref = whatsapp
+    ? `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hello Car Gallery Dubai")}`
+    : whatsappLink("Hello Car Gallery Dubai");
+
     <footer className="relative mt-24 border-t border-border/60 bg-charcoal">
       <div className="gold-line absolute inset-x-0 top-0 h-px" />
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-2 lg:grid-cols-4">
