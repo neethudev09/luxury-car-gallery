@@ -82,3 +82,58 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
   });
   return { settings: map };
 });
+
+// Resolve the relational menu stored in site_settings (key "menu") into
+// concrete { label, url } links using live content. Renaming a brand or
+// changing a page slug updates these links automatically.
+export const getPublicMenu = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { refUrl } = await import("@/lib/refs");
+
+  const [{ data: settingRow }, pages, vehicles, brands, posts, galleries, faqs] =
+    await Promise.all([
+      supabaseAdmin.from("site_settings").select("value").eq("key", "menu").maybeSingle(),
+      supabaseAdmin.from("pages").select("id,title,slug").eq("status", "published"),
+      supabaseAdmin.from("vehicles").select("id,title,slug").eq("published", true),
+      supabaseAdmin.from("brands").select("id,name,slug").eq("published", true),
+      supabaseAdmin.from("blog_posts").select("id,title,slug").eq("status", "published"),
+      supabaseAdmin.from("galleries").select("id,name,slug").eq("published", true),
+      supabaseAdmin.from("faqs").select("id,question").eq("published", true),
+    ]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lookup = new Map<string, { label: string; slug: string; type: string }>();
+  const add = (type: string, rows: any[] | null, labelKey: string) =>
+    (rows ?? []).forEach((r) =>
+      lookup.set(`${type}:${r.id}`, { label: r[labelKey], slug: r.slug ?? r.id, type }),
+    );
+  add("page", pages.data, "title");
+  add("vehicle", vehicles.data, "title");
+  add("brand", brands.data, "name");
+  add("post", posts.data, "title");
+  add("gallery", galleries.data, "name");
+  add("faq", faqs.data, "question");
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const resolveList = (list: any): { label: string; url: string }[] => {
+    if (!Array.isArray(list)) return [];
+    const out: { label: string; url: string }[] = [];
+    for (const ref of list) {
+      if (!ref || typeof ref !== "object") continue;
+      if (ref.type === "custom") {
+        if (ref.url && ref.label) out.push({ label: ref.label, url: ref.url });
+        continue;
+      }
+      const item = lookup.get(`${ref.type}:${ref.id}`);
+      if (item) out.push({ label: item.label, url: refUrl(item.type as never, item.slug) });
+    }
+    return out;
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const value = (settingRow?.value ?? {}) as Record<string, any>;
+  return {
+    header: resolveList(value.header),
+    footer_explore: resolveList(value.footer_explore),
+  };
+});

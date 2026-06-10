@@ -512,3 +512,62 @@ export const getDashboardStats = createServerFn({ method: "GET" })
       recentPosts: posts ?? [],
     };
   });
+
+// ============================================================
+// CONTENT INDEX (powers relational pickers across the CMS)
+// Returns lightweight, linkable records for every content type.
+// ============================================================
+export const getContentIndex = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase } = context;
+    const [pages, vehicles, brands, posts, galleries, faqs] = await Promise.all([
+      supabase.from("pages").select("id,title,slug,status").order("title"),
+      supabase.from("vehicles").select("id,title,slug,sold,availability").order("title"),
+      supabase.from("brands").select("id,name,slug").order("name"),
+      supabase.from("blog_posts").select("id,title,slug,status").order("title"),
+      supabase.from("galleries").select("id,name,slug").order("name"),
+      supabase.from("faqs").select("id,question,category").order("category"),
+    ]);
+
+    const items: {
+      id: string;
+      type: string;
+      label: string;
+      slug: string;
+      status?: string;
+    }[] = [];
+
+    (pages.data ?? []).forEach((p) =>
+      items.push({ id: p.id, type: "page", label: p.title, slug: p.slug, status: p.status }),
+    );
+    (vehicles.data ?? []).forEach((v) =>
+      items.push({
+        id: v.id,
+        type: "vehicle",
+        label: v.title,
+        slug: v.slug,
+        status: v.sold ? "sold" : v.availability ?? "available",
+      }),
+    );
+    (brands.data ?? []).forEach((b) =>
+      items.push({ id: b.id, type: "brand", label: b.name, slug: b.slug }),
+    );
+    (posts.data ?? []).forEach((p) =>
+      items.push({ id: p.id, type: "post", label: p.title, slug: p.slug, status: p.status }),
+    );
+    (galleries.data ?? []).forEach((g) =>
+      items.push({ id: g.id, type: "gallery", label: g.name, slug: g.slug }),
+    );
+    (faqs.data ?? []).forEach((f) =>
+      items.push({
+        id: f.id,
+        type: "faq",
+        label: f.question,
+        slug: f.id,
+        status: f.category ?? undefined,
+      }),
+    );
+
+    return { items };
+  });

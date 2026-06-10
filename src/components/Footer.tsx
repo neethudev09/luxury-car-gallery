@@ -2,8 +2,18 @@ import { Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { brands as staticBrands, EMAIL, PHONE, whatsappLink } from "@/data/cars";
-import { getPublicBrands, getPublicSettings } from "@/lib/public.functions";
+import { getPublicBrands, getPublicSettings, getPublicMenu } from "@/lib/public.functions";
 import lcgLogo from "@/assets/lcg-logo.png.asset.json";
+
+const STATIC_EXPLORE = [
+  { label: "Cars For Sale", url: "/inventory" },
+  { label: "Sell Your Car", url: "/sell" },
+  { label: "Showroom Tour", url: "/showroom" },
+  { label: "Media Gallery", url: "/media" },
+  { label: "News & Blog", url: "/blog" },
+  { label: "About Us", url: "/about" },
+  { label: "Contact", url: "/contact" },
+];
 
 export function Footer() {
   const { data: brandData } = useQuery({
@@ -16,9 +26,18 @@ export function Footer() {
     queryFn: () => getPublicSettings(),
     staleTime: 5 * 60_000,
   });
+  const { data: menuData } = useQuery({
+    queryKey: ["public-menu"],
+    queryFn: () => getPublicMenu(),
+    staleTime: 5 * 60_000,
+  });
 
   const brands =
     brandData?.brands && brandData.brands.length > 0 ? brandData.brands : staticBrands;
+  const explore =
+    menuData?.footer_explore && menuData.footer_explore.length > 0
+      ? menuData.footer_explore
+      : STATIC_EXPLORE;
   const footer = (settingsData?.settings?.footer ?? {}) as Record<string, string>;
   const phone = footer.phone || PHONE;
   const email = footer.email || EMAIL;
@@ -64,18 +83,13 @@ export function Footer() {
         <div>
           <h4 className="mb-5 text-xs uppercase tracking-luxury text-gold">Explore</h4>
           <ul className="space-y-3 text-sm text-muted-foreground">
-            {[
-              { l: "Cars For Sale", to: "/inventory" },
-              { l: "Sell Your Car", to: "/sell" },
-              { l: "Showroom Tour", to: "/showroom" },
-              { l: "Media Gallery", to: "/media" },
-              { l: "News & Blog", to: "/blog" },
-              { l: "About Us", to: "/about" },
-              { l: "Contact", to: "/contact" },
-            ].map((x) => (
-              <li key={x.l}>
-                <Link to={x.to} className="transition-colors hover:text-gold">
-                  {x.l}
+            {explore.map((x) => (
+              <li key={`${x.label}-${x.url}`}>
+                <Link
+                  to={x.url as never}
+                  className="transition-colors hover:text-gold"
+                >
+                  {x.label}
                 </Link>
               </li>
             ))}
