@@ -201,6 +201,8 @@ function RootComponent() {
           </main>
           <Footer />
           <CompareBar />
+          <FloatingCTA />
+          <EnquiryPullout />
           <Toaster />
         </div>
       </CompareProvider>
