@@ -348,7 +348,49 @@ function SellSection() {
   );
 }
 
-/* SECTION 7 — SOCIAL FEED */
+/* SECTION — FINANCE CALCULATOR */
+function FinanceSection() {
+  const [price, setPrice] = useState(750000);
+  return (
+    <section className="relative overflow-hidden py-24">
+      <div className="mx-auto max-w-7xl px-5">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <Reveal>
+            <SectionHeading
+              eyebrow="Finance"
+              title="Finance Your Dream Car"
+              subtitle="Estimate your monthly payments instantly. Adjust the vehicle price, deposit, rate and term to see what works for you — then speak to our team for a tailored quote."
+            />
+            <div className="mt-8 max-w-sm">
+              <label className="text-sm text-muted-foreground">Vehicle price (AED)</label>
+              <input
+                type="number"
+                min={50000}
+                step={10000}
+                value={price}
+                onChange={(e) => setPrice(Math.max(0, Number(e.target.value)))}
+                className="mt-2 w-full rounded-lg border border-border bg-card px-4 py-3 text-lg outline-none focus:border-gold"
+              />
+              <input
+                type="range"
+                min={100000}
+                max={5000000}
+                step={10000}
+                value={Math.min(price, 5000000)}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                className="mt-4 w-full accent-gold"
+              />
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <FinanceCalculator price={price} />
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function SocialSection() {
   const feed = [cars[0], cars[2], cars[5], cars[10], cars[1], cars[6]];
   return (
