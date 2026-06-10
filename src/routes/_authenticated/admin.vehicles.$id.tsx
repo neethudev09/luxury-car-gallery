@@ -198,10 +198,24 @@ function VehicleEditor() {
                   <Input value={form.slug} onChange={(e) => set("slug", slugify(e.target.value))} />
                 </Field>
                 <Field label="Brand *">
-                  <Input value={form.brand} onChange={(e) => {
-                    const b = e.target.value;
-                    setForm((f) => ({ ...f, brand: b, brand_slug: slugify(b) }));
-                  }} />
+                  <Select
+                    value={form.brand}
+                    onValueChange={(b) => {
+                      const match = brandOptions.find((br) => br.name === b);
+                      setForm((f) => ({ ...f, brand: b, brand_slug: match?.slug ?? slugify(b) }));
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a brand" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {brandOptions.map((br) => (
+                        <SelectItem key={br.id} value={br.name}>
+                          {br.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </Field>
                 <Field label="Model"><Input value={form.model} onChange={(e) => set("model", e.target.value)} /></Field>
                 <Field label="Year"><Input type="number" value={form.year} onChange={(e) => set("year", e.target.value)} /></Field>
