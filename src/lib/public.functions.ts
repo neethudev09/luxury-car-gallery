@@ -39,6 +39,30 @@ export const getPublicPosts = createServerFn({ method: "GET" }).handler(async ()
   return { posts: data ?? [] };
 });
 
+export const getPublicPost = createServerFn({ method: "GET" })
+  .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(200) }).parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: post } = await supabaseAdmin
+      .from("blog_posts")
+      .select(
+        "slug,title,excerpt,content,category,tags,cover_image,author,published_at,seo_title,meta_description,og_image",
+      )
+      .eq("slug", data.slug)
+      .eq("status", "published")
+      .maybeSingle();
+    // Lightweight related list for the footer of the article.
+    const { data: related } = await supabaseAdmin
+      .from("blog_posts")
+      .select("slug,title,excerpt,category,cover_image,author,published_at")
+      .eq("status", "published")
+      .neq("slug", data.slug)
+      .order("published_at", { ascending: false })
+      .limit(3);
+    return { post: post ?? null, related: related ?? [] };
+  });
+
+
 export const getPublicFaqs = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data } = await supabaseAdmin
