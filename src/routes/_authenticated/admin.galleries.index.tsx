@@ -73,8 +73,9 @@ function GalleriesPage() {
   };
 
   const addItem = () => {
-    if (!newUrl.trim()) return;
-    setForm((f) => ({ ...f, items: [...f.items, { url: newUrl.trim(), alt: "" }] }));
+    const url = newUrl.trim();
+    if (!url) return;
+    setForm((f) => ({ ...f, items: [...f.items, { url, alt: "", type: detectKind(url) }] }));
     setNewUrl("");
   };
   const updateItem = (i: number, patch: Partial<Item>) =>
