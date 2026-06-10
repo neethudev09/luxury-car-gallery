@@ -527,7 +527,7 @@ export const getContentIndex = createServerFn({ method: "GET" })
       supabase.from("brands").select("id,name,slug").order("name"),
       supabase.from("blog_posts").select("id,title,slug,status").order("title"),
       supabase.from("galleries").select("id,name,slug").order("name"),
-      supabase.from("faqs").select("id,question,category,slug:id").order("category"),
+      supabase.from("faqs").select("id,question,category").order("category"),
     ]);
 
     const items: {
