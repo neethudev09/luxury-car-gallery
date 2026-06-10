@@ -18,7 +18,9 @@ import {
   PanelBottom,
   Search,
   Users,
+  Plug,
   Settings as SettingsIcon,
+
 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,6 +46,7 @@ const nav = [
   { to: "/admin/menus", label: "Menu Manager", icon: MenuIcon, exact: false },
   { to: "/admin/footer", label: "Footer Editor", icon: PanelBottom, exact: false },
   { to: "/admin/seo", label: "SEO Settings", icon: Search, exact: false },
+  { to: "/admin/integrations", label: "Google Tools", icon: Plug, exact: false },
   { to: "/admin/users", label: "Users", icon: Users, exact: false },
   { to: "/admin/settings", label: "Settings", icon: SettingsIcon, exact: false },
 ];
