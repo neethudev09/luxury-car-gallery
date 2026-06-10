@@ -78,7 +78,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  loader: async () => {
+    try {
+      const { getPublicIntegrations } = await import("@/lib/public.functions");
+      return { integrations: await getPublicIntegrations() };
+    } catch {
+      return {
+        integrations: { ga4_id: "", gtm_id: "", google_site_verification: "", custom_head_js: "" },
+      };
+    }
+  },
+  head: (ctx) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
