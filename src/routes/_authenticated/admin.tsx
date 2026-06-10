@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 const nav = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { to: "/admin/vehicles", label: "Vehicles", icon: Car, exact: false },
+  { to: "/admin/vehicles", label: "Cars", icon: Car, exact: false },
   { to: "/admin/brands", label: "Brands", icon: Tag, exact: false },
   { to: "/admin/media", label: "Media Library", icon: Images, exact: false },
   { to: "/admin/galleries", label: "Galleries", icon: GalleryHorizontalEnd, exact: false },
