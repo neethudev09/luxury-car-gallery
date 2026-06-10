@@ -22,6 +22,7 @@ import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -108,6 +109,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
 } as any)
 const CarsSlugRoute = CarsSlugRouteImport.update({
   id: '/cars/$slug',
@@ -254,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
@@ -278,7 +285,6 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
@@ -289,6 +295,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/admin/blog': typeof AuthenticatedAdminBlogIndexRoute
@@ -327,6 +334,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/vehicles/$id': typeof AuthenticatedAdminVehiclesIdRoute
   '/_authenticated/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
@@ -365,6 +373,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/brands/$brand'
     | '/cars/$slug'
+    | '/blog/'
     | '/admin/'
     | '/admin/vehicles/$id'
     | '/admin/blog/'
@@ -389,7 +398,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/auth'
-    | '/blog'
     | '/compare'
     | '/contact'
     | '/inventory'
@@ -400,6 +408,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/brands/$brand'
     | '/cars/$slug'
+    | '/blog'
     | '/admin'
     | '/admin/vehicles/$id'
     | '/admin/blog'
@@ -437,6 +446,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/brands/$brand'
     | '/cars/$slug'
+    | '/blog/'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/vehicles/$id'
     | '/_authenticated/admin/blog/'
@@ -567,6 +577,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/cars/$slug': {
       id: '/cars/$slug'
@@ -785,10 +802,12 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
