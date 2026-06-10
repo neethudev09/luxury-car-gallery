@@ -130,7 +130,7 @@ function GalleriesPage() {
         <div>
           <h1 className="text-3xl">Galleries</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Build image galleries. Drag images to reorder and edit alt text.
+            Build galleries with images and YouTube videos. Drag to reorder and edit captions.
           </p>
         </div>
         <Button onClick={openNew}>
