@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/admin/galleries/")({
   component: GalleriesPage,
 });
 
-type Item = { url: string; alt: string };
+type Item = { url: string; alt: string; type?: MediaKind };
 type Gallery = {
   id?: string;
   name: string;
