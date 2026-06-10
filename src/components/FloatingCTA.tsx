@@ -3,7 +3,7 @@ import { PHONE, whatsappLink } from "@/data/cars";
 
 export function FloatingCTA() {
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 print:hidden">
+    <div className="fixed bottom-20 right-6 z-40 flex flex-col items-end gap-3 print:hidden">
       <a
         href={whatsappLink("Hello Car Gallery Dubai, I'd like to enquire about a vehicle.")}
         target="_blank"
