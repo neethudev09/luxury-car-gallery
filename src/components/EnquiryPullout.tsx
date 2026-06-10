@@ -90,6 +90,10 @@ export function EnquiryPullout() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.interest) {
+      toast.error("Please select what you're interested in.");
+      return;
+    }
     setSending(true);
     try {
       await send({ data: { ...form, source: "enquiry-bar" } });
