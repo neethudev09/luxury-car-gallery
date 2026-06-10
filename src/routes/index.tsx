@@ -59,6 +59,7 @@ function Home() {
       <ThreeSixtySection />
       <ShowroomSection />
       <SellSection />
+      <FinanceSection />
       <SocialSection />
       <SeoSection />
       <BlogSection />
