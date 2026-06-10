@@ -88,52 +88,83 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       };
     }
   },
-  head: (ctx) => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Car Gallery Dubai | Luxury & Supercars For Sale in Dubai" },
-      {
-        name: "description",
-        content:
-          "Car Gallery Dubai — Dubai's premier destination for luxury cars and supercars. Buy, sell and discover Ferrari, Lamborghini, Rolls-Royce, Porsche and more.",
-      },
-      { name: "author", content: "Car Gallery Dubai" },
-      { property: "og:title", content: "Car Gallery Dubai | Luxury & Supercars" },
-      {
-        property: "og:description",
-        content: "Dubai's premier destination for luxury cars and supercars.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "Car Gallery Dubai" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap",
-      },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "AutoDealer",
-          name: "Car Gallery Dubai",
-          description: "Luxury cars and supercars for sale in Dubai.",
-          areaServed: "Dubai, United Arab Emirates",
-          url: "https://cargallerydubai.com",
-        }),
-      },
-    ],
-  }),
+  head: (ctx) => {
+    const integ = (ctx as { loaderData?: { integrations?: Record<string, string> } }).loaderData
+      ?.integrations ?? {};
+    const ga4 = integ.ga4_id ?? "";
+    const gtm = integ.gtm_id ?? "";
+    const verify = integ.google_site_verification ?? "";
+    const customJs = integ.custom_head_js ?? "";
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const integrationScripts: any[] = [];
+    if (gtm) {
+      integrationScripts.push({
+        children: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtm}');`,
+      });
+    }
+    if (ga4) {
+      integrationScripts.push({
+        src: `https://www.googletagmanager.com/gtag/js?id=${ga4}`,
+        async: true,
+      });
+      integrationScripts.push({
+        children: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4}');`,
+      });
+    }
+    if (customJs) {
+      integrationScripts.push({ children: customJs });
+    }
+
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title: "Car Gallery Dubai | Luxury & Supercars For Sale in Dubai" },
+        {
+          name: "description",
+          content:
+            "Car Gallery Dubai — Dubai's premier destination for luxury cars and supercars. Buy, sell and discover Ferrari, Lamborghini, Rolls-Royce, Porsche and more.",
+        },
+        { name: "author", content: "Car Gallery Dubai" },
+        { property: "og:title", content: "Car Gallery Dubai | Luxury & Supercars" },
+        {
+          property: "og:description",
+          content: "Dubai's premier destination for luxury cars and supercars.",
+        },
+        { property: "og:type", content: "website" },
+        { property: "og:site_name", content: "Car Gallery Dubai" },
+        { name: "twitter:card", content: "summary_large_image" },
+        ...(verify ? [{ name: "google-site-verification", content: verify }] : []),
+      ],
+      links: [
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap",
+        },
+        {
+          rel: "stylesheet",
+          href: appCss,
+        },
+      ],
+      scripts: [
+        ...integrationScripts,
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AutoDealer",
+            name: "Car Gallery Dubai",
+            description: "Luxury cars and supercars for sale in Dubai.",
+            areaServed: "Dubai, United Arab Emirates",
+            url: "https://cargallerydubai.com",
+          }),
+        },
+      ],
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
