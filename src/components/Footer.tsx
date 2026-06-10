@@ -86,7 +86,7 @@ export function Footer() {
             {explore.map((x) => (
               <li key={`${x.label}-${x.url}`}>
                 <Link
-                  to={x.url}
+                  to={x.url as never}
                   className="transition-colors hover:text-gold"
                 >
                   {x.label}
