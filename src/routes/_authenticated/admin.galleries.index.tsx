@@ -151,10 +151,17 @@ function GalleriesPage() {
                 {g.published ? "Published" : "Draft"}
               </Badge>
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">{g.items?.length ?? 0} images</p>
+            <p className="mt-1 text-xs text-muted-foreground">{g.items?.length ?? 0} items</p>
             <div className="mt-3 grid grid-cols-4 gap-1">
               {(g.items ?? []).slice(0, 4).map((it, i) => (
-                <img key={i} src={it.url} alt={it.alt} className="aspect-square rounded object-cover" />
+                <div key={i} className="relative aspect-square overflow-hidden rounded">
+                  <img src={mediaThumb(it.url)} alt={it.alt} className="h-full w-full object-cover" />
+                  {it.type === "video" && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-background/40">
+                      <Play className="h-4 w-4 text-gold" />
+                    </span>
+                  )}
+                </div>
               ))}
             </div>
             <div className="mt-4 flex gap-2">
