@@ -16,6 +16,7 @@ import {
 import { Reveal, SectionHeading, CountUp } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
 import { VehicleShowcase } from "@/components/VehicleShowcase";
+import { FinanceCalculator } from "@/components/FinanceCalculator";
 
 import { BrandLogo } from "@/components/BrandLogo";
 import { brands, featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
