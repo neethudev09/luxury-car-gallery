@@ -89,6 +89,13 @@ function VehicleEditor() {
     enabled: !isNew,
   });
 
+  const fetchBrands = useServerFn(listBrands);
+  const { data: brandsData } = useQuery({
+    queryKey: ["brands-admin"],
+    queryFn: () => fetchBrands(),
+  });
+  const brandOptions = brandsData?.brands ?? [];
+
   useEffect(() => {
     const v = data?.vehicle;
     if (!v) return;
