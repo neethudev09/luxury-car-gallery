@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import { Plus, Trash2, GripVertical, Loader2, ArrowUp, ArrowDown } from "lucide-react";
+import { Plus, Trash2, GripVertical, Loader2, ArrowUp, ArrowDown, Play } from "lucide-react";
 import { listGalleries, saveGallery, deleteGallery } from "@/lib/cms.functions";
+import { detectKind, mediaThumb, type MediaKind } from "@/lib/media";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/admin/galleries/")({
   component: GalleriesPage,
 });
 
-type Item = { url: string; alt: string };
+type Item = { url: string; alt: string; type?: MediaKind };
 type Gallery = {
   id?: string;
   name: string;
@@ -72,8 +73,9 @@ function GalleriesPage() {
   };
 
   const addItem = () => {
-    if (!newUrl.trim()) return;
-    setForm((f) => ({ ...f, items: [...f.items, { url: newUrl.trim(), alt: "" }] }));
+    const url = newUrl.trim();
+    if (!url) return;
+    setForm((f) => ({ ...f, items: [...f.items, { url, alt: "", type: detectKind(url) }] }));
     setNewUrl("");
   };
   const updateItem = (i: number, patch: Partial<Item>) =>
@@ -128,7 +130,7 @@ function GalleriesPage() {
         <div>
           <h1 className="text-3xl">Galleries</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Build image galleries. Drag images to reorder and edit alt text.
+            Build galleries with images and YouTube videos. Drag to reorder and edit captions.
           </p>
         </div>
         <Button onClick={openNew}>
@@ -149,10 +151,17 @@ function GalleriesPage() {
                 {g.published ? "Published" : "Draft"}
               </Badge>
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">{g.items?.length ?? 0} images</p>
+            <p className="mt-1 text-xs text-muted-foreground">{g.items?.length ?? 0} items</p>
             <div className="mt-3 grid grid-cols-4 gap-1">
               {(g.items ?? []).slice(0, 4).map((it, i) => (
-                <img key={i} src={it.url} alt={it.alt} className="aspect-square rounded object-cover" />
+                <div key={i} className="relative aspect-square overflow-hidden rounded">
+                  <img src={mediaThumb(it.url)} alt={it.alt} className="h-full w-full object-cover" />
+                  {it.type === "video" && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-background/40">
+                      <Play className="h-4 w-4 text-gold" />
+                    </span>
+                  )}
+                </div>
               ))}
             </div>
             <div className="mt-4 flex gap-2">
@@ -205,11 +214,14 @@ function GalleriesPage() {
           </div>
 
           <div className="mt-2">
-            <Label>Images</Label>
+            <Label>Media items</Label>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Paste an image URL or a YouTube link — videos are detected automatically.
+            </p>
             <div className="mt-2 flex gap-2">
               <Input
                 value={newUrl}
-                placeholder="https://image-url.jpg"
+                placeholder="https://image-url.jpg or https://youtu.be/..."
                 onChange={(e) => setNewUrl(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addItem())}
               />
@@ -228,13 +240,24 @@ function GalleriesPage() {
                   className="flex items-center gap-2 rounded-md border border-border bg-card/40 p-2"
                 >
                   <GripVertical className="h-4 w-4 cursor-grab text-muted-foreground" />
-                  <img src={it.url} alt={it.alt} className="h-12 w-16 rounded object-cover" />
-                  <Input
-                    value={it.alt}
-                    placeholder="Alt text"
-                    className="flex-1"
-                    onChange={(e) => updateItem(i, { alt: e.target.value })}
-                  />
+                  <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded">
+                    <img src={mediaThumb(it.url)} alt={it.alt} className="h-full w-full object-cover" />
+                    {it.type === "video" && (
+                      <span className="absolute inset-0 flex items-center justify-center bg-background/40">
+                        <Play className="h-4 w-4 text-gold" />
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1">
+                    <Input
+                      value={it.alt}
+                      placeholder={it.type === "video" ? "Video title" : "Alt text"}
+                      onChange={(e) => updateItem(i, { alt: e.target.value })}
+                    />
+                    <span className="text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+                      {it.type === "video" ? "YouTube video" : "Image"}
+                    </span>
+                  </div>
                   <Button size="icon" variant="ghost" onClick={() => move(i, -1)}>
                     <ArrowUp className="h-4 w-4" />
                   </Button>
@@ -248,6 +271,7 @@ function GalleriesPage() {
               ))}
             </div>
           </div>
+
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
