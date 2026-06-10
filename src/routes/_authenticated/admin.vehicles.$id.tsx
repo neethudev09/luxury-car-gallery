@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import { toast } from "sonner";
 import { getVehicleAdmin, saveVehicle } from "@/lib/vehicles.functions";
+import { listBrands } from "@/lib/cms.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/_authenticated/admin/vehicles/$id")({
   component: VehicleEditor,
