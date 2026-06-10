@@ -214,11 +214,14 @@ function GalleriesPage() {
           </div>
 
           <div className="mt-2">
-            <Label>Images</Label>
+            <Label>Media items</Label>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Paste an image URL or a YouTube link — videos are detected automatically.
+            </p>
             <div className="mt-2 flex gap-2">
               <Input
                 value={newUrl}
-                placeholder="https://image-url.jpg"
+                placeholder="https://image-url.jpg or https://youtu.be/..."
                 onChange={(e) => setNewUrl(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addItem())}
               />
@@ -237,13 +240,24 @@ function GalleriesPage() {
                   className="flex items-center gap-2 rounded-md border border-border bg-card/40 p-2"
                 >
                   <GripVertical className="h-4 w-4 cursor-grab text-muted-foreground" />
-                  <img src={it.url} alt={it.alt} className="h-12 w-16 rounded object-cover" />
-                  <Input
-                    value={it.alt}
-                    placeholder="Alt text"
-                    className="flex-1"
-                    onChange={(e) => updateItem(i, { alt: e.target.value })}
-                  />
+                  <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded">
+                    <img src={mediaThumb(it.url)} alt={it.alt} className="h-full w-full object-cover" />
+                    {it.type === "video" && (
+                      <span className="absolute inset-0 flex items-center justify-center bg-background/40">
+                        <Play className="h-4 w-4 text-gold" />
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1">
+                    <Input
+                      value={it.alt}
+                      placeholder={it.type === "video" ? "Video title" : "Alt text"}
+                      onChange={(e) => updateItem(i, { alt: e.target.value })}
+                    />
+                    <span className="text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+                      {it.type === "video" ? "YouTube video" : "Image"}
+                    </span>
+                  </div>
                   <Button size="icon" variant="ghost" onClick={() => move(i, -1)}>
                     <ArrowUp className="h-4 w-4" />
                   </Button>
@@ -257,6 +271,7 @@ function GalleriesPage() {
               ))}
             </div>
           </div>
+
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
