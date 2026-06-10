@@ -127,6 +127,7 @@ export const listGalleries = createServerFn({ method: "GET" })
 const galleryItem = z.object({
   url: z.string().max(2000),
   alt: z.string().max(300).optional().default(""),
+  type: z.enum(["image", "video"]).optional().default("image"),
 });
 const gallerySchema = z.object({
   id: z.string().optional(),
