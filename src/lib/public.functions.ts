@@ -103,6 +103,35 @@ export const getPublicIntegrations = createServerFn({ method: "GET" }).handler(a
   };
 });
 
+// Public enquiry submission from the live website (contact forms, pullout, etc.)
+const enquirySchema = z.object({
+  name: z.string().min(1).max(120),
+  email: z.string().email().max(200).optional().or(z.literal("")),
+  phone: z.string().max(40).optional().or(z.literal("")),
+  message: z.string().max(4000).optional().or(z.literal("")),
+  source: z.string().max(40).default("website"),
+  vehicle_title: z.string().max(200).optional().or(z.literal("")),
+});
+
+export const submitEnquiry = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => enquirySchema.parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("enquiries").insert({
+      name: data.name,
+      email: data.email || null,
+      phone: data.phone || null,
+      message: data.message || null,
+      source: data.source || "website",
+      vehicle_title: data.vehicle_title || null,
+      status: "new",
+    });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+
+
 // Resolve the relational menu stored in site_settings (key "menu") into
 // concrete { label, url } links using live content. Renaming a brand or
 // changing a page slug updates these links automatically.
