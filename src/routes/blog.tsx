@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { getPublicPosts } from "@/lib/public.functions";
@@ -63,7 +63,7 @@ function Blog() {
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {list.map((p, i) => (
               <Reveal key={p.slug} delay={(i % 3) * 0.07}>
-                <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-luxury hover-lift">
+                <Link to="/blog/$slug" params={{ slug: p.slug }} className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-luxury hover-lift">
                   <div className="relative aspect-[16/10] overflow-hidden">
                     {p.cover_image && (
                       <img src={p.cover_image} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -77,7 +77,8 @@ function Blog() {
                     <h2 className="mt-2 text-xl leading-snug transition-colors group-hover:text-gold">{p.title}</h2>
                     <p className="mt-3 text-sm text-muted-foreground">{p.excerpt}</p>
                   </div>
-                </article>
+                </Link>
+
               </Reveal>
             ))}
           </div>

@@ -24,6 +24,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 import { Route as BrandsBrandRouteImport } from './routes/brands.$brand'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminVehiclesIndexRouteImport } from './routes/_authenticated/admin.vehicles.index'
@@ -117,6 +118,11 @@ const BrandsBrandRoute = BrandsBrandRouteImport.update({
   id: '/brands/$brand',
   path: '/brands/$brand',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
@@ -236,7 +242,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
@@ -245,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/showroom': typeof ShowroomRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -271,7 +278,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
@@ -279,6 +286,7 @@ export interface FileRoutesByTo {
   '/sell': typeof SellRoute
   '/showroom': typeof ShowroomRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -307,7 +315,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
@@ -316,6 +324,7 @@ export interface FileRoutesById {
   '/showroom': typeof ShowroomRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/brands/$brand': typeof BrandsBrandRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -353,6 +362,7 @@ export interface FileRouteTypes {
     | '/showroom'
     | '/sitemap.xml'
     | '/admin'
+    | '/blog/$slug'
     | '/brands/$brand'
     | '/cars/$slug'
     | '/admin/'
@@ -387,6 +397,7 @@ export interface FileRouteTypes {
     | '/sell'
     | '/showroom'
     | '/sitemap.xml'
+    | '/blog/$slug'
     | '/brands/$brand'
     | '/cars/$slug'
     | '/admin'
@@ -423,6 +434,7 @@ export interface FileRouteTypes {
     | '/showroom'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/blog/$slug'
     | '/brands/$brand'
     | '/cars/$slug'
     | '/_authenticated/admin/'
@@ -451,7 +463,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
   AuthRoute: typeof AuthRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
   InventoryRoute: typeof InventoryRoute
@@ -569,6 +581,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/brands/$brand'
       preLoaderRoute: typeof BrandsBrandRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -764,13 +783,23 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
   AuthRoute: AuthRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
   InventoryRoute: InventoryRoute,
