@@ -83,6 +83,26 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
   return { settings: map };
 });
 
+// Google / marketing tool tags stored in site_settings (key "integrations").
+// Injected into the site <head> so they load on every public page.
+export const getPublicIntegrations = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin
+    .from("site_settings")
+    .select("value")
+    .eq("key", "integrations")
+    .maybeSingle();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const v = (data?.value ?? {}) as Record<string, any>;
+  const str = (x: unknown) => (typeof x === "string" ? x.trim() : "");
+  return {
+    ga4_id: str(v.ga4_id),
+    gtm_id: str(v.gtm_id),
+    google_site_verification: str(v.google_site_verification),
+    custom_head_js: str(v.custom_head_js),
+  };
+});
+
 // Resolve the relational menu stored in site_settings (key "menu") into
 // concrete { label, url } links using live content. Renaming a brand or
 // changing a page slug updates these links automatically.
