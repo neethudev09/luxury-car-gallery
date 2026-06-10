@@ -83,18 +83,13 @@ export function Footer() {
         <div>
           <h4 className="mb-5 text-xs uppercase tracking-luxury text-gold">Explore</h4>
           <ul className="space-y-3 text-sm text-muted-foreground">
-            {[
-              { l: "Cars For Sale", to: "/inventory" },
-              { l: "Sell Your Car", to: "/sell" },
-              { l: "Showroom Tour", to: "/showroom" },
-              { l: "Media Gallery", to: "/media" },
-              { l: "News & Blog", to: "/blog" },
-              { l: "About Us", to: "/about" },
-              { l: "Contact", to: "/contact" },
-            ].map((x) => (
-              <li key={x.l}>
-                <Link to={x.to} className="transition-colors hover:text-gold">
-                  {x.l}
+            {explore.map((x) => (
+              <li key={`${x.label}-${x.url}`}>
+                <Link
+                  to={x.url}
+                  className="transition-colors hover:text-gold"
+                >
+                  {x.label}
                 </Link>
               </li>
             ))}
