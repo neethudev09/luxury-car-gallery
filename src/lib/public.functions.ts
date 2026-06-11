@@ -79,7 +79,7 @@ export const getPublicBrandPage = createServerFn({ method: "GET" })
       .eq("slug", data.slug)
       .eq("published", true)
       .maybeSingle();
-    if (!brand) return { brand: null, vehicles: [] };
+    if (!brand) return { brand: null, vehicles: [], available: 0 };
 
     const { data: vehicles } = await supabaseAdmin
       .from("vehicles")
