@@ -188,32 +188,41 @@ function BrandsSection() {
         align="center"
       />
       <div className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-        {list.map((b, i) => (
-          <Reveal key={b.slug} delay={i * 0.04}>
-            <Link
-              to="/brands/$brand"
-              params={{ brand: b.slug }}
-              className="group relative flex aspect-[3/2] cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border border-border bg-card p-4 transition-all duration-500 hover:-translate-y-1.5 hover:border-gold hover:shadow-gold"
-            >
-              {/* soft glow on hover */}
-              <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_30%,color-mix(in_oklab,var(--gold)_22%,transparent),transparent_70%)]" />
-              {/* logo plate for contrast */}
-              <span className="relative flex h-16 w-16 items-center justify-center rounded-xl bg-foreground/[0.06] ring-1 ring-border/60 transition-all duration-500 group-hover:bg-foreground/[0.1] group-hover:ring-gold/40">
+        {list.map((b, i) => {
+          const empty = b.available === 0;
+          return (
+            <Reveal key={b.slug} delay={i * 0.04}>
+              <Link
+                to="/brands/$brand"
+                params={{ brand: b.slug }}
+                className={`group relative flex aspect-[4/3] cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-border bg-card px-4 py-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-gold hover:shadow-gold ${empty ? "opacity-70 hover:opacity-100" : ""}`}
+              >
+                {/* soft glow on hover */}
+                <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_35%,color-mix(in_oklab,var(--gold)_18%,transparent),transparent_70%)]" />
                 <BrandLogo
                   slug={b.slug}
-                  className="h-11 w-11 brightness-110 transition-transform duration-500 group-hover:scale-110"
+                  className="relative h-12 w-16 transition-transform duration-500 group-hover:scale-110"
                 />
-              </span>
-              <span className="relative text-xs uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-foreground">
-                {b.name}
-              </span>
-              <span className="relative text-[0.65rem] uppercase tracking-widest text-gold/80 transition-colors group-hover:text-gold">
-                {b.available} available
-              </span>
-            </Link>
-          </Reveal>
-        ))}
+                <div className="relative flex flex-col items-center gap-1.5">
+                  <span className="text-xs uppercase tracking-widest text-foreground/80 transition-colors group-hover:text-foreground">
+                    {b.name}
+                  </span>
+                  {empty ? (
+                    <span className="text-[0.65rem] uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-gold">
+                      View Brand
+                    </span>
+                  ) : (
+                    <span className="text-[0.65rem] uppercase tracking-widest text-gold/80 transition-colors group-hover:text-gold">
+                      {b.available} available
+                    </span>
+                  )}
+                </div>
+              </Link>
+            </Reveal>
+          );
+        })}
       </div>
+
     </section>
   );
 }

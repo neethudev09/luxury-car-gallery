@@ -25,15 +25,33 @@ const logos: Record<string, { url: string }> = {
   "range-rover": rangeRover,
 };
 
+/**
+ * Logos that are dark/monochrome and disappear on a dark background.
+ * These get inverted to a clean white so every marque reads clearly.
+ */
+const darkLogos = new Set([
+  "audi",
+  "bentley",
+  "mclaren",
+  "mercedes-benz",
+  "aston-martin",
+  "range-rover",
+  "rolls-royce",
+]);
+
 export function BrandLogo({ slug, className }: { slug: string; className?: string }) {
   const logo = logos[slug];
   if (!logo) return null;
+  // Whiten dark logos; gently lift the colored ones for extra contrast.
+  const tone = darkLogos.has(slug)
+    ? "brightness-0 invert"
+    : "brightness-110 contrast-110";
   return (
     <img
       src={logo.url}
       alt={`${slug} logo`}
       loading="lazy"
-      className={`${className ?? ""} object-contain`}
+      className={`${className ?? ""} ${tone} object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]`}
     />
   );
 }
