@@ -260,9 +260,9 @@ function FeaturedSection() {
       </div>
       <Reveal className="mt-6 max-w-2xl text-muted-foreground leading-relaxed">
         <p>
-          Discover our current collection of luxury, performance and supercars for sale in Dubai.
-          Every vehicle is hand selected and fully inspected, with new arrivals added regularly. See
-          the full range on our{" "}
+          Discover our current collection of luxury cars for sale in Dubai, spanning performance
+          cars, supercars, premium SUVs and rare collector vehicles. Every car is hand selected and
+          fully inspected, with new arrivals added regularly. See the full range on our{" "}
           <Link to="/inventory" className="text-gold hover:underline">cars for sale</Link> page.
         </p>
       </Reveal>
