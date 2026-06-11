@@ -33,12 +33,13 @@ const logos: Record<string, { url: string }> = {
  */
 const whiteLogos = new Set([
   "audi",
-  "bentley",
-  "mclaren",
   "mercedes-benz",
+  "bentley",
   "aston-martin",
-  "porsche",
 ]);
+
+/** Marques kept in colour but brightened extra so they pop on dark. */
+const brightBoost = new Set(["mclaren"]);
 
 /**
  * Marques whose colour IS the identity (Ferrari shield, Lamborghini crest,
@@ -46,7 +47,7 @@ const whiteLogos = new Set([
  */
 
 /** BMW's roundel needs a light circular backing to stay legible on dark. */
-const circleBacked = new Set(["bmw"]);
+const circleBacked = new Set<string>([]);
 
 /**
  * Per-brand size multipliers so visually small marks read at the same
@@ -75,7 +76,9 @@ export function BrandLogo({
 
   const tone = whiteLogos.has(slug)
     ? "brightness-0 invert opacity-95" // crisp white silhouette, always readable
-    : "brightness-110 contrast-110 saturate-110"; // colour marques, lifted
+    : brightBoost.has(slug)
+      ? "brightness-150 contrast-125 saturate-150" // colour marque, extra pop
+      : "brightness-110 contrast-110 saturate-110"; // colour marques, lifted
 
   const sizeBoost = scale[slug] ?? "";
 
