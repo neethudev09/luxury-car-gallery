@@ -33,11 +33,7 @@ const logos: Record<string, { url: string }> = {
  */
 const whiteLogos = new Set([
   "audi",
-  "bentley",
-  "mclaren",
   "mercedes-benz",
-  "aston-martin",
-  "porsche",
 ]);
 
 /**
