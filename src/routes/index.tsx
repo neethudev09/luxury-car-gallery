@@ -409,7 +409,7 @@ function FinanceSection() {
             <SectionHeading
               eyebrow="Finance"
               title="Finance Your Dream Car"
-              subtitle="Estimate your monthly payments instantly. Adjust the vehicle price, deposit, rate and term to see what works for you — then speak to our team for a tailored quote."
+              subtitle="Estimate your monthly payments instantly. Adjust the vehicle price, deposit, rate and term to see what works for you, then speak to our team for a tailored quote."
             />
             <div className="mt-8 max-w-sm">
               <label className="text-sm text-muted-foreground">Vehicle price (AED)</label>
