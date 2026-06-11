@@ -342,8 +342,9 @@ function ShowroomSection() {
                 Step Inside Our Dubai Showroom
               </h2>
               <p className="mt-4 max-w-lg text-foreground/80">
-                Take an interactive 360° tour with hotspot navigation and discover our collection
-                exactly as it sits on our showroom floor.
+                Explore each vehicle in detail with an interactive 360° tour and hotspot navigation.
+                View our collection exactly as it sits on the showroom floor and get to know a car
+                fully before you visit us in person.
               </p>
               <Link
                 to="/showroom"
