@@ -183,11 +183,11 @@ function BrandsSection() {
     <section className="mx-auto max-w-7xl px-5 py-24">
       <SectionHeading
         eyebrow="Marques We Curate"
-        title="The World's Finest Brands"
-        subtitle="From Maranello to Goodwood — we source, certify and present the most coveted automobiles on earth."
+        title="Shop by Brand"
+        subtitle="From Maranello to Goodwood — explore the most coveted automobiles on earth, by marque."
         align="center"
       />
-      <div className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <div className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-border/60 bg-border/40 sm:grid-cols-3 lg:grid-cols-4">
         {list.map((b, i) => {
           const empty = b.available === 0;
           return (
@@ -195,25 +195,27 @@ function BrandsSection() {
               <Link
                 to="/brands/$brand"
                 params={{ brand: b.slug }}
-                className={`group relative flex aspect-[4/3] cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-border bg-card px-4 py-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-gold hover:shadow-gold ${empty ? "opacity-70 hover:opacity-100" : ""}`}
+                className={`group relative flex aspect-square cursor-pointer flex-col items-center justify-center gap-6 bg-card px-6 py-8 transition-all duration-500 hover:z-10 hover:bg-card/80 hover:shadow-[inset_0_0_0_1px_var(--gold)] ${empty ? "opacity-60 hover:opacity-100" : ""}`}
               >
-                {/* soft glow on hover */}
-                <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_35%,color-mix(in_oklab,var(--gold)_18%,transparent),transparent_70%)]" />
+                {/* soft gold glow on hover */}
+                <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_40%,color-mix(in_oklab,var(--gold)_22%,transparent),transparent_70%)]" />
                 <BrandLogo
                   slug={b.slug}
-                  className="relative h-12 w-16 transition-transform duration-500 group-hover:scale-110"
+                  src={b.logo}
+                  name={b.name}
+                  className="relative h-20 w-full max-w-[150px] transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="relative flex flex-col items-center gap-1.5">
-                  <span className="text-xs uppercase tracking-widest text-foreground/80 transition-colors group-hover:text-foreground">
+                <div className="relative flex flex-col items-center gap-1.5 text-center">
+                  <span className="text-sm uppercase tracking-[0.2em] text-foreground/90 transition-colors group-hover:text-foreground">
                     {b.name}
                   </span>
                   {empty ? (
-                    <span className="text-[0.65rem] uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-gold">
+                    <span className="text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground transition-colors group-hover:text-gold">
                       View Brand
                     </span>
                   ) : (
-                    <span className="text-[0.65rem] uppercase tracking-widest text-gold/80 transition-colors group-hover:text-gold">
-                      {b.available} available
+                    <span className="text-[0.7rem] uppercase tracking-[0.2em] text-gold/90 transition-colors group-hover:text-gold">
+                      {b.available} Available
                     </span>
                   )}
                 </div>
@@ -222,10 +224,10 @@ function BrandsSection() {
           );
         })}
       </div>
-
     </section>
   );
 }
+
 
 
 /* SECTION 3 — FEATURED INVENTORY */
