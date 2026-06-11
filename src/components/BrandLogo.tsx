@@ -76,7 +76,9 @@ export function BrandLogo({
 
   const tone = whiteLogos.has(slug)
     ? "brightness-0 invert opacity-95" // crisp white silhouette, always readable
-    : "brightness-110 contrast-110 saturate-110"; // colour marques, lifted
+    : brightBoost.has(slug)
+      ? "brightness-150 contrast-125 saturate-150" // colour marque, extra pop
+      : "brightness-110 contrast-110 saturate-110"; // colour marques, lifted
 
   const sizeBoost = scale[slug] ?? "";
 
