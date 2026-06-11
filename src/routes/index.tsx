@@ -23,7 +23,7 @@ import { FinanceCalculator } from "@/components/FinanceCalculator";
 
 import { BrandLogo } from "@/components/BrandLogo";
 import { getBrandsWithCounts } from "@/lib/public.functions";
-import { brands, featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
+import { featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
 import { posts } from "@/data/blog";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import heroVideo from "@/assets/hero-video.mp4.asset.json";
