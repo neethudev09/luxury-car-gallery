@@ -8,8 +8,8 @@ import sellImg from "@/assets/sell-your-car.jpg";
 export const Route = createFileRoute("/sell")({
   head: () => ({
     meta: [
-      { title: "Sell Your Luxury Car in Dubai | Car Gallery Dubai" },
-      { name: "description", content: "Sell your luxury car or supercar in Dubai with Car Gallery Dubai. Free valuation, instant payment and a discreet, hassle-free process." },
+      { title: "Sell Your Luxury Car in Dubai | Luxury Car Gallery Dubai" },
+      { name: "description", content: "Sell your luxury car or supercar in Dubai with Luxury Car Gallery Dubai. Free valuation, instant payment and a discreet, hassle-free process." },
       { property: "og:title", content: "Sell Your Luxury Car in Dubai" },
     ],
     links: [{ rel: "canonical", href: "/sell" }],

@@ -33,13 +33,13 @@ export const Route = createFileRoute("/inventory")({
   },
   head: () => ({
     meta: [
-      { title: "Luxury Car Inventory For Sale in Dubai | Car Gallery Dubai" },
+      { title: "Luxury Car Inventory For Sale in Dubai | Luxury Car Gallery Dubai" },
       {
         name: "description",
         content:
           "Browse our full inventory of luxury cars and supercars for sale in Dubai. Filter by brand, model, price, year, mileage, fuel type, colour and more.",
       },
-      { property: "og:title", content: "Luxury Car Inventory | Car Gallery Dubai" },
+      { property: "og:title", content: "Luxury Car Inventory | Luxury Car Gallery Dubai" },
     ],
     links: [{ rel: "canonical", href: "/inventory" }],
   }),

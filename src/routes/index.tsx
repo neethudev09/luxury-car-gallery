@@ -33,13 +33,13 @@ import sellImg from "@/assets/sell-your-car.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Luxury Cars & Supercars For Sale in Dubai | Car Gallery Dubai" },
+      { title: "Luxury Car Sales Dubai | Luxury Car Gallery" },
       {
         name: "description",
         content:
-          "Discover Dubai's finest collection of luxury cars and supercars for sale. Ferrari, Lamborghini, Rolls-Royce, Porsche & more. View inventory or sell your car today.",
+          "Luxury car sales in Dubai from Luxury Car Gallery. Browse luxury cars, supercars and premium cars for sale, including Ferrari, Lamborghini, Porsche and Rolls-Royce.",
       },
-      { property: "og:title", content: "Luxury Cars & Supercars For Sale in Dubai" },
+      { property: "og:title", content: "Luxury Car Sales Dubai | Luxury Car Gallery" },
       { property: "og:image", content: heroShowroom },
     ],
     links: [{ rel: "canonical", href: "/" }],
@@ -61,6 +61,7 @@ function Home() {
       <BrandsSection />
       <FeaturedSection />
       <ThreeSixtySection />
+      <TrustSection />
       <ShowroomSection />
       <SellSection />
       <FinanceSection />
@@ -102,7 +103,7 @@ function Hero() {
           transition={{ duration: 0.8 }}
           className="text-xs uppercase tracking-luxury text-gold"
         >
-          Car Gallery Dubai
+          Luxury Car Gallery Dubai
         </motion.span>
         <motion.h1
           initial={{ opacity: 0, y: 28 }}
@@ -110,7 +111,7 @@ function Hero() {
           transition={{ duration: 0.9, delay: 0.1 }}
           className="mt-5 max-w-3xl text-4xl leading-[1.05] sm:text-6xl lg:text-7xl"
         >
-          Luxury Cars <span className="gold-gradient-text">For Sale</span> In Dubai
+          Luxury Car <span className="gold-gradient-text">Sales</span> Dubai
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 28 }}
@@ -118,8 +119,10 @@ function Hero() {
           transition={{ duration: 0.9, delay: 0.25 }}
           className="mt-6 max-w-xl text-lg text-foreground/80"
         >
-          An exclusive collection of the world's most desirable supercars and luxury automobiles,
-          curated for the most discerning collectors.
+          Luxury Car Gallery is Dubai's trusted home for luxury cars for sale, bringing together a
+          handpicked collection of supercars, premium saloons and grand tourers. Browse our current
+          inventory and enjoy a discreet, personalised luxury car buying experience from start to
+          finish.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 28 }}
@@ -184,9 +187,21 @@ function BrandsSection() {
       <SectionHeading
         eyebrow="Marques We Curate"
         title="Shop by Brand"
-        subtitle="From Maranello to Goodwood — explore the most coveted automobiles on earth, by marque."
+        subtitle="Explore the world's leading luxury automotive brands, from Maranello to Goodwood."
         align="center"
       />
+      <Reveal className="mx-auto mt-6 max-w-3xl text-center text-muted-foreground leading-relaxed">
+        <p>
+          Luxury Car Gallery brings together the world's most respected marques under one roof.
+          Browse dedicated pages for{" "}
+          <Link to="/brands/$brand" params={{ brand: "ferrari" }} className="text-gold hover:underline">Ferrari</Link>,{" "}
+          <Link to="/brands/$brand" params={{ brand: "lamborghini" }} className="text-gold hover:underline">Lamborghini</Link>,{" "}
+          <Link to="/brands/$brand" params={{ brand: "porsche" }} className="text-gold hover:underline">Porsche</Link>{" "}
+          and{" "}
+          <Link to="/brands/$brand" params={{ brand: "rolls-royce" }} className="text-gold hover:underline">Rolls-Royce</Link>{" "}
+          to view current availability and find the right luxury car for you.
+        </p>
+      </Reveal>
       <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {list.map((b, i) => (
           <Reveal key={b.slug} delay={i * 0.04} className="h-full">
@@ -242,6 +257,14 @@ function FeaturedSection() {
           </Link>
         </Reveal>
       </div>
+      <Reveal className="mt-6 max-w-2xl text-muted-foreground leading-relaxed">
+        <p>
+          Discover our current collection of luxury, performance and supercars for sale in Dubai.
+          Every vehicle is hand selected and fully inspected, with new arrivals added regularly. See
+          the full range on our{" "}
+          <Link to="/inventory" className="text-gold hover:underline">cars for sale</Link> page.
+        </p>
+      </Reveal>
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {featuredCars.slice(0, 6).map((car, i) => (
           <Reveal key={car.slug} delay={(i % 3) * 0.08}>
@@ -266,7 +289,7 @@ function ThreeSixtySection() {
           </h2>
           <p className="mt-4 max-w-md text-muted-foreground">
             Browse genuine vehicles from our current inventory, presented on a dark stage with soft
-            spotlight lighting and a mirrored reflection. Real photography only — no rendered models.
+            spotlight lighting and a mirrored reflection. Real photography only, no rendered models.
           </p>
           <ul className="mt-8 space-y-4">
             {[
@@ -304,7 +327,7 @@ function ShowroomSection() {
       <div className="relative h-[60vh] min-h-[460px] overflow-hidden">
         <img
           src={showroomInterior}
-          alt="Car Gallery Dubai virtual showroom tour"
+          alt="Luxury Car Gallery Dubai virtual showroom tour"
           loading="lazy"
           width={1024}
           height={1024}
@@ -357,8 +380,8 @@ function SellSection() {
               The Effortless Way to Sell Your Luxury Car
             </h2>
             <p className="mt-4 text-foreground/80">
-              Receive a competitive valuation within hours. We handle everything — paperwork,
-              transfer and payment — with absolute discretion.
+              Receive a competitive valuation within hours. We handle everything, from paperwork to
+              transfer and payment, with absolute discretion.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
@@ -386,7 +409,7 @@ function FinanceSection() {
             <SectionHeading
               eyebrow="Finance"
               title="Finance Your Dream Car"
-              subtitle="Estimate your monthly payments instantly. Adjust the vehicle price, deposit, rate and term to see what works for you — then speak to our team for a tailored quote."
+              subtitle="Estimate your monthly payments instantly. Adjust the vehicle price, deposit, rate and term to see what works for you, then speak to our team for a tailored quote."
             />
             <div className="mt-8 max-w-sm">
               <label className="text-sm text-muted-foreground">Vehicle price (AED)</label>
@@ -460,37 +483,91 @@ function SocialSection() {
   );
 }
 
+/* SECTION — TRUST / WHY CHOOSE US */
+function TrustSection() {
+  const points = [
+    { t: "Curated Quality", d: "Every luxury car is hand selected, fully inspected and presented with complete history." },
+    { t: "Honest Transparency", d: "Clear pricing, accurate descriptions and straightforward advice with no pressure." },
+    { t: "Specialist Expertise", d: "A knowledgeable team with deep experience across supercars and premium marques." },
+    { t: "Personalised Service", d: "A discreet, tailored buying experience with finance and worldwide delivery." },
+  ];
+  return (
+    <section className="mx-auto max-w-7xl px-5 py-24">
+      <SectionHeading
+        eyebrow="Why Choose Luxury Car Gallery"
+        title="Trusted Luxury Car Sales in Dubai"
+        subtitle="Buyers choose Luxury Car Gallery for quality, transparency, expertise and genuinely personalised service."
+        align="center"
+      />
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {points.map((p, i) => (
+          <Reveal key={p.t} delay={i * 0.06}>
+            <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-7">
+              <h3 className="text-lg font-medium text-foreground">{p.t}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.d}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* SECTION 8 — SEO CONTENT */
 function SeoSection() {
   return (
     <section className="mx-auto max-w-4xl px-5 py-24">
       <Reveal>
-        <span className="text-xs uppercase tracking-luxury text-gold">Why Car Gallery Dubai</span>
-        <h2 className="mt-3 text-3xl md:text-4xl">Luxury Cars For Sale In Dubai</h2>
+        <span className="text-xs uppercase tracking-luxury text-gold">Why Luxury Car Gallery Dubai</span>
+        <h2 className="mt-3 text-3xl md:text-4xl">Luxury Car Sales Dubai</h2>
         <div className="mt-6 space-y-5 leading-relaxed text-muted-foreground">
           <p>
-            Car Gallery Dubai is the destination of choice for collectors and enthusiasts seeking
-            the finest <Link to="/inventory" className="text-gold hover:underline">luxury cars for sale in Dubai</Link>.
-            Our curated showroom brings together the most desirable marques in the world, from
-            track-bred supercars to handcrafted grand tourers.
+            Luxury Car Gallery is a leading name in luxury car sales in Dubai, trusted by collectors
+            and enthusiasts who expect the very best. Our showroom brings together a carefully chosen
+            selection of{" "}
+            <Link to="/inventory" className="text-gold hover:underline">luxury cars for sale in Dubai</Link>,
+            from elegant grand tourers to track bred supercars, each one prepared and presented to an
+            exacting standard.
           </p>
-          <h3 className="font-display text-2xl text-foreground">An Unrivalled Supercar Collection</h3>
+          <h3 className="font-display text-2xl text-foreground">Supercars for Sale in Dubai</h3>
           <p>
-            Whether you are searching for a{" "}
-            <Link to="/brands/$brand" params={{ brand: "ferrari" }} className="text-gold hover:underline">Ferrari for sale in Dubai</Link>,
+            If you are looking for supercars for sale in Dubai, our collection features some of the
+            most exciting machines ever built. Browse a{" "}
+            <Link to="/brands/$brand" params={{ brand: "ferrari" }} className="text-gold hover:underline">Ferrari</Link>,
             a{" "}
-            <Link to="/brands/$brand" params={{ brand: "lamborghini" }} className="text-gold hover:underline">Lamborghini</Link>{" "}
-            or the serene luxury of a{" "}
-            <Link to="/brands/$brand" params={{ brand: "rolls-royce" }} className="text-gold hover:underline">Rolls-Royce</Link>,
-            every vehicle in our inventory is meticulously inspected and presented to the highest
-            standard.
+            <Link to="/brands/$brand" params={{ brand: "lamborghini" }} className="text-gold hover:underline">Lamborghini</Link>,
+            a{" "}
+            <Link to="/brands/$brand" params={{ brand: "mclaren" }} className="text-gold hover:underline">McLaren</Link>{" "}
+            or a precision engineered{" "}
+            <Link to="/brands/$brand" params={{ brand: "porsche" }} className="text-gold hover:underline">Porsche</Link>.
+            Every supercar is inspected in detail so you can buy with complete confidence.
           </p>
-          <h3 className="font-display text-2xl text-foreground">Buy & Sell With Confidence</h3>
+          <h3 className="font-display text-2xl text-foreground">Premium Cars for Sale in Dubai</h3>
           <p>
-            We make buying and selling luxury cars in Dubai effortless. Our specialists provide
-            transparent valuations, finance options and a discreet, white-glove service trusted by
-            a global clientele. Looking to sell?{" "}
-            <Link to="/sell" className="text-gold hover:underline">Get a valuation today</Link>.
+            Beyond the supercars, we offer premium cars for sale in Dubai for those who value
+            craftsmanship and refinement. Discover the serene luxury of a{" "}
+            <Link to="/brands/$brand" params={{ brand: "rolls-royce" }} className="text-gold hover:underline">Rolls-Royce</Link>,
+            the heritage of a{" "}
+            <Link to="/brands/$brand" params={{ brand: "bentley" }} className="text-gold hover:underline">Bentley</Link>,
+            the engineering of a{" "}
+            <Link to="/brands/$brand" params={{ brand: "mercedes-benz" }} className="text-gold hover:underline">Mercedes-Benz</Link>{" "}
+            or the balance of a{" "}
+            <Link to="/brands/$brand" params={{ brand: "bmw" }} className="text-gold hover:underline">BMW</Link>.
+            We also stock used luxury cars in Dubai, giving you access to exceptional vehicles at
+            considered values.
+          </p>
+          <h3 className="font-display text-2xl text-foreground">Buy Luxury Cars in Dubai With Confidence</h3>
+          <p>
+            We make it simple to buy luxury cars in Dubai. Our specialists provide honest valuations,
+            flexible finance and a discreet service trusted by clients around the world. Explore every
+            model on our{" "}
+            <Link to="/inventory" className="text-gold hover:underline">all cars for sale</Link> page,
+            or if you are ready to move on from your current vehicle you can{" "}
+            <Link to="/sell" className="text-gold hover:underline">sell your car</Link> with us in just
+            a few steps. To learn more about our story visit{" "}
+            <Link to="/about" className="text-gold hover:underline">about us</Link>, or{" "}
+            <Link to="/contact" className="text-gold hover:underline">contact us</Link> to speak with a
+            member of the team about your next luxury car.
           </p>
         </div>
       </Reveal>
@@ -549,7 +626,7 @@ function ContactSection() {
       Icon: Quote,
       t: "WhatsApp",
       d: "Chat with a specialist",
-      href: whatsappLink("Hello Car Gallery Dubai"),
+      href: whatsappLink("Hello Luxury Car Gallery Dubai"),
     },
 { Icon: MapPin, t: "Visit Showroom", d: "Al Quoz, Dubai", href: "/contact" },
   ];

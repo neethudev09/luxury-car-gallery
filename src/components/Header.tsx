@@ -126,7 +126,7 @@ export function Header() {
             <Search className="h-4.5 w-4.5" />
           </Link>
           <a
-            href={whatsappLink("Hello Car Gallery Dubai, I would like to enquire about your inventory.")}
+            href={whatsappLink("Hello Luxury Car Gallery Dubai, I would like to enquire about your inventory.")}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"
@@ -497,7 +497,7 @@ function AboutMega() {
     <LinkMega
       eyebrow="The Gallery"
       links={[
-        { label: "About Car Gallery Dubai", desc: "Our story & ethos", to: "/about", Icon: Building2 },
+        { label: "About Luxury Car Gallery Dubai", desc: "Our story & ethos", to: "/about", Icon: Building2 },
         { label: "Why Choose Us", desc: "Trust, discretion, expertise", to: "/about", Icon: ShieldCheck },
         { label: "Showroom", desc: "Visit us in Dubai", to: "/showroom", Icon: Compass },
         { label: "Careers", desc: "Join the team", to: "/about", Icon: Briefcase },

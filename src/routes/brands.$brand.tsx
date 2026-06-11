@@ -18,12 +18,12 @@ export const Route = createFileRoute("/brands/$brand")({
     const b = loaderData?.brand;
     return {
       meta: [
-        { title: b?.seo_title || `${b?.name} For Sale in Dubai | Car Gallery Dubai` },
+        { title: b?.seo_title || `${b?.name} For Sale in Dubai | Luxury Car Gallery Dubai` },
         {
           name: "description",
           content:
             b?.meta_description ||
-            `Browse ${b?.name} cars for sale in Dubai. Explore our curated ${b?.name} inventory with finance and WhatsApp enquiry at Car Gallery Dubai.`,
+            `Browse ${b?.name} cars for sale in Dubai. Explore our curated ${b?.name} inventory with finance and WhatsApp enquiry at Luxury Car Gallery Dubai.`,
         },
         { property: "og:title", content: `${b?.name} For Sale in Dubai` },
         { property: "og:image", content: b?.hero_image || b?.logo || undefined },
@@ -105,7 +105,7 @@ function BrandPage() {
           <h2 className="text-2xl">Buy a {brand.name} in Dubai</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
             {brand.description ||
-              `Car Gallery Dubai is your trusted source for ${brand.name} cars for sale in Dubai. Each ${brand.name} in our collection is meticulously inspected and presented with full history. Our specialists offer finance, worldwide delivery and a discreet, white-glove experience.`}{" "}
+              `Luxury Car Gallery Dubai is your trusted source for ${brand.name} cars for sale in Dubai. Each ${brand.name} in our collection is meticulously inspected and presented with full history. Our specialists offer finance, worldwide delivery and a discreet, white-glove experience.`}{" "}
             <Link to="/sell" className="text-gold hover:underline">Looking to sell your {brand.name}?</Link>
           </p>
         </Reveal>

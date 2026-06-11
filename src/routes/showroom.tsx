@@ -8,8 +8,8 @@ import { cars } from "@/data/cars";
 export const Route = createFileRoute("/showroom")({
   head: () => ({
     meta: [
-      { title: "Visit Our Luxury Car Showroom in Dubai | Car Gallery Dubai" },
-      { name: "description", content: "Explore the Car Gallery Dubai showroom with an interactive 360° virtual tour, video showcase and luxury imagery." },
+      { title: "Visit Our Luxury Car Showroom in Dubai | Luxury Car Gallery Dubai" },
+      { name: "description", content: "Explore the Luxury Car Gallery Dubai showroom with an interactive 360° virtual tour, video showcase and luxury imagery." },
       { property: "og:title", content: "Our Dubai Showroom" },
       { property: "og:image", content: showroom },
     ],
@@ -28,7 +28,7 @@ function Showroom() {
     <div className="pt-28">
       <div className="mx-auto max-w-7xl px-5 py-10">
         <span className="text-xs uppercase tracking-luxury text-gold">Showroom</span>
-        <h1 className="mt-3 text-4xl md:text-5xl">The Car Gallery Experience</h1>
+        <h1 className="mt-3 text-4xl md:text-5xl">The Luxury Car Gallery Experience</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">A 12,000 sq ft temple to automotive excellence in Al Quoz Industrial Third, Dubai.</p>
       </div>
 

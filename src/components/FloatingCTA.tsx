@@ -5,7 +5,7 @@ export function FloatingCTA() {
   return (
     <div className="fixed bottom-20 right-6 z-40 flex flex-col items-end gap-3 print:hidden">
       <a
-        href={whatsappLink("Hello Car Gallery Dubai, I'd like to enquire about a vehicle.")}
+        href={whatsappLink("Hello Luxury Car Gallery Dubai, I'd like to enquire about a vehicle.")}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"

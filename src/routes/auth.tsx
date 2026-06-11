@@ -9,7 +9,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Staff Login | Car Gallery Dubai" },
+      { title: "Staff Login | Luxury Car Gallery Dubai" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -60,7 +60,7 @@ function AuthPage() {
       <div className="glass w-full max-w-md rounded-3xl p-10">
         <h1 className="text-3xl">{mode === "login" ? "Staff Login" : "Create Account"}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Access the Car Gallery Dubai management dashboard.
+          Access the Luxury Car Gallery Dubai management dashboard.
         </p>
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div className="space-y-2">

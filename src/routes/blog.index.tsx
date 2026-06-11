@@ -6,9 +6,9 @@ import { getPublicPosts } from "@/lib/public.functions";
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Luxury Car News, Blog & Buying Guides | Car Gallery Dubai" },
-      { name: "description", content: "The latest luxury car news, supercar features, buying guides and Dubai automotive market updates from Car Gallery Dubai." },
-      { property: "og:title", content: "Journal | Car Gallery Dubai" },
+      { title: "Luxury Car News, Blog & Buying Guides | Luxury Car Gallery Dubai" },
+      { name: "description", content: "The latest luxury car news, supercar features, buying guides and Dubai automotive market updates from Luxury Car Gallery Dubai." },
+      { property: "og:title", content: "Journal | Luxury Car Gallery Dubai" },
     ],
     links: [{ rel: "canonical", href: "/blog" }],
   }),

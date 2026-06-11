@@ -15,7 +15,7 @@ export const Route = createFileRoute("/cars/$slug")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.year} ${loaderData?.title} For Sale in Dubai | Car Gallery Dubai` },
+      { title: `${loaderData?.year} ${loaderData?.title} For Sale in Dubai | Luxury Car Gallery Dubai` },
       {
         name: "description",
         content: loaderData

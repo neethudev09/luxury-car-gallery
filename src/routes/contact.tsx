@@ -7,9 +7,9 @@ import { EMAIL, PHONE, whatsappLink } from "@/data/cars";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Car Gallery Dubai | Luxury Car Showroom" },
-      { name: "description", content: "Get in touch with Car Gallery Dubai. Call, WhatsApp, email or visit our luxury car showroom at 87 4th St, Al Quoz Industrial Third, Dubai." },
-      { property: "og:title", content: "Contact Car Gallery Dubai" },
+      { title: "Contact Luxury Car Gallery Dubai | Luxury Car Showroom" },
+      { name: "description", content: "Get in touch with Luxury Car Gallery Dubai. Call, WhatsApp, email or visit our luxury car showroom at 87 4th St, Al Quoz Industrial Third, Dubai." },
+      { property: "og:title", content: "Contact Luxury Car Gallery Dubai" },
     ],
     links: [{ rel: "canonical", href: "/contact" }],
   }),
@@ -37,7 +37,7 @@ function Contact() {
                 <div><p className="font-medium">{t}</p><p className="text-sm text-muted-foreground">{d}</p></div>
               </a>
             ))}
-            <a href={whatsappLink("Hello Car Gallery Dubai")} target="_blank" rel="noopener noreferrer" className="block rounded-full bg-gold py-3.5 text-center text-sm font-medium uppercase tracking-widest text-primary-foreground shadow-gold transition-transform hover:scale-105">Chat on WhatsApp</a>
+            <a href={whatsappLink("Hello Luxury Car Gallery Dubai")} target="_blank" rel="noopener noreferrer" className="block rounded-full bg-gold py-3.5 text-center text-sm font-medium uppercase tracking-widest text-primary-foreground shadow-gold transition-transform hover:scale-105">Chat on WhatsApp</a>
           </div>
         </Reveal>
         <Reveal delay={0.1}>
