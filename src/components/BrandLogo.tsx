@@ -42,7 +42,7 @@ const whiteLogos = new Set([
  */
 
 /** BMW's roundel needs a light circular backing to stay legible on dark. */
-const circleBacked = new Set(["bmw"]);
+const circleBacked = new Set<string>([]);
 
 /**
  * Per-brand size multipliers so visually small marks read at the same
