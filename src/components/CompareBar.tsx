@@ -16,7 +16,7 @@ export function CompareBar() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 280, damping: 30 }}
-          className="fixed inset-x-0 bottom-0 z-40 px-4 pb-4"
+          className="fixed inset-x-0 bottom-14 z-40 px-4 pb-4"
         >
           <div className="glass-strong mx-auto flex max-w-5xl flex-wrap items-center gap-3 rounded-2xl border border-gold/20 p-3 shadow-luxury">
             <span className="flex items-center gap-2 px-2 text-xs uppercase tracking-widest text-gold">
