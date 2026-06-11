@@ -37,7 +37,6 @@ const whiteLogos = new Set([
   "mclaren",
   "mercedes-benz",
   "aston-martin",
-  "rolls-royce",
   "porsche",
 ]);
 
