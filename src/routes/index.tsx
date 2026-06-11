@@ -289,7 +289,7 @@ function ThreeSixtySection() {
           </h2>
           <p className="mt-4 max-w-md text-muted-foreground">
             Browse genuine vehicles from our current inventory, presented on a dark stage with soft
-            spotlight lighting and a mirrored reflection. Real photography only — no rendered models.
+            spotlight lighting and a mirrored reflection. Real photography only, no rendered models.
           </p>
           <ul className="mt-8 space-y-4">
             {[
