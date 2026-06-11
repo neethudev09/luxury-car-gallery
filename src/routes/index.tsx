@@ -186,9 +186,21 @@ function BrandsSection() {
       <SectionHeading
         eyebrow="Marques We Curate"
         title="Shop by Brand"
-        subtitle="From Maranello to Goodwood — explore the most coveted automobiles on earth, by marque."
+        subtitle="Explore the world's leading luxury automotive brands, from Maranello to Goodwood."
         align="center"
       />
+      <Reveal className="mx-auto mt-6 max-w-3xl text-center text-muted-foreground leading-relaxed">
+        <p>
+          Luxury Car Gallery brings together the world's most respected marques under one roof.
+          Browse dedicated pages for{" "}
+          <Link to="/brands/$brand" params={{ brand: "ferrari" }} className="text-gold hover:underline">Ferrari</Link>,{" "}
+          <Link to="/brands/$brand" params={{ brand: "lamborghini" }} className="text-gold hover:underline">Lamborghini</Link>,{" "}
+          <Link to="/brands/$brand" params={{ brand: "porsche" }} className="text-gold hover:underline">Porsche</Link>{" "}
+          and{" "}
+          <Link to="/brands/$brand" params={{ brand: "rolls-royce" }} className="text-gold hover:underline">Rolls-Royce</Link>{" "}
+          to view current availability and find the right luxury car for you.
+        </p>
+      </Reveal>
       <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {list.map((b, i) => (
           <Reveal key={b.slug} delay={i * 0.04} className="h-full">
