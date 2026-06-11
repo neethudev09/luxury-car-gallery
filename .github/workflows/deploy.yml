@@ -1,31 +1,42 @@
-name: Deploy to Hostinger
+name: Build static site onto deploy branch
 
-# Long-term deployment workflow:
-#   1. You push/update from Lovable (which syncs to GitHub).
-#   2. This workflow runs `npm run build` to produce a static site in ./dist.
-#   3. Only the CONTENTS of ./dist are uploaded to Hostinger public_html via FTP.
+# Workflow (matches your other Lovable + Hostinger projects):
+#   1. You push/update from Lovable -> syncs to the `main` branch on GitHub.
+#   2. This workflow builds the static site (npm run build -> ./dist).
+#   3. The CONTENTS of ./dist (index.html, assets/, .htaccess, robots.txt,
+#      sitemap.xml) are committed to the `deploy` branch — built files ONLY,
+#      never source code.
+#   4. Hostinger Git deployment stays connected to the `deploy` branch.
+#      Click "Redeploy" in hPanel and public_html receives a normal static
+#      site with index.html at the root. No FTP, no manual uploads, no Node
+#      server.
 #
-# Raw source (src, public, scripts, supabase, package.json, .env, etc.) is
-# NEVER uploaded — only the built static site.
+# IMPORTANT: the `deploy` branch is now machine-managed build output.
+# Do NOT merge or push source code into it manually — this workflow
+# overwrites it on every run.
 
 on:
   push:
     branches:
-      - deploy
-  # Allows manual runs from the GitHub "Actions" tab.
+      - main
+  # Manual "Run workflow" button in the GitHub Actions tab.
   workflow_dispatch:
 
-# Prevent overlapping deploys from racing each other onto the server.
+# Needed so the workflow can push the built site to the deploy branch
+# using the built-in GITHUB_TOKEN (no extra secrets required).
+permissions:
+  contents: write
+
 concurrency:
-  group: hostinger-deploy
+  group: build-deploy-branch
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout source (main)
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -46,32 +57,17 @@ jobs:
             echo "::error::Build failed — dist/index.html was not generated."
             exit 1
           fi
-          echo "dist/index.html found. Contents of dist/:"
+          echo "dist contents:"
           ls -la dist
 
-      - name: Deploy contents of dist/ to Hostinger public_html
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Publish dist/ contents to the deploy branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          # IMPORTANT: trailing slash means "upload the CONTENTS of dist/",
-          # not the dist folder itself.
-          local-dir: ./dist/
-          # Target directory on Hostinger, e.g. /public_html/
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          # Hidden files like .htaccess ARE uploaded by default.
-          # Extra safety: never let any stray source files get pushed.
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/src/**
-            **/public/**
-            **/scripts/**
-            **/supabase/**
-            **/*.ts
-            **/*.tsx
-            package.json
-            package-lock.json
-            .env
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: deploy
+          publish_dir: ./dist
+          # Keep the deploy branch as a single clean snapshot of the
+          # latest build (no history bloat).
+          force_orphan: true
+          # Dotfiles like .htaccess are included by default.
+          commit_message: "Static build for Hostinger (from ${{ github.sha }})"
