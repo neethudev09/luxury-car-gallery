@@ -10,7 +10,7 @@ import astonMartin from "@/assets/brands/aston-martin.png.asset.json";
 import audi from "@/assets/brands/audi.png.asset.json";
 import rangeRover from "@/assets/brands/range-rover.png.asset.json";
 
-/** Real brand logos for each marque, keyed by slug. */
+/** Bundled fallback logos for each marque, keyed by slug. */
 const logos: Record<string, { url: string }> = {
   ferrari,
   lamborghini,
@@ -26,10 +26,11 @@ const logos: Record<string, { url: string }> = {
 };
 
 /**
- * Logos that are dark/monochrome and disappear on a dark background.
- * These get inverted to a clean white so every marque reads clearly.
+ * Monochrome / dark marques that vanish on a dark background.
+ * These get inverted to a clean white so every logo reads clearly.
+ * Porsche is included so it shows as a crisp black/white version.
  */
-const darkLogos = new Set([
+const monoLogos = new Set([
   "audi",
   "bentley",
   "mclaren",
@@ -37,21 +38,50 @@ const darkLogos = new Set([
   "aston-martin",
   "range-rover",
   "rolls-royce",
+  "porsche",
 ]);
 
-export function BrandLogo({ slug, className }: { slug: string; className?: string }) {
-  const logo = logos[slug];
-  if (!logo) return null;
-  // Whiten dark logos; gently lift the colored ones for extra contrast.
-  const tone = darkLogos.has(slug)
+/**
+ * Per-brand size multipliers so visually small logos (e.g. McLaren) read as
+ * large and prominent as the wordier marques.
+ */
+const scale: Record<string, string> = {
+  mclaren: "scale-125",
+  "aston-martin": "scale-110",
+  "range-rover": "scale-110",
+  ferrari: "scale-105",
+};
+
+export function BrandLogo({
+  slug,
+  src,
+  name,
+  className,
+}: {
+  slug: string;
+  /** CMS-managed logo URL; takes priority over the bundled fallback. */
+  src?: string | null;
+  name?: string;
+  className?: string;
+}) {
+  const fallback = logos[slug];
+  const url = src || fallback?.url;
+  if (!url) return null;
+
+  // CMS logos are uploaded pre-adjusted for the dark background, so don't
+  // invert them. Only the bundled mono fallbacks get whitened.
+  const usingFallback = !src;
+  const tone = usingFallback && monoLogos.has(slug)
     ? "brightness-0 invert"
     : "brightness-110 contrast-110";
+  const sizeBoost = usingFallback ? (scale[slug] ?? "") : "";
+
   return (
     <img
-      src={logo.url}
-      alt={`${slug} logo`}
+      src={url}
+      alt={`${name ?? slug} logo`}
       loading="lazy"
-      className={`${className ?? ""} ${tone} object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]`}
+      className={`${className ?? ""} ${tone} ${sizeBoost} object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]`}
     />
   );
 }
