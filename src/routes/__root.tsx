@@ -149,6 +149,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { property: "og:site_name", content: "Luxury Car Gallery Dubai" },
         { name: "twitter:card", content: "summary_large_image" },
         ...(verify ? [{ name: "google-site-verification", content: verify }] : []),
+        {
+          name: "robots",
+          content: allowIndexing ? "index, follow" : "noindex, nofollow",
+        },
+        {
+          name: "googlebot",
+          content: allowIndexing ? "index, follow" : "noindex, nofollow",
+        },
       ],
       links: [
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
