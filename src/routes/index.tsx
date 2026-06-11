@@ -256,6 +256,14 @@ function FeaturedSection() {
           </Link>
         </Reveal>
       </div>
+      <Reveal className="mt-6 max-w-2xl text-muted-foreground leading-relaxed">
+        <p>
+          Discover our current collection of luxury, performance and supercars for sale in Dubai.
+          Every vehicle is hand selected and fully inspected, with new arrivals added regularly. See
+          the full range on our{" "}
+          <Link to="/inventory" className="text-gold hover:underline">cars for sale</Link> page.
+        </p>
+      </Reveal>
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {featuredCars.slice(0, 6).map((car, i) => (
           <Reveal key={car.slug} delay={(i % 3) * 0.08}>
