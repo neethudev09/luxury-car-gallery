@@ -60,8 +60,10 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
     brands: (brands ?? []).map((b) => ({
       name: b.name,
       slug: b.slug,
-      // Prefer the dedicated brand-section logo, then a light logo, then standard.
-      logo: b.logo_section || b.logo_light || b.logo || null,
+      // Only pass a purpose-made light/section logo as-is. The standard (often
+      // dark) logo is NOT used directly on the dark section — the frontend
+      // falls back to the bundled asset and applies a light treatment.
+      logo: b.logo_section || b.logo_light || null,
       country: b.country,
       featured: b.featured,
       available: counts.get((b.slug ?? "").toLowerCase()) ?? 0,
