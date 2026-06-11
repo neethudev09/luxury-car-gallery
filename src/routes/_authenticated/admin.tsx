@@ -22,7 +22,7 @@ import {
   Settings as SettingsIcon,
 
 } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
+import { useServerFn } from "@/lib/server-compat";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyAccess } from "@/lib/vehicles.functions";
 import { Button } from "@/components/ui/button";

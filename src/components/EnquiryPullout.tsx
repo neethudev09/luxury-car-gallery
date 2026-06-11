@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
+import { useServerFn } from "@/lib/server-compat";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Loader2, ChevronUp, X, Send, MessageSquareText } from "lucide-react";
