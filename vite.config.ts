@@ -7,14 +7,18 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Static SPA: no SSR, no Node/server runtime. TanStack Start prerenders a
+  // single client shell (index.html) and the app hydrates + routes entirely
+  // in the browser. Suitable for plain shared hosting (e.g. Hostinger Web
+  // Hosting). All data is read straight from the database in the browser
+  // using the publishable key + Row Level Security.
   tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
+    spa: { enabled: true },
   },
-  // Self-hosting target. Inside Lovable's sandbox the preset is forced to
-  // Cloudflare automatically (preview/publish keep working). When you clone
-  // this repo and run `npm run build` on your own Node VPS (e.g. Hostinger),
-  // this pins a Node server build whose entry is dist/server/index.mjs.
-  nitro: { preset: "node-server" },
+  // Outside the Lovable sandbox (your own `npm run build`), produce a static
+  // site with Nitro's static preset. Inside the sandbox the preset/output are
+  // forced to Cloudflare automatically so preview/publish keep working.
+  nitro: {
+    preset: "static",
+  },
 });

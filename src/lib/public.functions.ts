@@ -1,4 +1,5 @@
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from "@/lib/server-compat";
+import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
 // Public, read-only CMS data for the live website.
@@ -6,7 +7,7 @@ import { z } from "zod";
 // non-sensitive content with explicit column selection.
 
 export const getPublicBrands = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin
     .from("brands")
     .select("name,slug,logo,hero_image,country,available,sold,featured,seo_title,meta_description")
@@ -17,7 +18,7 @@ export const getPublicBrands = createServerFn({ method: "GET" }).handler(async (
 });
 
 export const getPublicVehicles = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin
     .from("vehicles")
     .select(
@@ -32,7 +33,7 @@ export const getPublicVehicles = createServerFn({ method: "GET" }).handler(async
 // Brands with live "available" counts computed directly from the inventory.
 // A vehicle counts as available when published, not sold and not reserved.
 export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const [{ data: brands }, { data: vehicles }] = await Promise.all([
     supabaseAdmin
       .from("brands")
@@ -75,7 +76,7 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
 export const getPublicBrandPage = createServerFn({ method: "GET" })
   .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(120) }).parse(d))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const supabaseAdmin = supabase;
     const { data: brand } = await supabaseAdmin
       .from("brands")
       .select("name,slug,logo,hero_image,country,description,seo_title,meta_description")
@@ -103,7 +104,7 @@ export const getPublicBrandPage = createServerFn({ method: "GET" })
 
 
 export const getPublicPosts = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin
     .from("blog_posts")
     .select("slug,title,excerpt,category,cover_image,author,published_at,seo_title,meta_description")
@@ -115,7 +116,7 @@ export const getPublicPosts = createServerFn({ method: "GET" }).handler(async ()
 export const getPublicPost = createServerFn({ method: "GET" })
   .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(200) }).parse(d))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const supabaseAdmin = supabase;
     const { data: post } = await supabaseAdmin
       .from("blog_posts")
       .select(
@@ -137,7 +138,7 @@ export const getPublicPost = createServerFn({ method: "GET" })
 
 
 export const getPublicFaqs = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin
     .from("faqs")
     .select("question,answer,category,sort_order")
@@ -147,7 +148,7 @@ export const getPublicFaqs = createServerFn({ method: "GET" }).handler(async () 
 });
 
 export const getPublicGalleries = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin
     .from("galleries")
     .select("name,slug,description,items")
@@ -159,7 +160,7 @@ export const getPublicGalleries = createServerFn({ method: "GET" }).handler(asyn
 export const getPublicPage = createServerFn({ method: "GET" })
   .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(200) }).parse(d))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const supabaseAdmin = supabase;
     const { data: page } = await supabaseAdmin
       .from("pages")
       .select("slug,title,content,seo_title,meta_description,og_image")
@@ -170,7 +171,7 @@ export const getPublicPage = createServerFn({ method: "GET" })
   });
 
 export const getPublicSettings = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin.from("site_settings").select("key,value");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map: Record<string, any> = {};
@@ -183,7 +184,7 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
 // Google / marketing tool tags stored in site_settings (key "integrations").
 // Injected into the site <head> so they load on every public page.
 export const getPublicIntegrations = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin
     .from("site_settings")
     .select("value")
@@ -215,7 +216,7 @@ const enquirySchema = z.object({
 export const submitEnquiry = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => enquirySchema.parse(d))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const supabaseAdmin = supabase;
     const vehicle_title = [data.make, data.model].filter(Boolean).join(" ").trim();
     const parts: string[] = [];
     if (data.interest) parts.push(`Interest: ${data.interest}`);
@@ -240,7 +241,7 @@ export const submitEnquiry = createServerFn({ method: "POST" })
 // concrete { label, url } links using live content. Renaming a brand or
 // changing a page slug updates these links automatically.
 export const getPublicMenu = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const supabaseAdmin = supabase;
   const { refUrl } = await import("@/lib/refs");
 
   const [{ data: settingRow }, pages, vehicles, brands, posts, galleries, faqs] =

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
+import { useServerFn } from "@/lib/server-compat";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { listUsers, setUserRole } from "@/lib/cms.functions";
