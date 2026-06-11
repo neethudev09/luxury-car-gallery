@@ -14,13 +14,13 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface FnContext {
   supabase: typeof supabase;
-  userId: string | null;
+  userId: string;
   claims: null;
 }
 
 async function buildContext(): Promise<FnContext> {
   const { data } = await supabase.auth.getUser();
-  return { supabase, userId: data.user?.id ?? null, claims: null };
+  return { supabase, userId: data.user?.id ?? "", claims: null };
 }
 
 class ServerFnBuilder<TData = unknown> {
