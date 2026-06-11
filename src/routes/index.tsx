@@ -380,8 +380,8 @@ function SellSection() {
               The Effortless Way to Sell Your Luxury Car
             </h2>
             <p className="mt-4 text-foreground/80">
-              Receive a competitive valuation within hours. We handle everything — paperwork,
-              transfer and payment — with absolute discretion.
+              Receive a competitive valuation within hours. We handle everything, from paperwork to
+              transfer and payment, with absolute discretion.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
