@@ -81,6 +81,10 @@ export type Database = {
           hero_image: string | null
           id: string
           logo: string | null
+          logo_dark: string | null
+          logo_light: string | null
+          logo_menu: string | null
+          logo_section: string | null
           meta_description: string | null
           name: string
           published: boolean
@@ -99,6 +103,10 @@ export type Database = {
           hero_image?: string | null
           id?: string
           logo?: string | null
+          logo_dark?: string | null
+          logo_light?: string | null
+          logo_menu?: string | null
+          logo_section?: string | null
           meta_description?: string | null
           name: string
           published?: boolean
@@ -117,6 +125,10 @@ export type Database = {
           hero_image?: string | null
           id?: string
           logo?: string | null
+          logo_dark?: string | null
+          logo_light?: string | null
+          logo_menu?: string | null
+          logo_section?: string | null
           meta_description?: string | null
           name?: string
           published?: boolean
