@@ -39,17 +39,23 @@ jobs:
       - name: Checkout source (main)
         uses: actions/checkout@v4
 
+      # This repo uses Bun's lockfile (bun.lock) — there is no
+      # package-lock.json, so `npm ci` would fail. Install with Bun instead.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build static site
-        run: npm run build
+        run: bun run build
 
       - name: Confirm dist/index.html exists
         run: |
