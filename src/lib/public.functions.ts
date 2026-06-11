@@ -181,6 +181,22 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
   return { settings: map };
 });
 
+// Search-engine indexing flag stored in site_settings (key "indexing").
+// Defaults to NOT indexed (noindex) until explicitly enabled in the CRM.
+export const getPublicSeoFlags = createServerFn({ method: "GET" }).handler(async () => {
+  const supabaseAdmin = supabase;
+  const { data } = await supabaseAdmin
+    .from("site_settings")
+    .select("value")
+    .eq("key", "indexing")
+    .maybeSingle();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const v = (data?.value ?? {}) as Record<string, any>;
+  // Only an explicit true enables indexing; everything else stays noindex.
+  const allow_indexing = v.allow_indexing === true || v.allow_indexing === "true";
+  return { allow_indexing };
+});
+
 // Google / marketing tool tags stored in site_settings (key "integrations").
 // Injected into the site <head> so they load on every public page.
 export const getPublicIntegrations = createServerFn({ method: "GET" }).handler(async () => {
