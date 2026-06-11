@@ -36,7 +36,7 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
   const [{ data: brands }, { data: vehicles }] = await Promise.all([
     supabaseAdmin
       .from("brands")
-      .select("name,slug,logo,country,featured,sort_order")
+      .select("name,slug,logo,logo_section,logo_light,country,featured,sort_order")
       .eq("published", true)
       .order("sort_order", { ascending: true })
       .order("name", { ascending: true }),
@@ -60,7 +60,8 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
     brands: (brands ?? []).map((b) => ({
       name: b.name,
       slug: b.slug,
-      logo: b.logo,
+      // Prefer the dedicated brand-section logo, then a light logo, then standard.
+      logo: b.logo_section || b.logo_light || b.logo || null,
       country: b.country,
       featured: b.featured,
       available: counts.get((b.slug ?? "").toLowerCase()) ?? 0,

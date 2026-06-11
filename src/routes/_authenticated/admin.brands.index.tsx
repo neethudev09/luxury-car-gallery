@@ -12,6 +12,10 @@ type Brand = {
   name: string;
   slug: string;
   logo: string | null;
+  logo_section: string | null;
+  logo_light: string | null;
+  logo_dark: string | null;
+  logo_menu: string | null;
   country: string | null;
   featured: boolean;
   published: boolean;
@@ -22,7 +26,11 @@ const fields: FieldDef[] = [
   { name: "slug", label: "Slug", type: "text", required: true, help: "URL identifier" },
   { name: "country", label: "Country", type: "text" },
   { name: "sort_order", label: "Sort order", type: "number" },
-  { name: "logo", label: "Logo image", type: "image" },
+  { name: "logo", label: "Standard logo", type: "image", help: "Default logo (colour)" },
+  { name: "logo_section", label: "Brand section logo", type: "image", help: "Used in the homepage brand showcase" },
+  { name: "logo_light", label: "Light logo", type: "image", help: "For dark backgrounds" },
+  { name: "logo_dark", label: "Dark logo", type: "image", help: "For light backgrounds" },
+  { name: "logo_menu", label: "Menu logo", type: "image", help: "Small logo for navigation menus" },
   { name: "hero_image", label: "Hero image", type: "image" },
   { name: "description", label: "Description", type: "textarea" },
   { name: "seo_title", label: "SEO title", type: "text", full: true },
@@ -77,6 +85,10 @@ function BrandsPage() {
         country: "",
         sort_order: 0,
         logo: "",
+        logo_section: "",
+        logo_light: "",
+        logo_dark: "",
+        logo_menu: "",
         hero_image: "",
         description: "",
         seo_title: "",
