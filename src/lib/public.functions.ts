@@ -29,6 +29,76 @@ export const getPublicVehicles = createServerFn({ method: "GET" }).handler(async
   return { vehicles: data ?? [] };
 });
 
+// Brands with live "available" counts computed directly from the inventory.
+// A vehicle counts as available when published, not sold and not reserved.
+export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const [{ data: brands }, { data: vehicles }] = await Promise.all([
+    supabaseAdmin
+      .from("brands")
+      .select("name,slug,logo,country,featured,sort_order")
+      .eq("published", true)
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true }),
+    supabaseAdmin
+      .from("vehicles")
+      .select("brand_slug,sold,availability,published")
+      .eq("published", true),
+  ]);
+
+  const counts = new Map<string, number>();
+  for (const v of vehicles ?? []) {
+    const slug = (v.brand_slug ?? "").toLowerCase();
+    if (!slug) continue;
+    const avail = (v.availability ?? "available").toLowerCase();
+    if (!v.sold && avail === "available") {
+      counts.set(slug, (counts.get(slug) ?? 0) + 1);
+    }
+  }
+
+  return {
+    brands: (brands ?? []).map((b) => ({
+      name: b.name,
+      slug: b.slug,
+      logo: b.logo,
+      country: b.country,
+      featured: b.featured,
+      available: counts.get((b.slug ?? "").toLowerCase()) ?? 0,
+    })),
+  };
+});
+
+// A single brand plus its published inventory, filtered straight from the CMS.
+export const getPublicBrandPage = createServerFn({ method: "GET" })
+  .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(120) }).parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: brand } = await supabaseAdmin
+      .from("brands")
+      .select("name,slug,logo,hero_image,country,description,seo_title,meta_description")
+      .eq("slug", data.slug)
+      .eq("published", true)
+      .maybeSingle();
+    if (!brand) return { brand: null, vehicles: [], available: 0 };
+
+    const { data: vehicles } = await supabaseAdmin
+      .from("vehicles")
+      .select(
+        "slug,title,brand,brand_slug,model,year,price,mileage,fuel,transmission,body_type,exterior_colour,interior_colour,engine,horsepower,image,gallery,featured,new_arrival,sold,availability",
+      )
+      .eq("brand_slug", data.slug)
+      .eq("published", true)
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+
+    const available = (vehicles ?? []).filter(
+      (v) => !v.sold && (v.availability ?? "available").toLowerCase() === "available",
+    ).length;
+
+    return { brand, vehicles: vehicles ?? [], available };
+  });
+
+
 export const getPublicPosts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data } = await supabaseAdmin
