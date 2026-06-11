@@ -26,18 +26,17 @@ const logos: Record<string, { url: string }> = {
 };
 
 /**
- * Monochrome / dark marques that vanish on a dark background.
- * These get inverted to a clean white so every logo reads clearly.
- * Porsche is included so it shows as a crisp black/white version.
+ * Monochrome / dark marques that are hard to read on a dark background.
+ * These render as a crisp white silhouette so they're clearly visible by
+ * default (no hover required). Land Rover, Ferrari, Lamborghini and BMW are
+ * intentionally excluded — their colour IS the identity.
  */
-const monoLogos = new Set([
+const whiteLogos = new Set([
   "audi",
   "bentley",
   "mclaren",
   "mercedes-benz",
   "aston-martin",
-  "range-rover",
-  "rolls-royce",
   "porsche",
 ]);
 
@@ -59,7 +58,7 @@ export function BrandLogo({
   className,
 }: {
   slug: string;
-  /** CMS-managed logo URL; takes priority over the bundled fallback. */
+  /** CMS-managed light/section logo URL; rendered as-is when provided. */
   src?: string | null;
   name?: string;
   className?: string;
@@ -68,13 +67,16 @@ export function BrandLogo({
   const url = src || fallback?.url;
   if (!url) return null;
 
-  // CMS logos are uploaded pre-adjusted for the dark background, so don't
-  // invert them. Only the bundled mono fallbacks get whitened.
-  const usingFallback = !src;
-  const tone = usingFallback && monoLogos.has(slug)
-    ? "brightness-0 invert"
-    : "brightness-110 contrast-110";
-  const sizeBoost = usingFallback ? (scale[slug] ?? "") : "";
+  // An explicit CMS light/section logo is already adjusted for the dark
+  // background, so render it untouched. Otherwise apply a light treatment so
+  // dark logos are visible without needing hover.
+  let tone = "brightness-110 contrast-110";
+  if (!src) {
+    tone = whiteLogos.has(slug)
+      ? "brightness-0 invert" // crisp white silhouette
+      : "brightness-110 contrast-110 saturate-110"; // keep colour, lift it
+  }
+  const sizeBoost = src ? "" : (scale[slug] ?? "");
 
   return (
     <img
@@ -85,3 +87,4 @@ export function BrandLogo({
     />
   );
 }
+
