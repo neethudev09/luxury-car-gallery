@@ -12,4 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Self-hosting target. Inside Lovable's sandbox the preset is forced to
+  // Cloudflare automatically (preview/publish keep working). When you clone
+  // this repo and run `npm run build` on your own Node VPS (e.g. Hostinger),
+  // this pins a Node server build whose entry is dist/server/index.mjs.
+  nitro: { preset: "node-server" },
 });
