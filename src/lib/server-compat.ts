@@ -12,10 +12,13 @@
 // immediately in the browser against the authenticated Supabase client.
 import { supabase } from "@/integrations/supabase/client";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyObj = Record<string, any>;
+interface FnContext {
+  supabase: typeof supabase;
+  userId: string | null;
+  claims: null;
+}
 
-async function buildContext(): Promise<AnyObj> {
+async function buildContext(): Promise<FnContext> {
   const { data } = await supabase.auth.getUser();
   return { supabase, userId: data.user?.id ?? null, claims: null };
 }
@@ -36,13 +39,13 @@ class ServerFnBuilder<TData = unknown> {
   }
 
   handler<R>(
-    fn: (args: { context: AnyObj; data: TData }) => R | Promise<R>,
-  ): (arg?: { data?: TData }) => Promise<Awaited<R>> {
+    fn: (args: { context: FnContext; data: TData }) => R | Promise<R>,
+  ): (arg?: { data?: unknown }) => Promise<R> {
     const validator = this.validator;
-    return async (arg?: { data?: TData }) => {
+    return async (arg?: { data?: unknown }) => {
       const data = (validator ? validator(arg?.data) : arg?.data) as TData;
       const context = await buildContext();
-      return (await fn({ context, data })) as Awaited<R>;
+      return fn({ context, data }) as Promise<R>;
     };
   }
 }
