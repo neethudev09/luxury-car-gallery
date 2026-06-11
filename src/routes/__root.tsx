@@ -200,6 +200,8 @@ function RootComponent() {
             <Outlet />
           </main>
           <Footer />
+          {/* Spacer so fixed enquiry bar (h-14) never overlaps footer/content */}
+          <div aria-hidden className="h-14 print:hidden" />
           <CompareBar />
           <FloatingCTA />
           <EnquiryPullout />
