@@ -12,6 +12,10 @@ type Brand = {
   name: string;
   slug: string;
   logo: string | null;
+  logo_section: string | null;
+  logo_light: string | null;
+  logo_dark: string | null;
+  logo_menu: string | null;
   country: string | null;
   featured: boolean;
   published: boolean;
