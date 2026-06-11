@@ -59,9 +59,10 @@ function BrandPage() {
 
   const brand = data?.brand;
   if (!brand) return null;
-  const list = (data?.vehicles ?? []).map((v) => mapDbVehicle(v as DbVehicle));
+  const list = ((data?.vehicles ?? []) as DbVehicle[]).map((v) => mapDbVehicle(v));
   const available = data?.available ?? 0;
   const sold = list.filter((c) => c.sold).length;
+
   const img = brand.hero_image || brand.logo || "";
 
   return (
