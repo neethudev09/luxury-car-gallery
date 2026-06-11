@@ -6,9 +6,9 @@ import showroom from "@/assets/showroom-interior.jpg";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Car Gallery Dubai | Luxury Car Dealership" },
-      { name: "description", content: "Discover the story behind Car Gallery Dubai — a leading luxury and supercar dealership trusted by collectors across the globe." },
-      { property: "og:title", content: "About Car Gallery Dubai" },
+      { title: "About Luxury Car Gallery Dubai | Luxury Car Dealership" },
+      { name: "description", content: "Discover the story behind Luxury Car Gallery Dubai — a leading luxury and supercar dealership trusted by collectors across the globe." },
+      { property: "og:title", content: "About Luxury Car Gallery Dubai" },
     ],
     links: [{ rel: "canonical", href: "/about" }],
   }),
@@ -22,11 +22,11 @@ function About() {
         <Reveal>
           <span className="text-xs uppercase tracking-luxury text-gold">About Us</span>
           <h1 className="mt-3 text-4xl md:text-5xl">A Passion For The Extraordinary</h1>
-          <p className="mt-5 leading-relaxed text-muted-foreground">For over 15 years, Car Gallery Dubai has been the trusted destination for discerning collectors seeking the world's most desirable automobiles. From rare supercars to handcrafted grand tourers, we deliver an uncompromising standard of curation and service.</p>
+          <p className="mt-5 leading-relaxed text-muted-foreground">For over 15 years, Luxury Car Gallery Dubai has been the trusted destination for discerning collectors seeking the world's most desirable automobiles. From rare supercars to handcrafted grand tourers, we deliver an uncompromising standard of curation and service.</p>
           <p className="mt-4 leading-relaxed text-muted-foreground">Our reputation is built on trust, transparency and an obsessive attention to detail — every vehicle inspected, every client treated as family.</p>
         </Reveal>
         <Reveal delay={0.1}>
-          <img src={showroom} alt="Car Gallery Dubai showroom" width={1024} height={1024} className="rounded-3xl border border-border shadow-luxury" />
+          <img src={showroom} alt="Luxury Car Gallery Dubai showroom" width={1024} height={1024} className="rounded-3xl border border-border shadow-luxury" />
         </Reveal>
       </div>
 
@@ -42,7 +42,7 @@ function About() {
       </div>
 
       <div className="mx-auto max-w-7xl px-5 py-16">
-        <SectionHeading eyebrow="Why Choose Us" title="The Car Gallery Standard" align="center" />
+        <SectionHeading eyebrow="Why Choose Us" title="The Luxury Car Gallery Standard" align="center" />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { Icon: Gem, t: "Curated Collection", d: "Only the finest, most desirable vehicles" },

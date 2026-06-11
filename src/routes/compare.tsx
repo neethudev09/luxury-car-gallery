@@ -7,7 +7,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 export const Route = createFileRoute("/compare")({
   head: () => ({
     meta: [
-      { title: "Compare Luxury Cars | Car Gallery Dubai" },
+      { title: "Compare Luxury Cars | Luxury Car Gallery Dubai" },
       {
         name: "description",
         content:

@@ -13,11 +13,11 @@ export const Route = createFileRoute("/blog/$slug")({
     const post = loaderData?.post;
     const title = post?.seo_title || post?.title || "Article";
     const description =
-      post?.meta_description || post?.excerpt || "Luxury car news and insight from Car Gallery Dubai.";
+      post?.meta_description || post?.excerpt || "Luxury car news and insight from Luxury Car Gallery Dubai.";
     const image = post?.og_image || post?.cover_image || undefined;
     return {
       meta: [
-        { title: `${title} | Car Gallery Dubai` },
+        { title: `${title} | Luxury Car Gallery Dubai` },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },

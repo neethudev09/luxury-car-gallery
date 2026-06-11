@@ -7,9 +7,9 @@ import { cars } from "@/data/cars";
 export const Route = createFileRoute("/media")({
   head: () => ({
     meta: [
-      { title: "Media Gallery — Images, Videos & 360° Views | Car Gallery Dubai" },
+      { title: "Media Gallery — Images, Videos & 360° Views | Luxury Car Gallery Dubai" },
       { name: "description", content: "Explore our luxury car media gallery: high-resolution image galleries, video showcases and immersive 360° car views." },
-      { property: "og:title", content: "Media Gallery | Car Gallery Dubai" },
+      { property: "og:title", content: "Media Gallery | Luxury Car Gallery Dubai" },
     ],
     links: [{ rel: "canonical", href: "/media" }],
   }),

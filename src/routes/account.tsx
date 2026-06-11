@@ -4,8 +4,8 @@ import { User, Heart, Clock } from "lucide-react";
 export const Route = createFileRoute("/account")({
   head: () => ({
     meta: [
-      { title: "My Account | Car Gallery Dubai" },
-      { name: "description", content: "Sign in to your Car Gallery Dubai account to manage saved vehicles and enquiries." },
+      { title: "My Account | Luxury Car Gallery Dubai" },
+      { name: "description", content: "Sign in to your Luxury Car Gallery Dubai account to manage saved vehicles and enquiries." },
     ],
     links: [{ rel: "canonical", href: "/account" }],
   }),

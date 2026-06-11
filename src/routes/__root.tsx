@@ -122,20 +122,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       meta: [
         { charSet: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { title: "Car Gallery Dubai | Luxury & Supercars For Sale in Dubai" },
+        { title: "Luxury Car Gallery Dubai | Luxury & Supercars For Sale in Dubai" },
         {
           name: "description",
           content:
-            "Car Gallery Dubai — Dubai's premier destination for luxury cars and supercars. Buy, sell and discover Ferrari, Lamborghini, Rolls-Royce, Porsche and more.",
+            "Luxury Car Gallery Dubai — Dubai's premier destination for luxury cars and supercars. Buy, sell and discover Ferrari, Lamborghini, Rolls-Royce, Porsche and more.",
         },
-        { name: "author", content: "Car Gallery Dubai" },
-        { property: "og:title", content: "Car Gallery Dubai | Luxury & Supercars" },
+        { name: "author", content: "Luxury Car Gallery Dubai" },
+        { property: "og:title", content: "Luxury Car Gallery Dubai | Luxury & Supercars" },
         {
           property: "og:description",
           content: "Dubai's premier destination for luxury cars and supercars.",
         },
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "Car Gallery Dubai" },
+        { property: "og:site_name", content: "Luxury Car Gallery Dubai" },
         { name: "twitter:card", content: "summary_large_image" },
         ...(verify ? [{ name: "google-site-verification", content: verify }] : []),
       ],
@@ -158,7 +158,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "AutoDealer",
-            name: "Car Gallery Dubai",
+            name: "Luxury Car Gallery Dubai",
             description: "Luxury cars and supercars for sale in Dubai.",
             areaServed: "Dubai, United Arab Emirates",
             url: "https://cargallerydubai.com",

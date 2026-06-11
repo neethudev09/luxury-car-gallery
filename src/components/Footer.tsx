@@ -44,8 +44,8 @@ export function Footer() {
   const address = footer.address || "87 4th St - Al Qouz Ind.third - Al Quoz - Dubai, UAE";
   const whatsapp = footer.whatsapp;
   const waHref = whatsapp
-    ? `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hello Car Gallery Dubai")}`
-    : whatsappLink("Hello Car Gallery Dubai");
+    ? `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hello Luxury Car Gallery Dubai")}`
+    : whatsappLink("Hello Luxury Car Gallery Dubai");
 
   return (
     <footer className="relative mt-24 border-t border-border/60 bg-charcoal">
@@ -56,7 +56,7 @@ export function Footer() {
           <Link to="/" className="inline-flex items-center">
             <img
               src={lcgLogo.url}
-              alt="Car Gallery Dubai"
+              alt="Luxury Car Gallery Dubai"
               className="h-14 w-auto object-contain"
               width={160}
               height={56}
@@ -147,13 +147,13 @@ export function Footer() {
       <div className="border-t border-border/60">
         <div className="mx-auto max-w-7xl px-5 py-8">
           <p className="text-xs leading-relaxed text-muted-foreground/80">
-            Car Gallery Dubai is a leading luxury and supercar dealership in Dubai, offering an
+            Luxury Car Gallery Dubai is a leading luxury and supercar dealership in Dubai, offering an
             exclusive selection of Ferrari, Lamborghini, Rolls-Royce, Bentley, Porsche, McLaren,
             Mercedes-Benz and more. Whether you are buying or selling a luxury car in Dubai, our
             specialists deliver a seamless, discreet and world-class experience.
           </p>
           <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-border/50 pt-6 text-xs text-muted-foreground sm:flex-row">
-            <span>© {new Date().getFullYear()} Car Gallery Dubai. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} Luxury Car Gallery Dubai. All rights reserved.</span>
             <span className="flex gap-5">
               <a href="#" className="hover:text-gold">Privacy Policy</a>
               <a href="#" className="hover:text-gold">Terms</a>

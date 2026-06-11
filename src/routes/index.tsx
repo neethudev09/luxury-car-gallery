@@ -33,7 +33,7 @@ import sellImg from "@/assets/sell-your-car.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Luxury Cars & Supercars For Sale in Dubai | Car Gallery Dubai" },
+      { title: "Luxury Cars & Supercars For Sale in Dubai | Luxury Car Gallery Dubai" },
       {
         name: "description",
         content:
@@ -102,7 +102,7 @@ function Hero() {
           transition={{ duration: 0.8 }}
           className="text-xs uppercase tracking-luxury text-gold"
         >
-          Car Gallery Dubai
+          Luxury Car Gallery Dubai
         </motion.span>
         <motion.h1
           initial={{ opacity: 0, y: 28 }}
@@ -304,7 +304,7 @@ function ShowroomSection() {
       <div className="relative h-[60vh] min-h-[460px] overflow-hidden">
         <img
           src={showroomInterior}
-          alt="Car Gallery Dubai virtual showroom tour"
+          alt="Luxury Car Gallery Dubai virtual showroom tour"
           loading="lazy"
           width={1024}
           height={1024}
@@ -465,11 +465,11 @@ function SeoSection() {
   return (
     <section className="mx-auto max-w-4xl px-5 py-24">
       <Reveal>
-        <span className="text-xs uppercase tracking-luxury text-gold">Why Car Gallery Dubai</span>
+        <span className="text-xs uppercase tracking-luxury text-gold">Why Luxury Car Gallery Dubai</span>
         <h2 className="mt-3 text-3xl md:text-4xl">Luxury Cars For Sale In Dubai</h2>
         <div className="mt-6 space-y-5 leading-relaxed text-muted-foreground">
           <p>
-            Car Gallery Dubai is the destination of choice for collectors and enthusiasts seeking
+            Luxury Car Gallery Dubai is the destination of choice for collectors and enthusiasts seeking
             the finest <Link to="/inventory" className="text-gold hover:underline">luxury cars for sale in Dubai</Link>.
             Our curated showroom brings together the most desirable marques in the world, from
             track-bred supercars to handcrafted grand tourers.
@@ -549,7 +549,7 @@ function ContactSection() {
       Icon: Quote,
       t: "WhatsApp",
       d: "Chat with a specialist",
-      href: whatsappLink("Hello Car Gallery Dubai"),
+      href: whatsappLink("Hello Luxury Car Gallery Dubai"),
     },
 { Icon: MapPin, t: "Visit Showroom", d: "Al Quoz, Dubai", href: "/contact" },
   ];
