@@ -450,9 +450,15 @@ function SocialSection() {
       <SectionHeading
         eyebrow="@cargallerydubai"
         title="From Our Instagram"
-        subtitle="New arrivals, customer deliveries and behind-the-scenes from the showroom floor."
+        subtitle="Follow Luxury Car Gallery for the latest arrivals and life around the showroom."
         align="center"
       />
+      <Reveal className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground leading-relaxed">
+        <p>
+          Stay close to the collection with our latest arrivals, customer deliveries, showroom
+          updates and behind the scenes moments from the Luxury Car Gallery team.
+        </p>
+      </Reveal>
       <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {feed.map((c, i) => (
           <Reveal key={i} delay={(i % 6) * 0.05}>
