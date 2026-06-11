@@ -192,14 +192,15 @@ function BrandsSection() {
       />
       <Reveal className="mx-auto mt-6 max-w-3xl text-center text-muted-foreground leading-relaxed">
         <p>
-          Luxury Car Gallery brings together the world's most respected marques under one roof.
-          Browse dedicated pages for{" "}
+          Luxury Car Gallery brings together luxury cars for sale from the world's leading
+          manufacturers under one roof. Browse dedicated pages for{" "}
           <Link to="/brands/$brand" params={{ brand: "ferrari" }} className="text-gold hover:underline">Ferrari</Link>,{" "}
           <Link to="/brands/$brand" params={{ brand: "lamborghini" }} className="text-gold hover:underline">Lamborghini</Link>,{" "}
           <Link to="/brands/$brand" params={{ brand: "porsche" }} className="text-gold hover:underline">Porsche</Link>{" "}
           and{" "}
-          <Link to="/brands/$brand" params={{ brand: "rolls-royce" }} className="text-gold hover:underline">Rolls-Royce</Link>{" "}
-          to view current availability and find the right luxury car for you.
+          <Link to="/brands/$brand" params={{ brand: "rolls-royce" }} className="text-gold hover:underline">Rolls-Royce</Link>,
+          all backed by a carefully curated inventory and a specialist sourcing service for the cars
+          you cannot find elsewhere.
         </p>
       </Reveal>
       <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
