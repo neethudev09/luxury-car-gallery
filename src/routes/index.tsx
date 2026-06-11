@@ -533,56 +533,28 @@ function SeoSection() {
   return (
     <section className="mx-auto max-w-4xl px-5 py-24">
       <Reveal>
-        <span className="text-xs uppercase tracking-luxury text-gold">Why Luxury Car Gallery Dubai</span>
-        <h2 className="mt-3 text-3xl md:text-4xl">Luxury Car Sales Dubai</h2>
+        <span className="text-xs uppercase tracking-luxury text-gold">A Word From the Showroom</span>
+        <h2 className="mt-3 text-3xl md:text-4xl">Luxury Car Sales in Dubai, Done Properly</h2>
         <div className="mt-6 space-y-5 leading-relaxed text-muted-foreground">
           <p>
-            Luxury Car Gallery is a leading name in luxury car sales in Dubai, trusted by collectors
-            and enthusiasts who expect the very best. Our showroom brings together a carefully chosen
-            selection of{" "}
-            <Link to="/inventory" className="text-gold hover:underline">luxury cars for sale in Dubai</Link>,
-            from elegant grand tourers to track bred supercars, each one prepared and presented to an
-            exacting standard.
+            Buying a luxury car should be a pleasure in itself. At Luxury Car Gallery we take the time
+            to understand what you are looking for, whether that is a first supercar, a refined daily
+            grand tourer or a future classic to add to a collection. Our team is happy to talk through
+            specification, history and ownership so you can make a confident, informed decision.
           </p>
-          <h3 className="font-display text-2xl text-foreground">Supercars for Sale in Dubai</h3>
           <p>
-            If you are looking for supercars for sale in Dubai, our collection features some of the
-            most exciting machines ever built. Browse a{" "}
-            <Link to="/brands/$brand" params={{ brand: "ferrari" }} className="text-gold hover:underline">Ferrari</Link>,
-            a{" "}
-            <Link to="/brands/$brand" params={{ brand: "lamborghini" }} className="text-gold hover:underline">Lamborghini</Link>,
-            a{" "}
-            <Link to="/brands/$brand" params={{ brand: "mclaren" }} className="text-gold hover:underline">McLaren</Link>{" "}
-            or a precision engineered{" "}
-            <Link to="/brands/$brand" params={{ brand: "porsche" }} className="text-gold hover:underline">Porsche</Link>.
-            Every supercar is inspected in detail so you can buy with complete confidence.
-          </p>
-          <h3 className="font-display text-2xl text-foreground">Premium Cars for Sale in Dubai</h3>
-          <p>
-            Beyond the supercars, we offer premium cars for sale in Dubai for those who value
-            craftsmanship and refinement. Discover the serene luxury of a{" "}
+            Browse the full{" "}
+            <Link to="/inventory" className="text-gold hover:underline">collection of cars for sale</Link>,
+            explore individual marques such as{" "}
+            <Link to="/brands/$brand" params={{ brand: "ferrari" }} className="text-gold hover:underline">Ferrari</Link>{" "}
+            and{" "}
             <Link to="/brands/$brand" params={{ brand: "rolls-royce" }} className="text-gold hover:underline">Rolls-Royce</Link>,
-            the heritage of a{" "}
-            <Link to="/brands/$brand" params={{ brand: "bentley" }} className="text-gold hover:underline">Bentley</Link>,
-            the engineering of a{" "}
-            <Link to="/brands/$brand" params={{ brand: "mercedes-benz" }} className="text-gold hover:underline">Mercedes-Benz</Link>{" "}
-            or the balance of a{" "}
-            <Link to="/brands/$brand" params={{ brand: "bmw" }} className="text-gold hover:underline">BMW</Link>.
-            We also stock used luxury cars in Dubai, giving you access to exceptional vehicles at
-            considered values.
-          </p>
-          <h3 className="font-display text-2xl text-foreground">Buy Luxury Cars in Dubai With Confidence</h3>
-          <p>
-            We make it simple to buy luxury cars in Dubai. Our specialists provide honest valuations,
-            flexible finance and a discreet service trusted by clients around the world. Explore every
-            model on our{" "}
-            <Link to="/inventory" className="text-gold hover:underline">all cars for sale</Link> page,
-            or if you are ready to move on from your current vehicle you can{" "}
-            <Link to="/sell" className="text-gold hover:underline">sell your car</Link> with us in just
-            a few steps. To learn more about our story visit{" "}
-            <Link to="/about" className="text-gold hover:underline">about us</Link>, or{" "}
-            <Link to="/contact" className="text-gold hover:underline">contact us</Link> to speak with a
-            member of the team about your next luxury car.
+            or read more{" "}
+            <Link to="/about" className="text-gold hover:underline">about us</Link>. When you are ready,{" "}
+            <Link to="/contact" className="text-gold hover:underline">contact us</Link> to arrange a
+            viewing, or{" "}
+            <Link to="/sell" className="text-gold hover:underline">sell your car</Link> through our team
+            with a straightforward, discreet valuation.
           </p>
         </div>
       </Reveal>
