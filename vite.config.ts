@@ -6,19 +6,26 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineConfig({
-  // Static SPA: no SSR, no Node/server runtime. TanStack Start prerenders a
-  // single client shell (index.html) and the app hydrates + routes entirely
-  // in the browser. Suitable for plain shared hosting (e.g. Hostinger Web
-  // Hosting). All data is read straight from the database in the browser
-  // using the publishable key + Row Level Security.
-  tanstackStart: {
-    spa: { enabled: true },
-  },
-  // Disable the Nitro server/deploy build entirely. Outside the Lovable
-  // sandbox this yields a Vite-only static build: the TanStack Start plugin
-  // still prerenders the SPA shell to index.html. Inside the sandbox, Nitro
-  // is force-enabled (Cloudflare) automatically so preview/publish keep
-  // working regardless of this flag.
-  nitro: false,
-});
+// Inside the Lovable sandbox (preview / publish) we keep the default SSR setup so
+// the live preview and the hosted build keep working. Only when building OUTSIDE
+// the sandbox (e.g. on a machine producing the static bundle for Hostinger Web
+// Hosting) do we switch to a fully static SPA build.
+const isSandbox = !!(process.env.LOVABLE_SANDBOX || process.env.DEV_SERVER__PROJECT_PATH);
+
+export default defineConfig(
+  isSandbox
+    ? {}
+    : {
+        // Static SPA: no SSR, no Node/server runtime. TanStack Start prerenders a
+        // single client shell (index.html) and the app hydrates + routes entirely
+        // in the browser. Suitable for plain shared hosting (e.g. Hostinger Web
+        // Hosting). All data is read straight from the database in the browser
+        // using the publishable key + Row Level Security.
+        tanstackStart: {
+          spa: { enabled: true },
+        },
+        // Disable the Nitro server/deploy build entirely so we get a Vite-only
+        // static build flattened into ./dist by scripts/static-postbuild.mjs.
+        nitro: false,
+      },
+);
