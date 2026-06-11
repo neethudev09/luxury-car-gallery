@@ -26,10 +26,10 @@ const logos: Record<string, { url: string }> = {
 };
 
 /**
- * Monochrome / dark marques that are hard to read on a dark background.
- * These render as a crisp white silhouette so they're clearly visible by
- * default (no hover required). Land Rover, Ferrari, Lamborghini and BMW are
- * intentionally excluded — their colour IS the identity.
+ * Marques rendered as a crisp white/silver silhouette so they are always
+ * clearly visible on the dark background — no hover required.
+ * `brightness-0 invert` produces pure white regardless of the source colours,
+ * so this is safe for both bundled and CMS-uploaded logos.
  */
 const whiteLogos = new Set([
   "audi",
@@ -41,14 +41,20 @@ const whiteLogos = new Set([
 ]);
 
 /**
- * Per-brand size multipliers so visually small logos (e.g. McLaren) read as
- * large and prominent as the wordier marques.
+ * Marques whose colour IS the identity (Ferrari shield, Lamborghini crest,
+ * Rolls-Royce badge, Land Rover green). Kept in colour with a brightness lift.
+ */
+
+/** BMW's roundel needs a light circular backing to stay legible on dark. */
+const circleBacked = new Set(["bmw"]);
+
+/**
+ * Per-brand size multipliers so visually small marks read at the same
+ * apparent size as wider wordmarks.
  */
 const scale: Record<string, string> = {
   mclaren: "scale-125",
   "aston-martin": "scale-110",
-  "range-rover": "scale-110",
-  ferrari: "scale-105",
 };
 
 export function BrandLogo({
@@ -58,7 +64,7 @@ export function BrandLogo({
   className,
 }: {
   slug: string;
-  /** CMS-managed light/section logo URL; rendered as-is when provided. */
+  /** CMS-managed light/section logo URL; used when provided. */
   src?: string | null;
   name?: string;
   className?: string;
@@ -67,16 +73,28 @@ export function BrandLogo({
   const url = src || fallback?.url;
   if (!url) return null;
 
-  // An explicit CMS light/section logo is already adjusted for the dark
-  // background, so render it untouched. Otherwise apply a light treatment so
-  // dark logos are visible without needing hover.
-  let tone = "brightness-110 contrast-110";
-  if (!src) {
-    tone = whiteLogos.has(slug)
-      ? "brightness-0 invert" // crisp white silhouette
-      : "brightness-110 contrast-110 saturate-110"; // keep colour, lift it
+  const tone = whiteLogos.has(slug)
+    ? "brightness-0 invert opacity-95" // crisp white silhouette, always readable
+    : "brightness-110 contrast-110 saturate-110"; // colour marques, lifted
+
+  const sizeBoost = scale[slug] ?? "";
+
+  if (circleBacked.has(slug)) {
+    return (
+      <span
+        className={`${className ?? ""} flex items-center justify-center`}
+      >
+        <span className="flex aspect-square h-full items-center justify-center rounded-full bg-foreground/95 p-2 shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+          <img
+            src={url}
+            alt={`${name ?? slug} logo`}
+            loading="lazy"
+            className="h-full w-full object-contain"
+          />
+        </span>
+      </span>
+    );
   }
-  const sizeBoost = src ? "" : (scale[slug] ?? "");
 
   return (
     <img
@@ -87,4 +105,3 @@ export function BrandLogo({
     />
   );
 }
-

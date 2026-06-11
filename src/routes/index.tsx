@@ -187,42 +187,39 @@ function BrandsSection() {
         subtitle="From Maranello to Goodwood — explore the most coveted automobiles on earth, by marque."
         align="center"
       />
-      <div className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-border/60 bg-border/40 sm:grid-cols-3 lg:grid-cols-4">
-        {list.map((b, i) => {
-          const empty = b.available === 0;
-          return (
-            <Reveal key={b.slug} delay={i * 0.04}>
-              <Link
-                to="/brands/$brand"
-                params={{ brand: b.slug }}
-                className={`group relative flex aspect-square cursor-pointer flex-col items-center justify-center gap-6 bg-card px-6 py-8 transition-all duration-500 hover:z-10 hover:bg-card/80 hover:shadow-[inset_0_0_0_1px_var(--gold)] ${empty ? "opacity-60 hover:opacity-100" : ""}`}
-              >
-                {/* soft gold glow on hover */}
-                <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_40%,color-mix(in_oklab,var(--gold)_22%,transparent),transparent_70%)]" />
+      <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {list.map((b, i) => (
+          <Reveal key={b.slug} delay={i * 0.04} className="h-full">
+            <Link
+              to="/brands/$brand"
+              params={{ brand: b.slug }}
+              className="group relative flex h-full cursor-pointer flex-col items-center rounded-2xl border border-border/60 bg-card px-6 pb-7 pt-8 text-center transition-all duration-500 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[0_10px_40px_-12px_color-mix(in_oklab,var(--gold)_35%,transparent)]"
+            >
+              {/* soft gold glow on hover */}
+              <span className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_30%,color-mix(in_oklab,var(--gold)_16%,transparent),transparent_70%)]" />
+              <div className="relative flex h-20 w-full items-center justify-center">
                 <BrandLogo
                   slug={b.slug}
                   src={b.logo}
                   name={b.name}
-                  className="relative h-20 w-full max-w-[150px] transition-transform duration-500 group-hover:scale-110"
+                  className="h-full max-w-[150px] transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="relative flex flex-col items-center gap-1.5 text-center">
-                  <span className="text-sm uppercase tracking-[0.2em] text-foreground/90 transition-colors group-hover:text-foreground">
-                    {b.name}
-                  </span>
-                  {empty ? (
-                    <span className="text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground transition-colors group-hover:text-gold">
-                      View Brand
-                    </span>
-                  ) : (
-                    <span className="text-[0.7rem] uppercase tracking-[0.2em] text-gold/90 transition-colors group-hover:text-gold">
-                      {b.available} Available
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </Reveal>
-          );
-        })}
+              </div>
+              <span className="relative mt-5 text-sm uppercase tracking-[0.2em] text-foreground">
+                {b.name}
+              </span>
+              {b.available > 0 ? (
+                <span className="relative mt-1.5 text-[0.7rem] uppercase tracking-[0.2em] text-gold/90 transition-colors group-hover:text-gold">
+                  {b.available} Available
+                </span>
+              ) : (
+                <span className="relative mt-1.5 text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground transition-colors group-hover:text-gold">
+                  View Brand
+                </span>
+              )}
+            </Link>
+          </Reveal>
+        ))}
       </div>
     </section>
   );
