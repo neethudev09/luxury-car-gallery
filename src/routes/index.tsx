@@ -494,19 +494,26 @@ function SocialSection() {
 /* SECTION — TRUST / WHY CHOOSE US */
 function TrustSection() {
   const points = [
-    { t: "Curated Quality", d: "Every luxury car is hand selected, fully inspected and presented with complete history." },
-    { t: "Honest Transparency", d: "Clear pricing, accurate descriptions and straightforward advice with no pressure." },
-    { t: "Specialist Expertise", d: "A knowledgeable team with deep experience across supercars and premium marques." },
-    { t: "Personalised Service", d: "A discreet, tailored buying experience with finance and worldwide delivery." },
+    { t: "Industry Expertise", d: "More than fifteen years buying, selling and advising on the world's finest cars, with a team that lives and breathes the marques we represent." },
+    { t: "Vehicle Sourcing", d: "Cannot find the right car? Our specialists source rare and bespoke vehicles to your exact specification, drawing on a trusted global network." },
+    { t: "Quality Standards", d: "Every car is hand selected and undergoes a thorough inspection, with verified history and an honest, accurate description before it reaches you." },
+    { t: "Customer Experience", d: "A discreet, personalised service from first enquiry to handover, including tailored finance and secure worldwide delivery." },
   ];
   return (
     <section className="mx-auto max-w-7xl px-5 py-24">
       <SectionHeading
         eyebrow="Why Choose Luxury Car Gallery"
-        title="Trusted Luxury Car Sales in Dubai"
-        subtitle="Buyers choose Luxury Car Gallery for quality, transparency, expertise and genuinely personalised service."
+        title="A Luxury Car Dealership Built on Trust"
         align="center"
       />
+      <Reveal className="mx-auto mt-6 max-w-3xl text-center text-muted-foreground leading-relaxed">
+        <p>
+          Buyers return to Luxury Car Gallery because we pair genuine expertise with a calm,
+          transparent way of doing business. From sourcing and inspection to finance and delivery,
+          every part of the experience is handled with care, so acquiring your next luxury car feels
+          effortless from start to finish.
+        </p>
+      </Reveal>
       <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {points.map((p, i) => (
           <Reveal key={p.t} delay={i * 0.06}>
