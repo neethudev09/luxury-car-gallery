@@ -33,13 +33,13 @@ import sellImg from "@/assets/sell-your-car.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Luxury Cars & Supercars For Sale in Dubai | Luxury Car Gallery Dubai" },
+      { title: "Luxury Car Sales Dubai | Luxury Car Gallery" },
       {
         name: "description",
         content:
-          "Discover Dubai's finest collection of luxury cars and supercars for sale. Ferrari, Lamborghini, Rolls-Royce, Porsche & more. View inventory or sell your car today.",
+          "Luxury car sales in Dubai from Luxury Car Gallery. Browse luxury cars, supercars and premium cars for sale, including Ferrari, Lamborghini, Porsche and Rolls-Royce.",
       },
-      { property: "og:title", content: "Luxury Cars & Supercars For Sale in Dubai" },
+      { property: "og:title", content: "Luxury Car Sales Dubai | Luxury Car Gallery" },
       { property: "og:image", content: heroShowroom },
     ],
     links: [{ rel: "canonical", href: "/" }],
