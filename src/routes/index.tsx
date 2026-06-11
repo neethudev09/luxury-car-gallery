@@ -60,6 +60,7 @@ function Home() {
       <Hero />
       <BrandsSection />
       <FeaturedSection />
+      <BrowseByBrandSection />
       <ThreeSixtySection />
       <TrustSection />
       <ShowroomSection />
@@ -277,7 +278,61 @@ function FeaturedSection() {
   );
 }
 
-/* SECTION 4 — REAL VEHICLE SHOWCASE */
+/* SECTION — BROWSE LUXURY CARS BY BRAND (SEO internal linking) */
+function BrowseByBrandSection() {
+  const fetchBrands = useServerFn(getBrandsWithCounts);
+  const { data } = useQuery({
+    queryKey: ["brands-with-counts"],
+    queryFn: () => fetchBrands(),
+  });
+  const list = data?.brands ?? [];
+
+  return (
+    <section className="relative overflow-hidden py-16">
+      <div className="absolute inset-0 bg-grain" />
+      <div className="relative mx-auto max-w-7xl px-5">
+        <SectionHeading
+          eyebrow="Explore By Marque"
+          title="Browse Luxury Cars by Brand"
+          subtitle="Discover our full collection of luxury cars for sale in Dubai, organised by marque. Select a brand to view current stock, pricing and availability."
+        />
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {list.map((b, i) => (
+            <Reveal key={b.slug} delay={(i % 4) * 0.05}>
+              <Link
+                to="/brands/$brand"
+                params={{ brand: b.slug }}
+                className="group flex items-center justify-between gap-4 rounded-xl border border-border/70 bg-card/60 px-5 py-5 backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-gold/60 hover:bg-card hover:shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)]"
+              >
+                <span className="flex flex-col">
+                  <span className="text-base font-medium text-foreground transition-colors group-hover:text-gold">
+                    {b.name} for Sale in Dubai
+                  </span>
+                  {b.available > 0 && (
+                    <span className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
+                      {b.available} available
+                    </span>
+                  )}
+                </span>
+                <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-gold" />
+              </Link>
+            </Reveal>
+          ))}
+          <Reveal delay={(list.length % 4) * 0.05}>
+            <Link
+              to="/inventory"
+              className="group flex h-full items-center justify-between gap-4 rounded-xl border border-gold/40 bg-gold/10 px-5 py-5 backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:bg-gold/15 hover:shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)]"
+            >
+              <span className="text-base font-medium text-gold">All Luxury Cars for Sale</span>
+              <ArrowRight className="h-5 w-5 shrink-0 text-gold transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ThreeSixtySection() {
   return (
     <section className="relative overflow-hidden py-24">
