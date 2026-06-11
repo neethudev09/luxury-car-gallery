@@ -60,6 +60,7 @@ function Home() {
       <Hero />
       <BrandsSection />
       <FeaturedSection />
+      <BrowseByBrandSection />
       <ThreeSixtySection />
       <TrustSection />
       <ShowroomSection />
