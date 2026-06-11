@@ -33,13 +33,10 @@ const logos: Record<string, { url: string }> = {
  */
 const whiteLogos = new Set([
   "audi",
-  "mercedes-benz",
-  "bentley",
-  "aston-martin",
 ]);
 
 /** Marques kept in colour but brightened extra so they pop on dark. */
-const brightBoost = new Set(["mclaren"]);
+const brightBoost = new Set<string>([]);
 
 /**
  * Marques whose colour IS the identity (Ferrari shield, Lamborghini crest,
@@ -54,8 +51,9 @@ const circleBacked = new Set<string>([]);
  * apparent size as wider wordmarks.
  */
 const scale: Record<string, string> = {
-  mclaren: "scale-125",
+  mclaren: "scale-110",
   "aston-martin": "scale-110",
+  "mercedes-benz": "scale-110",
 };
 
 export function BrandLogo({
