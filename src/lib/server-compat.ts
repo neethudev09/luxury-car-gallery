@@ -14,32 +14,35 @@ import { supabase } from "@/integrations/supabase/client";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyObj = Record<string, any>;
-type Handler = (args: { context: AnyObj; data: unknown }) => Promise<unknown> | unknown;
 
 async function buildContext(): Promise<AnyObj> {
   const { data } = await supabase.auth.getUser();
   return { supabase, userId: data.user?.id ?? null, claims: null };
 }
 
-class ServerFnBuilder {
-  private validator?: (input: unknown) => unknown;
+class ServerFnBuilder<TData = unknown> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private validator?: (input: any) => any;
 
-  middleware() {
+  middleware(_middleware?: unknown): ServerFnBuilder<TData> {
     // Auth is enforced by RLS in the static build — middleware is a no-op.
     return this;
   }
 
-  inputValidator(fn: (input: unknown) => unknown) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  inputValidator<V extends (input: any) => any>(fn: V): ServerFnBuilder<ReturnType<V>> {
     this.validator = fn;
-    return this;
+    return this as unknown as ServerFnBuilder<ReturnType<V>>;
   }
 
-  handler(fn: Handler) {
+  handler<R>(
+    fn: (args: { context: AnyObj; data: TData }) => R | Promise<R>,
+  ): (arg?: { data?: TData }) => Promise<Awaited<R>> {
     const validator = this.validator;
-    return async (arg?: { data?: unknown }) => {
-      const data = validator ? validator(arg?.data) : arg?.data;
+    return async (arg?: { data?: TData }) => {
+      const data = (validator ? validator(arg?.data) : arg?.data) as TData;
       const context = await buildContext();
-      return fn({ context, data });
+      return (await fn({ context, data })) as Awaited<R>;
     };
   }
 }
