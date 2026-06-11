@@ -82,11 +82,16 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: async () => {
     try {
-      const { getPublicIntegrations } = await import("@/lib/public.functions");
-      return { integrations: await getPublicIntegrations() };
+      const { getPublicIntegrations, getPublicSeoFlags } = await import("@/lib/public.functions");
+      const [integrations, seoFlags] = await Promise.all([
+        getPublicIntegrations(),
+        getPublicSeoFlags(),
+      ]);
+      return { integrations, seoFlags };
     } catch {
       return {
         integrations: { ga4_id: "", gtm_id: "", google_site_verification: "", custom_head_js: "" },
+        seoFlags: { allow_indexing: false },
       };
     }
   },
