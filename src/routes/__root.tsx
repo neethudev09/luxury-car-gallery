@@ -82,17 +82,28 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: async () => {
     try {
-      const { getPublicIntegrations } = await import("@/lib/public.functions");
-      return { integrations: await getPublicIntegrations() };
+      const { getPublicIntegrations, getPublicSeoFlags } = await import("@/lib/public.functions");
+      const [integrations, seoFlags] = await Promise.all([
+        getPublicIntegrations(),
+        getPublicSeoFlags(),
+      ]);
+      return { integrations, seoFlags };
     } catch {
       return {
         integrations: { ga4_id: "", gtm_id: "", google_site_verification: "", custom_head_js: "" },
+        seoFlags: { allow_indexing: false },
       };
     }
   },
   head: (ctx) => {
-    const integ = (ctx as { loaderData?: { integrations?: Record<string, string> } }).loaderData
-      ?.integrations ?? {};
+    const ld = (ctx as {
+      loaderData?: {
+        integrations?: Record<string, string>;
+        seoFlags?: { allow_indexing?: boolean };
+      };
+    }).loaderData;
+    const integ = ld?.integrations ?? {};
+    const allowIndexing = ld?.seoFlags?.allow_indexing === true;
     const ga4 = integ.ga4_id ?? "";
     const gtm = integ.gtm_id ?? "";
     const verify = integ.google_site_verification ?? "";
@@ -138,6 +149,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { property: "og:site_name", content: "Luxury Car Gallery Dubai" },
         { name: "twitter:card", content: "summary_large_image" },
         ...(verify ? [{ name: "google-site-verification", content: verify }] : []),
+        {
+          name: "robots",
+          content: allowIndexing ? "index, follow" : "noindex, nofollow",
+        },
+        {
+          name: "googlebot",
+          content: allowIndexing ? "index, follow" : "noindex, nofollow",
+        },
       ],
       links: [
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
