@@ -110,7 +110,7 @@ function Hero() {
           transition={{ duration: 0.9, delay: 0.1 }}
           className="mt-5 max-w-3xl text-4xl leading-[1.05] sm:text-6xl lg:text-7xl"
         >
-          Luxury Cars <span className="gold-gradient-text">For Sale</span> In Dubai
+          Luxury Car <span className="gold-gradient-text">Sales</span> Dubai
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 28 }}
@@ -118,8 +118,10 @@ function Hero() {
           transition={{ duration: 0.9, delay: 0.25 }}
           className="mt-6 max-w-xl text-lg text-foreground/80"
         >
-          An exclusive collection of the world's most desirable supercars and luxury automobiles,
-          curated for the most discerning collectors.
+          Luxury Car Gallery is Dubai's trusted home for luxury cars for sale, bringing together a
+          handpicked collection of supercars, premium saloons and grand tourers. Browse our current
+          inventory and enjoy a discreet, personalised luxury car buying experience from start to
+          finish.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 28 }}
