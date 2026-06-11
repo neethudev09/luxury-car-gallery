@@ -15,10 +15,10 @@ export default defineConfig({
   tanstackStart: {
     spa: { enabled: true },
   },
-  // Outside the Lovable sandbox (your own `npm run build`), produce a static
-  // site with Nitro's static preset. Inside the sandbox the preset/output are
-  // forced to Cloudflare automatically so preview/publish keep working.
-  nitro: {
-    preset: "static",
-  },
+  // Disable the Nitro server/deploy build entirely. Outside the Lovable
+  // sandbox this yields a Vite-only static build: the TanStack Start plugin
+  // still prerenders the SPA shell to index.html. Inside the sandbox, Nitro
+  // is force-enabled (Cloudflare) automatically so preview/publish keep
+  // working regardless of this flag.
+  nitro: false,
 });
