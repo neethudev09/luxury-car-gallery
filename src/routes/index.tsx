@@ -61,6 +61,7 @@ function Home() {
       <BrandsSection />
       <FeaturedSection />
       <ThreeSixtySection />
+      <TrustSection />
       <ShowroomSection />
       <SellSection />
       <FinanceSection />
