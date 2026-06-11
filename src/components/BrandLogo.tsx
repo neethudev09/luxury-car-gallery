@@ -33,13 +33,10 @@ const logos: Record<string, { url: string }> = {
  */
 const whiteLogos = new Set([
   "audi",
-  "mercedes-benz",
-  "bentley",
-  "aston-martin",
 ]);
 
 /** Marques kept in colour but brightened extra so they pop on dark. */
-const brightBoost = new Set(["mclaren"]);
+const brightBoost = new Set<string>([]);
 
 /**
  * Marques whose colour IS the identity (Ferrari shield, Lamborghini crest,
