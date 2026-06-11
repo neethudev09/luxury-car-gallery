@@ -51,8 +51,9 @@ const circleBacked = new Set<string>([]);
  * apparent size as wider wordmarks.
  */
 const scale: Record<string, string> = {
-  mclaren: "scale-125",
+  mclaren: "scale-110",
   "aston-martin": "scale-110",
+  "mercedes-benz": "scale-110",
 };
 
 export function BrandLogo({
