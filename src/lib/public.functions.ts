@@ -181,6 +181,20 @@ export const getPublicSettings = createServerFn({ method: "GET" }).handler(async
   return { settings: map };
 });
 
+// Feature flags stored in site_settings (key "features").
+export const getPublicFeatureFlags = createServerFn({ method: "GET" }).handler(async () => {
+  const supabaseAdmin = supabase;
+  const { data } = await supabaseAdmin
+    .from("site_settings")
+    .select("value")
+    .eq("key", "features")
+    .maybeSingle();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const v = (data?.value ?? {}) as Record<string, any>;
+  const viewer_360_enabled = v.viewer_360_enabled === true || v.viewer_360_enabled === "true";
+  return { viewer_360_enabled };
+});
+
 // Search-engine indexing flag stored in site_settings (key "indexing").
 // Defaults to NOT indexed (noindex) until explicitly enabled in the CRM.
 export const getPublicSeoFlags = createServerFn({ method: "GET" }).handler(async () => {
