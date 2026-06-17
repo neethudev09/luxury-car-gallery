@@ -64,11 +64,28 @@ export const Route = createFileRoute("/cars/$slug")({
   component: VehiclePage,
 });
 
-const faqs = [
-  { q: "Is finance available for this vehicle?", a: "Yes, we offer flexible finance options for residents and selected international buyers. Speak to our team for a tailored quote." },
-  { q: "Can I arrange international shipping?", a: "Absolutely. We regularly export vehicles worldwide and handle all logistics and documentation." },
-  { q: "Is a full service history available?", a: "All our vehicles are presented with verified service history and a comprehensive inspection report." },
-];
+function buildFaqs(car: import("@/data/cars").Car) {
+  return [
+    {
+      q: `Is finance available for the ${car.year} ${car.title}?`,
+      a: `Yes, we offer flexible finance options for the ${car.title} (${formatPrice(car.price)}) for residents and selected international buyers. Use the calculator opposite or speak to our team for a tailored quote.`,
+    },
+    {
+      q: `What is the mileage and condition of this ${car.brand}?`,
+      a: `This ${car.year} ${car.title} has ${car.mileage.toLocaleString()} km on the odometer, finished in ${car.exteriorColour} with ${car.interiorColour} interior, and is presented with verified service history and a full inspection report.`,
+    },
+    {
+      q: `Can I arrange international shipping for the ${car.title}?`,
+      a: `Absolutely. We regularly export vehicles like this ${car.brand} worldwide and handle all logistics, documentation and customs clearance.`,
+    },
+    {
+      q: `Is the ${car.title} still available?`,
+      a: car.sold
+        ? `This particular ${car.title} has been sold, but we frequently source similar ${car.brand} models — contact us and we'll find one for you.`
+        : `Yes, this ${car.year} ${car.title} is currently available. Contact us on WhatsApp to arrange a viewing or reserve it.`,
+    },
+  ];
+}
 
 function VehiclePage() {
   const car = Route.useLoaderData() as import("@/data/cars").Car;
@@ -86,6 +103,8 @@ function VehiclePage() {
     const w = el.clientWidth;
     el.scrollBy({ left: dir * w * 0.8, behavior: "smooth" });
   };
+
+  const faqs = buildFaqs(car);
 
   return (
     <div className="pt-28">
@@ -210,26 +229,26 @@ function VehiclePage() {
         </Reveal>
       </div>
 
-      {/* Finance Calculator */}
-      <div className="mx-auto mt-16 max-w-7xl px-5">
+      {/* Finance Calculator + FAQ */}
+      <div className="mx-auto mt-16 grid max-w-7xl items-start gap-10 px-5 lg:grid-cols-2">
         <FinanceCalculator price={car.price} />
-      </div>
 
-      {/* FAQ */}
-      <div className="mx-auto mt-16 max-w-3xl px-5">
-        <h2 className="text-2xl">Frequently Asked Questions</h2>
-        <div className="mt-6 space-y-3">
-          {faqs.map((f, i) => (
-            <div key={i} className="overflow-hidden rounded-xl border border-border bg-card">
-              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="flex w-full items-center justify-between gap-4 p-5 text-left">
-                <span className="font-medium">{f.q}</span>
-                <ChevronDown className={`h-5 w-5 shrink-0 text-gold transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
-              </button>
-              {openFaq === i && <p className="px-5 pb-5 text-sm text-muted-foreground">{f.a}</p>}
-            </div>
-          ))}
+        <div>
+          <h2 className="text-2xl">Frequently Asked Questions</h2>
+          <div className="mt-6 space-y-3">
+            {faqs.map((f, i) => (
+              <div key={i} className="overflow-hidden rounded-xl border border-border bg-card">
+                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="flex w-full items-center justify-between gap-4 p-5 text-left">
+                  <span className="font-medium">{f.q}</span>
+                  <ChevronDown className={`h-5 w-5 shrink-0 text-gold transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
+                </button>
+                {openFaq === i && <p className="px-5 pb-5 text-sm text-muted-foreground">{f.a}</p>}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
 
       {/* Related */}
       {related.length > 0 && (
