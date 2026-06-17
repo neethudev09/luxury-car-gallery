@@ -101,7 +101,10 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 function VehiclePage() {
-  const car = Route.useLoaderData() as import("@/data/cars").Car;
+  const { car, viewer360Enabled } = Route.useLoaderData() as {
+    car: import("@/data/cars").Car;
+    viewer360Enabled: boolean;
+  };
   const { toggleCompare, toggleSaved, isCompared, isSaved } = useCompare();
   const compared = isCompared(car.slug);
   const saved = isSaved(car.slug);
