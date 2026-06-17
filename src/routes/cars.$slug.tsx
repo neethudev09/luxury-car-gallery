@@ -229,26 +229,26 @@ function VehiclePage() {
         </Reveal>
       </div>
 
-      {/* Finance Calculator */}
-      <div className="mx-auto mt-16 max-w-7xl px-5">
+      {/* Finance Calculator + FAQ */}
+      <div className="mx-auto mt-16 grid max-w-7xl items-start gap-10 px-5 lg:grid-cols-2">
         <FinanceCalculator price={car.price} />
-      </div>
 
-      {/* FAQ */}
-      <div className="mx-auto mt-16 max-w-3xl px-5">
-        <h2 className="text-2xl">Frequently Asked Questions</h2>
-        <div className="mt-6 space-y-3">
-          {faqs.map((f, i) => (
-            <div key={i} className="overflow-hidden rounded-xl border border-border bg-card">
-              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="flex w-full items-center justify-between gap-4 p-5 text-left">
-                <span className="font-medium">{f.q}</span>
-                <ChevronDown className={`h-5 w-5 shrink-0 text-gold transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
-              </button>
-              {openFaq === i && <p className="px-5 pb-5 text-sm text-muted-foreground">{f.a}</p>}
-            </div>
-          ))}
+        <div>
+          <h2 className="text-2xl">Frequently Asked Questions</h2>
+          <div className="mt-6 space-y-3">
+            {faqs.map((f, i) => (
+              <div key={i} className="overflow-hidden rounded-xl border border-border bg-card">
+                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="flex w-full items-center justify-between gap-4 p-5 text-left">
+                  <span className="font-medium">{f.q}</span>
+                  <ChevronDown className={`h-5 w-5 shrink-0 text-gold transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
+                </button>
+                {openFaq === i && <p className="px-5 pb-5 text-sm text-muted-foreground">{f.a}</p>}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
 
       {/* Related */}
       {related.length > 0 && (
