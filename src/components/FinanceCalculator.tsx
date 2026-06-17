@@ -75,13 +75,14 @@ export function FinanceCalculator({ price }: { price: number }) {
         />
       </div>
 
-      <div className="mt-6 rounded-xl border border-gold/30 bg-gold/5 p-5 text-center">
+      <div className="mt-5 rounded-xl border border-gold/30 bg-gold/5 p-4 text-center">
         <p className="text-xs uppercase tracking-widest text-muted-foreground">
           Estimated Monthly Payment
         </p>
-        <p className="mt-1 font-display text-3xl text-gold">{formatAED(monthly)}</p>
+        <p className="mt-1 font-display text-2xl text-gold">{formatAED(monthly)}</p>
         <p className="mt-1 text-xs text-muted-foreground">per month over {termYears * 12} months</p>
       </div>
+
 
       <div className="mt-4 grid grid-cols-3 gap-3 text-center text-sm">
         <Stat label="Loan Amount" value={formatAED(loanAmount)} />
