@@ -1,12 +1,14 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Phone, RotateCcw } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, GitCompare, Heart, Phone, RotateCcw } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
 import { Car360Viewer } from "@/components/Car360Viewer";
 import { FinanceCalculator } from "@/components/FinanceCalculator";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
+import { useCompare } from "@/lib/compare";
 
 export const Route = createFileRoute("/cars/$slug")({
   loader: ({ params }) => {
