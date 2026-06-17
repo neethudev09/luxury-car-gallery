@@ -178,15 +178,24 @@ function VehiclePage() {
             </div>
           </div>
 
-          <div className="mt-8">
-            <FinanceCalculator price={car.price} />
-          </div>
         </div>
       </div>
 
-      {/* Specs + description */}
+      {/* Overview + Specifications */}
       <div className="mx-auto mt-16 grid max-w-7xl gap-10 px-5 lg:grid-cols-2">
         <Reveal>
+          <h2 className="text-2xl">Overview</h2>
+          <p className="mt-5 leading-relaxed text-muted-foreground">{car.description}</p>
+          <h3 className="mt-6 text-lg">Features</h3>
+          <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {car.features.map((f) => (
+              <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Check className="h-4 w-4 shrink-0 text-gold" /> {f}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+        <Reveal delay={0.1}>
           <h2 className="text-2xl">Specifications</h2>
           <table className="mt-5 w-full text-sm">
             <tbody>
@@ -199,18 +208,11 @@ function VehiclePage() {
             </tbody>
           </table>
         </Reveal>
-        <Reveal delay={0.1}>
-          <h2 className="text-2xl">Overview</h2>
-          <p className="mt-5 leading-relaxed text-muted-foreground">{car.description}</p>
-          <h3 className="mt-6 text-lg">Features</h3>
-          <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {car.features.map((f) => (
-              <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Check className="h-4 w-4 shrink-0 text-gold" /> {f}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+      </div>
+
+      {/* Finance Calculator */}
+      <div className="mx-auto mt-16 max-w-7xl px-5">
+        <FinanceCalculator price={car.price} />
       </div>
 
       {/* FAQ */}
