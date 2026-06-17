@@ -1,0 +1,1 @@
+UPDATE public.vehicles SET title = 'Bentley GT Speed', model = 'GT Speed' WHERE slug = 'bentley-continental-gt-2024';

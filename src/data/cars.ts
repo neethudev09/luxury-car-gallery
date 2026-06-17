@@ -91,10 +91,10 @@ type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpee
 const base: CarBase[] = [
   {
     slug: "bentley-continental-gt-2024",
-    title: "Bentley Continental GT",
+    title: "Bentley GT Speed",
     brand: "Bentley",
     brandSlug: "bentley",
-    model: "Continental GT",
+    model: "GT Speed",
     year: 2024,
     price: 930000,
     mileage: 11964,
@@ -107,7 +107,7 @@ const base: CarBase[] = [
     featured: false,
     sold: false,
     description:
-      "Bentley Continental GT (2024). GCC spec, finished in White over Beige. 11,964 km. Presented by Luxury Car Gallery, Dubai.",
+      "Bentley GT Speed (2024). GCC spec, finished in White over Beige. 11,964 km. Presented by Luxury Car Gallery, Dubai.",
     features: fmtFeatures,
   },
   {
