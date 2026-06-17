@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, GitCompare, Heart, Phone, RotateCcw, Share2 } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Phone, RotateCcw } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
 import { Car360Viewer } from "@/components/Car360Viewer";
