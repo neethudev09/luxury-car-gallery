@@ -1,10 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft, Check, ChevronDown, Phone } from "lucide-react";
+import { useRef, useState } from "react";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Phone, RotateCcw } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
 import { Car360Viewer } from "@/components/Car360Viewer";
 import { FinanceCalculator } from "@/components/FinanceCalculator";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
 
 export const Route = createFileRoute("/cars/$slug")({
@@ -76,6 +77,15 @@ function VehiclePage() {
   const related = cars.filter((c) => c.brandSlug === car.brandSlug && c.slug !== car.slug).slice(0, 3);
   const gallery = car.images && car.images.length > 0 ? car.images : [car.image, car.image, car.image, car.image];
   const [active, setActive] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [show360, setShow360] = useState(false);
+
+  const scrollThumbs = (dir: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const w = el.clientWidth;
+    el.scrollBy({ left: dir * w * 0.8, behavior: "smooth" });
+  };
 
   return (
     <div className="pt-28">
@@ -94,22 +104,49 @@ function VehiclePage() {
               {car.featured && <span className="rounded-full bg-gold px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-primary-foreground">Featured</span>}
               {car.sold && <span className="rounded-full bg-destructive px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-destructive-foreground">Sold</span>}
             </div>
-          </div>
-          <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
-            {gallery.map((g, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                className={`shrink-0 overflow-hidden rounded-xl border ${active === i ? "border-gold" : "border-border"}`}
-                style={{ width: "calc(25% - 0.75rem)" }}
-              >
-                <img src={g} alt={`${car.title} view ${i + 1}`} loading="lazy" className="aspect-[4/3] w-full object-cover" />
-              </button>
-            ))}
+            <button
+              onClick={() => setShow360(true)}
+              className="absolute bottom-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+            >
+              <RotateCcw className="h-3.5 w-3.5" /> 360°
+            </button>
           </div>
 
-          {/* 360 viewer */}
-          <Car360Viewer image={car.image} title={car.title} />
+          <div className="relative mt-3">
+            <button
+              onClick={() => scrollThumbs(-1)}
+              className="absolute left-0 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70"
+              aria-label="Scroll thumbnails left"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div ref={scrollRef} className="flex gap-3 overflow-x-auto pb-2 px-10">
+              {gallery.map((g, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActive(i)}
+                  className={`shrink-0 overflow-hidden rounded-xl border ${active === i ? "border-gold" : "border-border"}`}
+                  style={{ width: "calc(25% - 0.75rem)" }}
+                >
+                  <img src={g} alt={`${car.title} view ${i + 1}`} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => scrollThumbs(1)}
+              className="absolute right-0 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70"
+              aria-label="Scroll thumbnails right"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          <Dialog open={show360} onOpenChange={setShow360}>
+            <DialogContent className="max-w-3xl">
+              <DialogTitle className="sr-only">{car.title} 360° Viewer</DialogTitle>
+              <Car360Viewer image={car.image} title={car.title} />
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Details */}
