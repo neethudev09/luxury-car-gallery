@@ -60,8 +60,8 @@ function Inventory() {
   const [ext, setExt] = useState("all");
   const [int, setInt] = useState("all");
   const [status, setStatus] = useState<Status>("all");
-  const [maxPrice, setMaxPrice] = useState(2000000);
-  const [maxMileage, setMaxMileage] = useState(20000);
+  const [maxPrice, setMaxPrice] = useState(2100000);
+  const [maxMileage, setMaxMileage] = useState(100000);
   const [sort, setSort] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -111,8 +111,8 @@ function Inventory() {
     setExt("all");
     setInt("all");
     setStatus("all");
-    setMaxPrice(2000000);
-    setMaxMileage(20000);
+    setMaxPrice(2100000);
+    setMaxMileage(100000);
   };
 
   const FilterPanel = (
@@ -162,8 +162,8 @@ function Inventory() {
       <FilterGroup label={`Max Price: AED ${maxPrice.toLocaleString()}`}>
         <input
           type="range"
-          min={500000}
-          max={2000000}
+          min={100000}
+          max={2100000}
           step={50000}
           value={maxPrice}
           onChange={(e) => setMaxPrice(Number(e.target.value))}
@@ -174,9 +174,9 @@ function Inventory() {
       <FilterGroup label={`Max Mileage: ${maxMileage.toLocaleString()} km`}>
         <input
           type="range"
-          min={2000}
-          max={20000}
-          step={500}
+          min={5000}
+          max={100000}
+          step={1000}
           value={maxMileage}
           onChange={(e) => setMaxMileage(Number(e.target.value))}
           className="w-full accent-gold"
