@@ -70,6 +70,7 @@ export interface Car {
   topSpeed: number;
   accel: number;
   image: string;
+  images?: string[];
   featured: boolean;
   newArrival: boolean;
   sold: boolean;
