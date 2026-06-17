@@ -9,52 +9,57 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
 import { useCompare } from "@/lib/compare";
+import { getPublicFeatureFlags } from "@/lib/public.functions";
 
 export const Route = createFileRoute("/cars/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const car = getCar(params.slug);
     if (!car) throw notFound();
-    return car;
+    const flags = await getPublicFeatureFlags();
+    return { car, viewer360Enabled: flags.viewer_360_enabled };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.year} ${loaderData?.title} For Sale in Dubai | Luxury Car Gallery Dubai` },
-      {
-        name: "description",
-        content: loaderData
-          ? `${loaderData.title} for sale in Dubai. ${loaderData.mileage.toLocaleString()} km, ${loaderData.transmission}, ${loaderData.exteriorColour}. ${formatPrice(loaderData.price)}.`
-          : "Luxury car for sale in Dubai.",
-      },
-      { property: "og:title", content: `${loaderData?.year} ${loaderData?.title}` },
-      { property: "og:image", content: loaderData?.image },
-      { property: "og:type", content: "product" },
-    ],
-    links: [{ rel: "canonical", href: `/cars/${loaderData?.slug}` }],
-    scripts: loaderData
-      ? [
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Car",
-              name: loaderData.title,
-              brand: loaderData.brand,
-              modelDate: loaderData.year,
-              mileageFromOdometer: loaderData.mileage,
-              vehicleTransmission: loaderData.transmission,
-              fuelType: loaderData.fuel,
-              color: loaderData.exteriorColour,
-              offers: {
-                "@type": "Offer",
-                price: loaderData.price,
-                priceCurrency: "AED",
-                availability: loaderData.sold ? "SoldOut" : "InStock",
-              },
-            }),
-          },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    const car = loaderData?.car;
+    return {
+      meta: [
+        { title: `${car?.year} ${car?.title} For Sale in Dubai | Luxury Car Gallery Dubai` },
+        {
+          name: "description",
+          content: car
+            ? `${car.title} for sale in Dubai. ${car.mileage.toLocaleString()} km, ${car.transmission}, ${car.exteriorColour}. ${formatPrice(car.price)}.`
+            : "Luxury car for sale in Dubai.",
+        },
+        { property: "og:title", content: `${car?.year} ${car?.title}` },
+        { property: "og:image", content: car?.image },
+        { property: "og:type", content: "product" },
+      ],
+      links: [{ rel: "canonical", href: `/cars/${car?.slug}` }],
+      scripts: car
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Car",
+                name: car.title,
+                brand: car.brand,
+                modelDate: car.year,
+                mileageFromOdometer: car.mileage,
+                vehicleTransmission: car.transmission,
+                fuelType: car.fuel,
+                color: car.exteriorColour,
+                offers: {
+                  "@type": "Offer",
+                  price: car.price,
+                  priceCurrency: "AED",
+                  availability: car.sold ? "SoldOut" : "InStock",
+                },
+              }),
+            },
+          ]
+        : [],
+    };
+  },
   notFoundComponent: () => (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 pt-28 text-center">
       <h1 className="text-4xl">Vehicle not found</h1>
@@ -96,7 +101,10 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 function VehiclePage() {
-  const car = Route.useLoaderData() as import("@/data/cars").Car;
+  const { car, viewer360Enabled } = Route.useLoaderData() as {
+    car: import("@/data/cars").Car;
+    viewer360Enabled: boolean;
+  };
   const { toggleCompare, toggleSaved, isCompared, isSaved } = useCompare();
   const compared = isCompared(car.slug);
   const saved = isSaved(car.slug);
@@ -134,12 +142,14 @@ function VehiclePage() {
               {car.featured && <span className="rounded-full bg-gold px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-primary-foreground">Featured</span>}
               {car.sold && <span className="rounded-full bg-destructive px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-destructive-foreground">Sold</span>}
             </div>
-            <button
-              onClick={() => setShow360(true)}
-              className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-colors hover:bg-black/80"
-            >
-              <RotateCcw className="h-3.5 w-3.5" /> 360°
-            </button>
+            {viewer360Enabled && (
+              <button
+                onClick={() => setShow360(true)}
+                className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+              >
+                <RotateCcw className="h-3.5 w-3.5" /> 360°
+              </button>
+            )}
           </div>
 
           <div className="relative mt-3">
@@ -171,12 +181,14 @@ function VehiclePage() {
             </button>
           </div>
 
-          <Dialog open={show360} onOpenChange={setShow360}>
-            <DialogContent className="max-w-3xl">
-              <DialogTitle className="sr-only">{car.title} 360° Viewer</DialogTitle>
-              <Car360Viewer image={car.image} title={car.title} />
-            </DialogContent>
-          </Dialog>
+          {viewer360Enabled && (
+            <Dialog open={show360} onOpenChange={setShow360}>
+              <DialogContent className="max-w-3xl">
+                <DialogTitle className="sr-only">{car.title} 360° Viewer</DialogTitle>
+                <Car360Viewer image={car.image} title={car.title} />
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         {/* Details */}
