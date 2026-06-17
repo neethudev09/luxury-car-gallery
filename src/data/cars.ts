@@ -107,7 +107,7 @@ const base: CarBase[] = [
     featured: false,
     sold: false,
     description:
-      "Bentley Continental GT (2024). GCC spec, finished in White over Beige. 11,964 km. Presented by Luxury Car Gallery, Dubai.",
+      "Bentley GT Speed (2024). GCC spec, finished in White over Beige. 11,964 km. Presented by Luxury Car Gallery, Dubai.",
     features: fmtFeatures,
   },
   {
