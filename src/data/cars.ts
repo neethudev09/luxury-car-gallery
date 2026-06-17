@@ -91,10 +91,10 @@ type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpee
 const base: CarBase[] = [
   {
     slug: "bentley-continental-gt-2024",
-    title: "Bentley Continental GT",
+    title: "Bentley GT Speed",
     brand: "Bentley",
     brandSlug: "bentley",
-    model: "Continental GT",
+    model: "GT Speed",
     year: 2024,
     price: 930000,
     mileage: 11964,
