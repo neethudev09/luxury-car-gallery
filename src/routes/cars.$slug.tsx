@@ -95,12 +95,13 @@ function VehiclePage() {
               {car.sold && <span className="rounded-full bg-destructive px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-destructive-foreground">Sold</span>}
             </div>
           </div>
-          <div className="mt-3 grid grid-cols-4 gap-3">
+          <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
             {gallery.map((g, i) => (
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`overflow-hidden rounded-xl border ${active === i ? "border-gold" : "border-border"}`}
+                className={`shrink-0 overflow-hidden rounded-xl border ${active === i ? "border-gold" : "border-border"}`}
+                style={{ width: "calc(25% - 0.75rem)" }}
               >
                 <img src={g} alt={`${car.title} view ${i + 1}`} loading="lazy" className="aspect-[4/3] w-full object-cover" />
               </button>
