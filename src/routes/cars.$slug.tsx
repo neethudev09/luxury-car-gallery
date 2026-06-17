@@ -104,6 +104,8 @@ function VehiclePage() {
     el.scrollBy({ left: dir * w * 0.8, behavior: "smooth" });
   };
 
+  const faqs = buildFaqs(car);
+
   return (
     <div className="pt-28">
       <div className="mx-auto max-w-7xl px-5">
