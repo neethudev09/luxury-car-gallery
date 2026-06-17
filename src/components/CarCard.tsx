@@ -4,6 +4,7 @@ import type { Car } from "@/data/cars";
 import { formatPrice, whatsappLink } from "@/data/cars";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useCompare } from "@/lib/compare";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
