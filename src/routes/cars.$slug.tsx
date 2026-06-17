@@ -183,7 +183,60 @@ function VehiclePage() {
         <div>
           <span className="text-xs uppercase tracking-luxury text-gold">{car.brand}</span>
           <h1 className="mt-2 text-3xl md:text-4xl">{car.year} {car.title}</h1>
-          <p className="mt-4 font-display text-3xl text-gold">{formatPrice(car.price)}</p>
+          <div className="mt-4 flex items-center justify-between">
+            <p className="font-display text-3xl text-gold">{formatPrice(car.price)}</p>
+            <div className="flex items-center gap-2">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => toggleSaved(car.slug)}
+                      className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                        saved ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
+                      }`}
+                    >
+                      <Heart className={`h-4.5 w-4.5 ${saved ? "fill-gold" : ""}`} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="border border-border/60 bg-card text-xs text-foreground shadow-luxury">
+                    {saved ? "Remove from saved" : "Save this vehicle"}
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => toggleCompare(car.slug)}
+                      className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                        compared ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
+                      }`}
+                    >
+                      <GitCompare className="h-4.5 w-4.5" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="border border-border/60 bg-card text-xs text-foreground shadow-luxury">
+                    {compared ? "Remove from comparison" : "Compare this vehicle"}
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={whatsappLink(`I'm interested in the ${car.year} ${car.title} (${formatPrice(car.price)}).`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-500/40 text-emerald-400 transition-colors hover:bg-emerald-500 hover:text-white"
+                    >
+                      <WhatsAppIcon className="h-5 w-5" />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="border border-border/60 bg-card text-xs text-foreground shadow-luxury">
+                    WhatsApp enquiry
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
             {[
