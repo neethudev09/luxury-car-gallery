@@ -142,12 +142,14 @@ function VehiclePage() {
               {car.featured && <span className="rounded-full bg-gold px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-primary-foreground">Featured</span>}
               {car.sold && <span className="rounded-full bg-destructive px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-destructive-foreground">Sold</span>}
             </div>
-            <button
-              onClick={() => setShow360(true)}
-              className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-colors hover:bg-black/80"
-            >
-              <RotateCcw className="h-3.5 w-3.5" /> 360°
-            </button>
+            {viewer360Enabled && (
+              <button
+                onClick={() => setShow360(true)}
+                className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+              >
+                <RotateCcw className="h-3.5 w-3.5" /> 360°
+              </button>
+            )}
           </div>
 
           <div className="relative mt-3">
@@ -179,12 +181,14 @@ function VehiclePage() {
             </button>
           </div>
 
-          <Dialog open={show360} onOpenChange={setShow360}>
-            <DialogContent className="max-w-3xl">
-              <DialogTitle className="sr-only">{car.title} 360° Viewer</DialogTitle>
-              <Car360Viewer image={car.image} title={car.title} />
-            </DialogContent>
-          </Dialog>
+          {viewer360Enabled && (
+            <Dialog open={show360} onOpenChange={setShow360}>
+              <DialogContent className="max-w-3xl">
+                <DialogTitle className="sr-only">{car.title} 360° Viewer</DialogTitle>
+                <Car360Viewer image={car.image} title={car.title} />
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         {/* Details */}
