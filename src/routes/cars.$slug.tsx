@@ -12,50 +12,54 @@ import { useCompare } from "@/lib/compare";
 import { getPublicFeatureFlags } from "@/lib/public.functions";
 
 export const Route = createFileRoute("/cars/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const car = getCar(params.slug);
     if (!car) throw notFound();
-    return car;
+    const flags = await getPublicFeatureFlags();
+    return { car, viewer360Enabled: flags.viewer_360_enabled };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.year} ${loaderData?.title} For Sale in Dubai | Luxury Car Gallery Dubai` },
-      {
-        name: "description",
-        content: loaderData
-          ? `${loaderData.title} for sale in Dubai. ${loaderData.mileage.toLocaleString()} km, ${loaderData.transmission}, ${loaderData.exteriorColour}. ${formatPrice(loaderData.price)}.`
-          : "Luxury car for sale in Dubai.",
-      },
-      { property: "og:title", content: `${loaderData?.year} ${loaderData?.title}` },
-      { property: "og:image", content: loaderData?.image },
-      { property: "og:type", content: "product" },
-    ],
-    links: [{ rel: "canonical", href: `/cars/${loaderData?.slug}` }],
-    scripts: loaderData
-      ? [
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Car",
-              name: loaderData.title,
-              brand: loaderData.brand,
-              modelDate: loaderData.year,
-              mileageFromOdometer: loaderData.mileage,
-              vehicleTransmission: loaderData.transmission,
-              fuelType: loaderData.fuel,
-              color: loaderData.exteriorColour,
-              offers: {
-                "@type": "Offer",
-                price: loaderData.price,
-                priceCurrency: "AED",
-                availability: loaderData.sold ? "SoldOut" : "InStock",
-              },
-            }),
-          },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    const car = loaderData?.car;
+    return {
+      meta: [
+        { title: `${car?.year} ${car?.title} For Sale in Dubai | Luxury Car Gallery Dubai` },
+        {
+          name: "description",
+          content: car
+            ? `${car.title} for sale in Dubai. ${car.mileage.toLocaleString()} km, ${car.transmission}, ${car.exteriorColour}. ${formatPrice(car.price)}.`
+            : "Luxury car for sale in Dubai.",
+        },
+        { property: "og:title", content: `${car?.year} ${car?.title}` },
+        { property: "og:image", content: car?.image },
+        { property: "og:type", content: "product" },
+      ],
+      links: [{ rel: "canonical", href: `/cars/${car?.slug}` }],
+      scripts: car
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Car",
+                name: car.title,
+                brand: car.brand,
+                modelDate: car.year,
+                mileageFromOdometer: car.mileage,
+                vehicleTransmission: car.transmission,
+                fuelType: car.fuel,
+                color: car.exteriorColour,
+                offers: {
+                  "@type": "Offer",
+                  price: car.price,
+                  priceCurrency: "AED",
+                  availability: car.sold ? "SoldOut" : "InStock",
+                },
+              }),
+            },
+          ]
+        : [],
+    };
+  },
   notFoundComponent: () => (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 pt-28 text-center">
       <h1 className="text-4xl">Vehicle not found</h1>
