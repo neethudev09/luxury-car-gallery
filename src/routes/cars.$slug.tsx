@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
 import { useCompare } from "@/lib/compare";
+import { getPublicFeatureFlags } from "@/lib/public.functions";
 
 export const Route = createFileRoute("/cars/$slug")({
   loader: ({ params }) => {
