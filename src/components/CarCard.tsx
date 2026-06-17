@@ -4,6 +4,7 @@ import type { Car } from "@/data/cars";
 import { formatPrice, whatsappLink } from "@/data/cars";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useCompare } from "@/lib/compare";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
@@ -92,34 +93,56 @@ export function CarCard({ car }: { car: Car }) {
             <p className="font-display text-lg text-gold">{formatPrice(car.price)}</p>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => toggleSaved(car.slug)}
-              aria-label="Save vehicle"
-              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
-                saved ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
-              }`}
-            >
-              <Heart className={`h-4.5 w-4.5 ${saved ? "fill-gold" : ""}`} />
-            </button>
-            <button
-              onClick={() => toggleCompare(car.slug)}
-              aria-label="Compare vehicle"
-              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
-                compared ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
-              }`}
-            >
-              <GitCompare className="h-4.5 w-4.5" />
-            </button>
-            <a
-              href={whatsappLink(`I'm interested in the ${car.year} ${car.title}.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors hover:bg-gold hover:text-primary-foreground"
-              aria-label="WhatsApp enquiry"
-            >
-              <WhatsAppIcon className="h-5 w-5" />
-            </a>
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => toggleSaved(car.slug)}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                      saved ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
+                    }`}
+                  >
+                    <Heart className={`h-4.5 w-4.5 ${saved ? "fill-gold" : ""}`} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="border border-border/60 bg-card text-xs text-foreground shadow-luxury">
+                  {saved ? "Remove from saved" : "Save this vehicle"}
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => toggleCompare(car.slug)}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                      compared ? "border-gold bg-gold/10 text-gold" : "border-border text-foreground/70 hover:border-gold hover:text-gold"
+                    }`}
+                  >
+                    <GitCompare className="h-4.5 w-4.5" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="border border-border/60 bg-card text-xs text-foreground shadow-luxury">
+                  {compared ? "Remove from comparison" : "Compare this vehicle"}
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a
+                    href={whatsappLink(`I'm interested in the ${car.year} ${car.title}.`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-500/40 text-emerald-400 transition-colors hover:bg-emerald-500 hover:text-white"
+                  >
+                    <WhatsAppIcon className="h-5 w-5" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="border border-border/60 bg-card text-xs text-foreground shadow-luxury">
+                  WhatsApp enquiry
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </div>
