@@ -74,7 +74,7 @@ function VehiclePage() {
   
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const related = cars.filter((c) => c.brandSlug === car.brandSlug && c.slug !== car.slug).slice(0, 3);
-  const gallery = [car.image, car.image, car.image, car.image];
+  const gallery = car.images && car.images.length > 0 ? car.images : [car.image, car.image, car.image, car.image];
   const [active, setActive] = useState(0);
 
   return (
