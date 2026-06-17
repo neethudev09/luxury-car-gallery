@@ -106,7 +106,7 @@ function VehiclePage() {
             </div>
             <button
               onClick={() => setShow360(true)}
-              className="absolute bottom-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+              className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-colors hover:bg-black/80"
             >
               <RotateCcw className="h-3.5 w-3.5" /> 360°
             </button>
