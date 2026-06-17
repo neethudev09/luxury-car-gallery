@@ -1,4 +1,19 @@
 import carPlaceholder from "@/assets/car-placeholder.jpg";
+import bentleyGt1 from "@/assets/cars/bentley-gt-speed/1.webp";
+import bentleyGt2 from "@/assets/cars/bentley-gt-speed/2.webp";
+import bentleyGt3 from "@/assets/cars/bentley-gt-speed/3.webp";
+import bentleyGt4 from "@/assets/cars/bentley-gt-speed/4.webp";
+import bentleyGt5 from "@/assets/cars/bentley-gt-speed/5.webp";
+import bentleyGt6 from "@/assets/cars/bentley-gt-speed/6.webp";
+import bentleyGt7 from "@/assets/cars/bentley-gt-speed/7.webp";
+import bentleyGt8 from "@/assets/cars/bentley-gt-speed/8.webp";
+import bentleyGt9 from "@/assets/cars/bentley-gt-speed/9.webp";
+import bentleyGt10 from "@/assets/cars/bentley-gt-speed/10.webp";
+
+const bentleyGtSpeedImages = [
+  bentleyGt1, bentleyGt2, bentleyGt3, bentleyGt4, bentleyGt5,
+  bentleyGt6, bentleyGt7, bentleyGt8, bentleyGt9, bentleyGt10,
+];
 
 export interface Brand {
   name: string;
@@ -55,6 +70,7 @@ export interface Car {
   topSpeed: number;
   accel: number;
   image: string;
+  images?: string[];
   featured: boolean;
   newArrival: boolean;
   sold: boolean;
@@ -103,7 +119,8 @@ const base: CarBase[] = [
     bodyType: "Coupe",
     exteriorColour: "White",
     interiorColour: "Beige",
-    image: carPlaceholder,
+    image: bentleyGtSpeedImages[0],
+    images: bentleyGtSpeedImages,
     featured: false,
     sold: false,
     description:
