@@ -262,8 +262,7 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Red",
     interiorColour: "BLACK",
-    image: ferrariSf90Images[0],
-    images: ferrariSf90Images,
+    image: carPlaceholder,
     featured: true,
     sold: false,
     description:
