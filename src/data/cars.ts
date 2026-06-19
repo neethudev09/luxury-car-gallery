@@ -262,8 +262,9 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Red",
     interiorColour: "BLACK",
-    image: carPlaceholder,
-    featured: false,
+    image: ferrariSf90Images[0],
+    images: ferrariSf90Images,
+    featured: true,
     sold: false,
     description:
       "BMW X6M COMPETITION 900 HP (2022). GCC spec, finished in RED over BLACK. 40,850 km. Presented by Luxury Car Gallery, Dubai.",
