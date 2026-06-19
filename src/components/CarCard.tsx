@@ -27,7 +27,7 @@ export function CarCard({ car }: { car: Car }) {
             loading="lazy"
             width={1024}
             height={768}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card via-card/10 to-transparent" />
 

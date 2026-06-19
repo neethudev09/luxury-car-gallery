@@ -92,6 +92,7 @@ function Inventory() {
       return true;
     });
     list = [...list].sort((a, b) => {
+      if (a.featured !== b.featured) return a.featured ? -1 : 1;
       if (sort === "price-asc") return a.price - b.price;
       if (sort === "price-desc") return b.price - a.price;
       if (sort === "mileage") return a.mileage - b.mileage;

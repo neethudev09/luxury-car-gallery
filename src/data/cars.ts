@@ -800,7 +800,14 @@ export const configurator = {
   ],
 };
 
-export const featuredCars = cars.filter((c) => c.featured && !c.sold);
+export const featuredCars = cars
+  .filter((c) => c.featured && !c.sold)
+  .sort((a, b) => {
+    const aReal = a.image !== carPlaceholder;
+    const bReal = b.image !== carPlaceholder;
+    if (aReal !== bReal) return aReal ? -1 : 1;
+    return b.year - a.year;
+  });
 
 export function getCar(slug: string) {
   return cars.find((c) => c.slug === slug);
