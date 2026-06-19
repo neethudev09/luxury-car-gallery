@@ -63,6 +63,22 @@ const bmw5SeriesImages = [
   bmw5_6, bmw5_7, bmw5_8, bmw5_9, bmw5_10,
 ];
 
+import sf90_1 from "@/assets/cars/ferrari-sf90/1.webp";
+import sf90_2 from "@/assets/cars/ferrari-sf90/2.webp";
+import sf90_3 from "@/assets/cars/ferrari-sf90/3.webp";
+import sf90_4 from "@/assets/cars/ferrari-sf90/4.webp";
+import sf90_5 from "@/assets/cars/ferrari-sf90/5.webp";
+import sf90_6 from "@/assets/cars/ferrari-sf90/6.webp";
+import sf90_7 from "@/assets/cars/ferrari-sf90/7.webp";
+import sf90_8 from "@/assets/cars/ferrari-sf90/8.webp";
+import sf90_9 from "@/assets/cars/ferrari-sf90/9.webp";
+import sf90_10 from "@/assets/cars/ferrari-sf90/10.webp";
+
+const ferrariSf90Images = [
+  sf90_1, sf90_2, sf90_3, sf90_4, sf90_5,
+  sf90_6, sf90_7, sf90_8, sf90_9, sf90_10,
+];
+
 
 
 export interface Brand {
