@@ -47,6 +47,24 @@ const bmwX7Images = [
   bmwX7_6, bmwX7_7, bmwX7_8, bmwX7_9, bmwX7_10,
 ];
 
+import bmw5_1 from "@/assets/cars/bmw-5-series/1.webp";
+import bmw5_2 from "@/assets/cars/bmw-5-series/2.webp";
+import bmw5_3 from "@/assets/cars/bmw-5-series/3.webp";
+import bmw5_4 from "@/assets/cars/bmw-5-series/4.webp";
+import bmw5_5 from "@/assets/cars/bmw-5-series/5.webp";
+import bmw5_6 from "@/assets/cars/bmw-5-series/6.webp";
+import bmw5_7 from "@/assets/cars/bmw-5-series/7.webp";
+import bmw5_8 from "@/assets/cars/bmw-5-series/8.webp";
+import bmw5_9 from "@/assets/cars/bmw-5-series/9.webp";
+import bmw5_10 from "@/assets/cars/bmw-5-series/10.webp";
+
+const bmw5SeriesImages = [
+  bmw5_1, bmw5_2, bmw5_3, bmw5_4, bmw5_5,
+  bmw5_6, bmw5_7, bmw5_8, bmw5_9, bmw5_10,
+];
+
+
+
 export interface Brand {
   name: string;
   slug: string;
@@ -206,7 +224,8 @@ const base: CarBase[] = [
     bodyType: "Sedan",
     exteriorColour: "White",
     interiorColour: "BEIGE Alcantara",
-    image: carPlaceholder,
+    image: bmw5SeriesImages[0],
+    images: bmw5SeriesImages,
     featured: false,
     sold: false,
     description:
