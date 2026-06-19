@@ -283,8 +283,9 @@ const base: CarBase[] = [
     bodyType: "Coupe",
     exteriorColour: "Rosso Corsa",
     interiorColour: "Black / Alcantara",
-    image: carPlaceholder,
-    featured: false,
+    image: ferrariSf90Images[0],
+    images: ferrariSf90Images,
+    featured: true,
     sold: false,
     description:
       "Ferrari SF90 Stradale Assetto Fiorano (2021). Euro spec, finished in Rosso Corsa over Black / Alcantara. 3,222 km. Presented by Luxury Car Gallery, Dubai.",
