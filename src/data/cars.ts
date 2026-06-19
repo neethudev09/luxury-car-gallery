@@ -31,6 +31,22 @@ const ferrari812GtsImages = [
   ferrari812Gts6, ferrari812Gts7, ferrari812Gts8, ferrari812Gts9, ferrari812Gts10,
 ];
 
+import bmwX7_1 from "@/assets/cars/bmw-x7/1.webp";
+import bmwX7_2 from "@/assets/cars/bmw-x7/2.webp";
+import bmwX7_3 from "@/assets/cars/bmw-x7/3.webp";
+import bmwX7_4 from "@/assets/cars/bmw-x7/4.webp";
+import bmwX7_5 from "@/assets/cars/bmw-x7/5.webp";
+import bmwX7_6 from "@/assets/cars/bmw-x7/6.webp";
+import bmwX7_7 from "@/assets/cars/bmw-x7/7.webp";
+import bmwX7_8 from "@/assets/cars/bmw-x7/8.webp";
+import bmwX7_9 from "@/assets/cars/bmw-x7/9.webp";
+import bmwX7_10 from "@/assets/cars/bmw-x7/10.webp";
+
+const bmwX7Images = [
+  bmwX7_1, bmwX7_2, bmwX7_3, bmwX7_4, bmwX7_5,
+  bmwX7_6, bmwX7_7, bmwX7_8, bmwX7_9, bmwX7_10,
+];
+
 export interface Brand {
   name: string;
   slug: string;
@@ -168,7 +184,8 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Black",
     interiorColour: "Cream white/ Blue",
-    image: carPlaceholder,
+    image: bmwX7Images[0],
+    images: bmwX7Images,
     featured: false,
     sold: false,
     description:
