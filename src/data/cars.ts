@@ -262,8 +262,7 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Red",
     interiorColour: "BLACK",
-    image: ferrariSf90Images[0],
-    images: ferrariSf90Images,
+    image: carPlaceholder,
     featured: true,
     sold: false,
     description:
@@ -284,8 +283,9 @@ const base: CarBase[] = [
     bodyType: "Coupe",
     exteriorColour: "Rosso Corsa",
     interiorColour: "Black / Alcantara",
-    image: carPlaceholder,
-    featured: false,
+    image: ferrariSf90Images[0],
+    images: ferrariSf90Images,
+    featured: true,
     sold: false,
     description:
       "Ferrari SF90 Stradale Assetto Fiorano (2021). Euro spec, finished in Rosso Corsa over Black / Alcantara. 3,222 km. Presented by Luxury Car Gallery, Dubai.",
@@ -800,7 +800,14 @@ export const configurator = {
   ],
 };
 
-export const featuredCars = cars.filter((c) => c.featured && !c.sold);
+export const featuredCars = cars
+  .filter((c) => c.featured && !c.sold)
+  .sort((a, b) => {
+    const aReal = a.image !== carPlaceholder;
+    const bReal = b.image !== carPlaceholder;
+    if (aReal !== bReal) return aReal ? -1 : 1;
+    return b.year - a.year;
+  });
 
 export function getCar(slug: string) {
   return cars.find((c) => c.slug === slug);
