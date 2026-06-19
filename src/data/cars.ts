@@ -224,7 +224,8 @@ const base: CarBase[] = [
     bodyType: "Sedan",
     exteriorColour: "White",
     interiorColour: "BEIGE Alcantara",
-    image: carPlaceholder,
+    image: bmw5SeriesImages[0],
+    images: bmw5SeriesImages,
     featured: false,
     sold: false,
     description:
