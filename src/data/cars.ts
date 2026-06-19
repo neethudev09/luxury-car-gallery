@@ -15,6 +15,22 @@ const bentleyGtSpeedImages = [
   bentleyGt6, bentleyGt7, bentleyGt8, bentleyGt9, bentleyGt10,
 ];
 
+import ferrari812Gts1 from "@/assets/cars/ferrari-812-gts/1.webp";
+import ferrari812Gts2 from "@/assets/cars/ferrari-812-gts/2.webp";
+import ferrari812Gts3 from "@/assets/cars/ferrari-812-gts/3.webp";
+import ferrari812Gts4 from "@/assets/cars/ferrari-812-gts/4.webp";
+import ferrari812Gts5 from "@/assets/cars/ferrari-812-gts/5.webp";
+import ferrari812Gts6 from "@/assets/cars/ferrari-812-gts/6.webp";
+import ferrari812Gts7 from "@/assets/cars/ferrari-812-gts/7.webp";
+import ferrari812Gts8 from "@/assets/cars/ferrari-812-gts/8.webp";
+import ferrari812Gts9 from "@/assets/cars/ferrari-812-gts/9.webp";
+import ferrari812Gts10 from "@/assets/cars/ferrari-812-gts/10.webp";
+
+const ferrari812GtsImages = [
+  ferrari812Gts1, ferrari812Gts2, ferrari812Gts3, ferrari812Gts4, ferrari812Gts5,
+  ferrari812Gts6, ferrari812Gts7, ferrari812Gts8, ferrari812Gts9, ferrari812Gts10,
+];
+
 export interface Brand {
   name: string;
   slug: string;
@@ -236,7 +252,8 @@ const base: CarBase[] = [
     bodyType: "Coupe",
     exteriorColour: "Verde",
     interiorColour: "Cuoio / Alcantara",
-    image: carPlaceholder,
+    image: ferrari812GtsImages[0],
+    images: ferrari812GtsImages,
     featured: true,
     sold: false,
     description:
