@@ -794,7 +794,9 @@ export const cars: Car[] = base.map((c) => {
   const p = perf[c.brandSlug] ?? { engine: "V8", hp: 600, tq: 700, top: 320, accel: 3.4 };
   const gallery = carGalleries[c.slug];
   const heroIdx = (heroImageIndex[c.slug] ?? 1) - 1;
-  const hero = gallery && gallery[heroIdx] ? gallery[heroIdx] : gallery?.[0];
+  const hero =
+    heroOverrides[c.slug] ??
+    (gallery && gallery[heroIdx] ? gallery[heroIdx] : gallery?.[0]);
   const withGallery: CarBase =
     gallery && gallery.length ? { ...c, image: hero as string, images: gallery } : c;
   const enriched: Omit<Car, "specs"> = {
