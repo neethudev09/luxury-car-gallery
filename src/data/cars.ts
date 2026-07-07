@@ -168,6 +168,26 @@ const fmtFeatures = [
   "Carbon / Premium Interior Pack",
 ];
 
+// Auto-loaded car galleries. Any folder under src/assets/cars/<car-slug>/ whose
+// name matches a car slug is picked up here (files named 1.webp, 2.webp, ...).
+const galleryModules = import.meta.glob("../assets/cars/*/*.webp", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+
+const carGalleries: Record<string, string[]> = {};
+{
+  const buckets: Record<string, { n: number; url: string }[]> = {};
+  for (const [path, url] of Object.entries(galleryModules)) {
+    const m = path.match(/cars\/([^/]+)\/(\d+)\.webp$/);
+    if (!m) continue;
+    (buckets[m[1]] ??= []).push({ n: parseInt(m[2], 10), url });
+  }
+  for (const [slug, arr] of Object.entries(buckets)) {
+    carGalleries[slug] = arr.sort((a, b) => a.n - b.n).map((x) => x.url);
+  }
+}
+
 type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpeed" | "accel" | "newArrival">;
 
 const base: CarBase[] = [
@@ -749,8 +769,11 @@ const base: CarBase[] = [
 
 export const cars: Car[] = base.map((c) => {
   const p = perf[c.brandSlug] ?? { engine: "V8", hp: 600, tq: 700, top: 320, accel: 3.4 };
+  const gallery = carGalleries[c.slug];
+  const withGallery: CarBase =
+    gallery && gallery.length ? { ...c, image: gallery[0], images: gallery } : c;
   const enriched: Omit<Car, "specs"> = {
-    ...c,
+    ...withGallery,
     engine: p.engine,
     horsepower: p.hp,
     torque: p.tq,
