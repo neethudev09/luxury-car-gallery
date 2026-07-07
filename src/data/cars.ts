@@ -41,6 +41,7 @@ import bmwX7_7 from "@/assets/cars/bmw-x7/7.webp";
 import bmwX7_8 from "@/assets/cars/bmw-x7/8.webp";
 import bmwX7_9 from "@/assets/cars/bmw-x7/9.webp";
 import bmwX7_10 from "@/assets/cars/bmw-x7/10.webp";
+import bmwX7Hero from "@/assets/cars/bmw-x7/hero.webp";
 
 const bmwX7Images = [
   bmwX7_1, bmwX7_2, bmwX7_3, bmwX7_4, bmwX7_5,
@@ -188,18 +189,28 @@ const carGalleries: Record<string, string[]> = {};
   }
 }
 
+// Optional flipped/curated hero override per folder (src/assets/cars/<slug>/hero.webp).
+// Used when the best available front three-quarter shot faces the wrong way and
+// has to be mirrored so it faces right like the Ferrari 812 GTS.
+const heroModules = import.meta.glob("../assets/cars/*/hero.webp", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+const heroOverrides: Record<string, string> = {};
+for (const [path, url] of Object.entries(heroModules)) {
+  const m = path.match(/cars\/([^/]+)\/hero\.webp$/);
+  if (m) heroOverrides[m[1]] = url;
+}
+
 type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpeed" | "accel" | "newArrival">;
 
 // Which gallery photo (1-based) to use as the thumbnail/hero for each car.
-// Chosen so every car is shown in the same front-left three-quarter angle as
-// the Ferrari 812 GTS (nose toward the lower-left).
+// Chosen so every car is shown in the same front three-quarter angle as the
+// Ferrari 812 GTS (car facing to the right).
 const heroImageIndex: Record<string, number> = {
   "aston-martin-db12-coupe-2024": 6,
-  "mercedes-benz-g63-2022": 8,
   "porsche-911-gt3rs-2016": 1,
-  "porsche-911-turbo-s-techart-2020": 9,
-  "porsche-cayenne-turbo-gt-2025": 11,
-  "range-rover-autobiography-long-wheel-base-2024": 12,
+  "range-rover-autobiography-long-wheel-base-2024": 14,
   "rolls-royce-phantom-2019": 1,
 };
 
@@ -218,7 +229,7 @@ const base: CarBase[] = [
     bodyType: "Coupe",
     exteriorColour: "White",
     interiorColour: "Beige",
-    image: bentleyGtSpeedImages[3],
+    image: bentleyGtSpeedImages[2],
     images: [
       bentleyGtSpeedImages[3],
       bentleyGtSpeedImages[2],
@@ -252,7 +263,7 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Black",
     interiorColour: "Cream white/ Blue",
-    image: bmwX7Images[0],
+    image: bmwX7Hero,
     images: bmwX7Images,
     featured: false,
     sold: false,
@@ -784,7 +795,9 @@ export const cars: Car[] = base.map((c) => {
   const p = perf[c.brandSlug] ?? { engine: "V8", hp: 600, tq: 700, top: 320, accel: 3.4 };
   const gallery = carGalleries[c.slug];
   const heroIdx = (heroImageIndex[c.slug] ?? 1) - 1;
-  const hero = gallery && gallery[heroIdx] ? gallery[heroIdx] : gallery?.[0];
+  const hero =
+    heroOverrides[c.slug] ??
+    (gallery && gallery[heroIdx] ? gallery[heroIdx] : gallery?.[0]);
   const withGallery: CarBase =
     gallery && gallery.length ? { ...c, image: hero as string, images: gallery } : c;
   const enriched: Omit<Car, "specs"> = {
