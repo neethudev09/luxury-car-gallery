@@ -229,7 +229,7 @@ const base: CarBase[] = [
     bodyType: "Coupe",
     exteriorColour: "White",
     interiorColour: "Beige",
-    image: bentleyGtSpeedImages[3],
+    image: bentleyGtSpeedImages[2],
     images: [
       bentleyGtSpeedImages[3],
       bentleyGtSpeedImages[2],
