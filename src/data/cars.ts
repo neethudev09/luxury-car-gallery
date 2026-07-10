@@ -556,12 +556,12 @@ const base: CarBase[] = [
     transmission: "Automatic",
     bodyType: "SUV",
     exteriorColour: "Black",
-    interiorColour: "Orange",
+    interiorColour: "Blue",
     image: carPlaceholder,
     featured: true,
     sold: false,
     description:
-      "Rolls-Royce CULLINAN Black Badge (2021). GCC spec, finished in black over Orange. 19,000 km. Presented by Luxury Car Gallery, Dubai.",
+      "Rolls-Royce CULLINAN Black Badge (2021). GCC spec, finished in black over Blue. 19,000 km. Presented by Luxury Car Gallery, Dubai.",
     features: fmtFeatures,
   },
   {
