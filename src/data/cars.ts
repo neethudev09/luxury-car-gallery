@@ -209,9 +209,9 @@ type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpee
 // Ferrari 812 GTS (car facing to the right).
 const heroImageIndex: Record<string, number> = {
   "aston-martin-db12-coupe-2024": 6,
-  "porsche-911-gt3rs-2016": 1,
-  "range-rover-autobiography-long-wheel-base-2024": 14,
-  "rolls-royce-phantom-2019": 1,
+  "porsche-911-gt3rs-2016": 4,
+  "range-rover-autobiography-long-wheel-base-2024": 12,
+  "rolls-royce-phantom-2019": 6,
 };
 
 const base: CarBase[] = [
