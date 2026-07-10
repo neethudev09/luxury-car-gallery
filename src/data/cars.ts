@@ -213,6 +213,7 @@ const heroImageIndex: Record<string, number> = {
   "porsche-992-911-gt3-rs-weissach-2025": 12,
   "range-rover-autobiography-long-wheel-base-2024": 12,
   "rolls-royce-phantom-2019": 6,
+  "tesla-cybertruck-2024": 3,
 };
 
 const base: CarBase[] = [
