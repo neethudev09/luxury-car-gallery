@@ -92,10 +92,10 @@ export interface Brand {
 export const brands: Brand[] = [
   { name: "Aston Martin", slug: "aston-martin", available: 1, sold: 0 },
   { name: "Bentley", slug: "bentley", available: 1, sold: 0 },
-  { name: "BMW", slug: "bmw", available: 3, sold: 0 },
+  { name: "BMW", slug: "bmw", available: 2, sold: 0 },
   { name: "Ferrari", slug: "ferrari", available: 3, sold: 0 },
   { name: "Lamborghini", slug: "lamborghini", available: 3, sold: 0 },
-  { name: "Mercedes-Benz", slug: "mercedes-benz", available: 4, sold: 0 },
+  { name: "Mercedes-Benz", slug: "mercedes-benz", available: 3, sold: 0 },
   { name: "Porsche", slug: "porsche", available: 5, sold: 0 },
   { name: "Range Rover", slug: "range-rover", available: 1, sold: 0 },
   { name: "Rolls-Royce", slug: "rolls-royce", available: 2, sold: 0 },
