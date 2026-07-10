@@ -212,41 +212,7 @@ const carGalleries: Record<string, string[]> = {};
   }
 }
 
-// Optional flipped/curated hero override per folder (src/assets/cars/<slug>/hero.webp).
-// Used when the best available front three-quarter shot faces the wrong way and
-// has to be mirrored so it faces right like the Ferrari 812 GTS.
-const heroModules = import.meta.glob("../assets/cars/*/hero.webp", {
-  eager: true,
-  import: "default",
-}) as Record<string, string>;
-const heroOverrides: Record<string, string> = {};
-for (const [path, url] of Object.entries(heroModules)) {
-  const m = path.match(/cars\/([^/]+)\/hero\.webp$/);
-  if (m) heroOverrides[m[1]] = url;
-}
-
 type CarBase = Omit<Car, "specs" | "engine" | "horsepower" | "torque" | "topSpeed" | "accel" | "newArrival">;
-
-// Which gallery photo (1-based) to use as the thumbnail/hero for each car.
-// Chosen so every car is shown in the same front three-quarter angle as the
-// Ferrari 812 GTS (car facing to the right).
-const heroImageIndex: Record<string, number> = {
-  "aston-martin-db12-coupe-2024": 6,
-  "porsche-911-gt3rs-2016": 8,
-  "porsche-992-911-gt3-rs-weissach-2025": 12,
-  "range-rover-autobiography-long-wheel-base-2024": 12,
-  "rolls-royce-phantom-2019": 6,
-  "tesla-cybertruck-2024": 3,
-  "porsche-911-carrera-gts-2023": 13,
-  "lamborghini-urus-se-2025": 17,
-  "lamborghini-urus-mansory-kit-2019": 17,
-  "lamborghini-aventador-2012": 8,
-  "mercedes-benz-g63-2022": 8,
-  "mercedes-benz-g63-4x4-amg-2022": 6,
-  "porsche-911-turbo-s-techart-2020": 11,
-  "porsche-cayenne-turbo-gt-2025": 11,
-  "porsche-911-carrera-classic-coupe-1973": 15,
-};
 
 const base: CarBase[] = [
   {
