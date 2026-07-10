@@ -576,3 +576,75 @@ export const getContentIndex = createServerFn({ method: "GET" })
 
     return { items };
   });
+
+// ============================================================
+// HEALTH CHECK (admin dashboard diagnostics)
+// ============================================================
+export const getHealthCheck = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+
+    const check = async <T>(fn: () => Promise<T>): Promise<{ ok: boolean; error?: string; value?: T }> => {
+      try {
+        const value = await fn();
+        return { ok: true, value };
+      } catch (e) {
+        return { ok: false, error: e instanceof Error ? e.message : String(e) };
+      }
+    };
+
+    // Database connectivity + counts
+    const vehicles = await check(async () => {
+      const { count, error } = await supabase
+        .from("vehicles")
+        .select("*", { count: "exact", head: true });
+      if (error) throw new Error(error.message);
+      return count ?? 0;
+    });
+    const brands = await check(async () => {
+      const { count, error } = await supabase
+        .from("brands")
+        .select("*", { count: "exact", head: true });
+      if (error) throw new Error(error.message);
+      return count ?? 0;
+    });
+    const images = await check(async () => {
+      const { count, error } = await supabase
+        .from("media_assets")
+        .select("*", { count: "exact", head: true });
+      if (error) throw new Error(error.message);
+      return count ?? 0;
+    });
+
+    // Storage connectivity + media bucket
+    const bucket = await check(async () => {
+      const { data, error } = await supabase.storage.getBucket("media");
+      if (error) throw new Error(error.message);
+      return { exists: !!data, public: data?.public ?? false };
+    });
+
+    const dbConnected = vehicles.ok && brands.ok && images.ok;
+    const storageConnected = bucket.ok;
+
+    return {
+      checkedAt: new Date().toISOString(),
+      database: { ok: dbConnected, error: vehicles.error ?? brands.error ?? images.error },
+      storage: { ok: storageConnected, error: bucket.error },
+      mediaBucket: {
+        ok: bucket.ok && !!bucket.value?.exists,
+        public: bucket.value?.public ?? false,
+        error: bucket.error,
+      },
+      auth: { ok: !!userId, userId },
+      counts: {
+        vehicles: vehicles.value ?? null,
+        brands: brands.value ?? null,
+        images: images.value ?? null,
+      },
+      deployment: {
+        env: import.meta.env.MODE,
+        builtAt: import.meta.env.VITE_BUILD_TIME ?? null,
+      },
+    };
+  });
