@@ -15,8 +15,8 @@ const aed = (n: number) =>
  * a mirrored reflection — a premium dealership viewing experience rather than a
  * rendered configurator.
  */
-export function VehicleShowcase() {
-  const cars = featuredCars.length ? featuredCars : [];
+export function VehicleShowcase({ vehicles }: { vehicles?: Car[] }) {
+  const cars = vehicles && vehicles.length ? vehicles : featuredCars;
   const [index, setIndex] = useState(0);
   const drag = useRef<{ startX: number; moved: boolean } | null>(null);
 
