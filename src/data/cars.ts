@@ -41,7 +41,7 @@ import bmwX7_7 from "@/assets/cars/bmw-x7/7.webp";
 import bmwX7_8 from "@/assets/cars/bmw-x7/8.webp";
 import bmwX7_9 from "@/assets/cars/bmw-x7/9.webp";
 import bmwX7_10 from "@/assets/cars/bmw-x7/10.webp";
-import bmwX7Hero from "@/assets/cars/bmw-x7/hero.webp";
+
 
 const bmwX7Images = [
   bmwX7_1, bmwX7_2, bmwX7_3, bmwX7_4, bmwX7_5,
