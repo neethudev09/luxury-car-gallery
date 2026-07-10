@@ -510,13 +510,13 @@ const base: CarBase[] = [
     fuel: "Petrol",
     transmission: "Automatic",
     bodyType: "Coupe",
-    exteriorColour: "Black Metallic",
-    interiorColour: "Black / Yellow stitching",
+    exteriorColour: "Chalk Grey",
+    interiorColour: "Red Leather",
     image: carPlaceholder,
     featured: false,
     sold: false,
     description:
-      "Porsche 992 911 GT3 RS Weissach (2025). European spec, finished in Black Metallic over Black / Yellow stitching. 5,900 km. Presented by Luxury Car Gallery, Dubai.",
+      "Porsche 992 911 GT3 RS Weissach (2025). European spec, finished in Chalk Grey over Red Leather. 5,900 km. Presented by Luxury Car Gallery, Dubai.",
     features: fmtFeatures,
   },
   {
