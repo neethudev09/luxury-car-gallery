@@ -1,4 +1,27 @@
 import carPlaceholder from "@/assets/car-placeholder.jpg";
+import cullinanBB1 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/1.webp";
+import cullinanBB2 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/2.webp";
+import cullinanBB3 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/3.webp";
+import cullinanBB4 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/4.webp";
+import cullinanBB5 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/5.webp";
+import cullinanBB6 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/6.webp";
+import cullinanBB7 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/7.webp";
+import cullinanBB8 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/8.webp";
+import cullinanBB9 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/9.webp";
+import cullinanBB10 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/10.webp";
+import cullinanBB11 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/11.webp";
+import cullinanBB12 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/12.webp";
+import cullinanBB13 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/13.webp";
+import cullinanBB14 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/14.webp";
+import cullinanBB15 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/15.webp";
+import cullinanBB16 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/16.webp";
+import cullinanBB17 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/17.webp";
+
+const cullinanBlackBadgeImages = [
+  cullinanBB1, cullinanBB2, cullinanBB3, cullinanBB4, cullinanBB5, cullinanBB6,
+  cullinanBB7, cullinanBB8, cullinanBB9, cullinanBB10, cullinanBB11, cullinanBB12,
+  cullinanBB13, cullinanBB14, cullinanBB15, cullinanBB16, cullinanBB17,
+];
 import bentleyGt1 from "@/assets/cars/bentley-gt-speed/1.webp";
 import bentleyGt2 from "@/assets/cars/bentley-gt-speed/2.webp";
 import bentleyGt3 from "@/assets/cars/bentley-gt-speed/3.webp";
@@ -557,7 +580,8 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Black",
     interiorColour: "Blue",
-    image: carPlaceholder,
+    image: cullinanBlackBadgeImages[0],
+    images: cullinanBlackBadgeImages,
     featured: true,
     sold: false,
     description:
