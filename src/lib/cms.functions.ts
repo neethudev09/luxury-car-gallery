@@ -478,6 +478,67 @@ export const setUserRole = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const createUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { email: string; password: string; displayName?: string; role: string }) =>
+    z
+      .object({
+        email: z.string().email().max(255),
+        password: z.string().min(6).max(72),
+        displayName: z.string().max(120).optional(),
+        role: z.enum(["admin", "manager", "editor", "user"]),
+      })
+      .parse(d),
+  )
+  .handler(async ({ context, data }) => {
+    const { data: roles } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin");
+    if ((roles ?? []).length === 0) throw new Error("Only administrators can manage users");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
+      email: data.email,
+      password: data.password,
+      email_confirm: true,
+      user_metadata: { display_name: data.displayName ?? data.email.split("@")[0] },
+    });
+    if (error) throw new Error(error.message);
+    const newId = created.user?.id;
+    if (!newId) throw new Error("User creation failed");
+
+    // handle_new_user trigger creates profile + default role; override role
+    await supabaseAdmin.from("user_roles").delete().eq("user_id", newId);
+    const { error: roleErr } = await supabaseAdmin
+      .from("user_roles")
+      .insert({ user_id: newId, role: data.role as never });
+    if (roleErr) throw new Error(roleErr.message);
+    return { ok: true, id: newId };
+  });
+
+export const deleteUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { userId: string }) =>
+    z.object({ userId: z.string().uuid() }).parse(d),
+  )
+  .handler(async ({ context, data }) => {
+    const { data: roles } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin");
+    if ((roles ?? []).length === 0) throw new Error("Only administrators can manage users");
+    if (data.userId === context.userId) throw new Error("You cannot delete your own account");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(data.userId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+
 // ============================================================
 // DASHBOARD STATS
 // ============================================================
