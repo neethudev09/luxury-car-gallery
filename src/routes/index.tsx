@@ -22,8 +22,9 @@ import { VehicleShowcase } from "@/components/VehicleShowcase";
 import { FinanceCalculator } from "@/components/FinanceCalculator";
 
 import { BrandLogo } from "@/components/BrandLogo";
-import { getBrandsWithCounts } from "@/lib/public.functions";
-import { featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
+import { getBrandsWithCounts, getPublicVehicles } from "@/lib/public.functions";
+import { mapDbVehicle, type DbVehicle } from "@/lib/vehicle-map";
+import { whatsappLink, EMAIL, PHONE, type Car } from "@/data/cars";
 import { posts } from "@/data/blog";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import heroVideo from "@/assets/hero-video.mp4.asset.json";
