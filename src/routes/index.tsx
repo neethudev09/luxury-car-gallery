@@ -510,7 +510,8 @@ function FinanceSection() {
 }
 
 function SocialSection() {
-  const feed = [cars[0], cars[2], cars[5], cars[10], cars[1], cars[6]];
+  const { feed } = Route.useLoaderData() as { featured: Car[]; feed: Car[] };
+
   return (
     <section className="mx-auto max-w-7xl px-5 py-12">
       <SectionHeading
