@@ -20,6 +20,8 @@ import {
   Users,
   Plug,
   Settings as SettingsIcon,
+  Activity,
+
 
 } from "lucide-react";
 import { useServerFn } from "@/lib/server-compat";
@@ -49,6 +51,7 @@ const nav = [
   { to: "/admin/integrations", label: "Google Tools", icon: Plug, exact: false },
   { to: "/admin/users", label: "Users", icon: Users, exact: false },
   { to: "/admin/settings", label: "Settings", icon: SettingsIcon, exact: false },
+  { to: "/admin/health", label: "Health Check", icon: Activity, exact: false },
 ];
 
 
