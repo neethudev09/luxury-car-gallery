@@ -216,6 +216,8 @@ const heroImageIndex: Record<string, number> = {
   "tesla-cybertruck-2024": 3,
   "porsche-911-carrera-gts-2023": 13,
   "lamborghini-urus-se-2025": 17,
+  "lamborghini-urus-mansory-kit-2019": 17,
+  "lamborghini-aventador-2012": 8,
 };
 
 const base: CarBase[] = [
@@ -448,13 +450,13 @@ const base: CarBase[] = [
     fuel: "Petrol",
     transmission: "Automatic",
     bodyType: "SUV",
-    exteriorColour: "Purple With Black Carbon",
-    interiorColour: "tiffany blue",
+    exteriorColour: "Yellow with Black Carbon",
+    interiorColour: "Black / Yellow",
     image: carPlaceholder,
     featured: false,
     sold: false,
     description:
-      "Lamborghini Urus MANSORY KIT (2019). GCC spec, finished in Purple with Black Carbon over tiffany blue. 54,500 km. Presented by Luxury Car Gallery, Dubai.",
+      "Lamborghini Urus MANSORY KIT (2019). GCC spec, finished in Yellow with Black Carbon over Black / Yellow. 54,500 km. Presented by Luxury Car Gallery, Dubai.",
     features: fmtFeatures,
   },
   {
