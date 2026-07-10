@@ -279,7 +279,7 @@ function FeaturedSection() {
         </p>
       </Reveal>
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {featuredCars.slice(0, 6).map((car, i) => (
+        {featured.slice(0, 6).map((car, i) => (
           <Reveal key={car.slug} delay={(i % 3) * 0.08}>
             <CarCard car={car} />
           </Reveal>
