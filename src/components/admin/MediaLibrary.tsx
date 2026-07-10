@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@/lib/server-compat";
 import { toast } from "sonner";
-import { Plus, Trash2, Loader2, ImageOff, Search } from "lucide-react";
+import { Plus, Trash2, Loader2, ImageOff, Search, UploadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -87,6 +88,56 @@ export function MediaLibrary() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Media>(emptyRecord);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const slugify = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\.[^.]+$/, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "")
+      .slice(0, 60);
+
+  const uploadFiles = async (files: FileList | File[]) => {
+    const images = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (images.length === 0) {
+      toast.error("Only image files are supported");
+      return;
+    }
+    setUploading(true);
+    let ok = 0;
+    for (const file of images) {
+      try {
+        const ext = file.name.split(".").pop() ?? "jpg";
+        const path = `uploads/${Date.now()}-${slugify(file.name)}.${ext}`;
+        const { error: upErr } = await supabase.storage
+          .from("media")
+          .upload(path, file, { cacheControl: "31536000", upsert: false });
+        if (upErr) throw upErr;
+        const { data: pub } = supabase.storage.from("media").getPublicUrl(path);
+        const title = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+        await saveFn({
+          data: {
+            url: pub.publicUrl,
+            title,
+            alt: title,
+            folder: folder !== "all" ? folder : "uploads",
+            caption: "",
+          } as Record<string, unknown>,
+        });
+        ok += 1;
+      } catch (e) {
+        toast.error(`${file.name}: ${e instanceof Error ? e.message : "upload failed"}`);
+      }
+    }
+    if (ok > 0) {
+      toast.success(`${ok} image${ok > 1 ? "s" : ""} uploaded`);
+      qc.invalidateQueries({ queryKey: ["media"] });
+    }
+    setUploading(false);
+  };
 
   const folders = useMemo(() => {
     const set = new Set<string>();
@@ -158,6 +209,51 @@ export function MediaLibrary() {
         <Button onClick={openNew}>
           <Plus className="h-4 w-4" /> Add new
         </Button>
+      </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.files) uploadFiles(e.target.files);
+          e.target.value = "";
+        }}
+      />
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => !uploading && fileInputRef.current?.click()}
+        onKeyDown={(e) => {
+          if ((e.key === "Enter" || e.key === " ") && !uploading) fileInputRef.current?.click();
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragOver(false);
+          if (e.dataTransfer.files) uploadFiles(e.dataTransfer.files);
+        }}
+        className={`mt-6 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
+          dragOver ? "border-gold bg-gold/5" : "border-border hover:border-gold/60"
+        } ${uploading ? "pointer-events-none opacity-60" : ""}`}
+      >
+        {uploading ? (
+          <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
+        ) : (
+          <UploadCloud className="h-7 w-7 text-muted-foreground" />
+        )}
+        <p className="text-sm font-medium">
+          {uploading ? "Uploading…" : "Drag & drop images here, or click to browse"}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Uploaded images are added to the library and available across the site.
+        </p>
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
