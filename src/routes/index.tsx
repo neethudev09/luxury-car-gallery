@@ -22,8 +22,9 @@ import { VehicleShowcase } from "@/components/VehicleShowcase";
 import { FinanceCalculator } from "@/components/FinanceCalculator";
 
 import { BrandLogo } from "@/components/BrandLogo";
-import { getBrandsWithCounts } from "@/lib/public.functions";
-import { featuredCars, cars, whatsappLink, EMAIL, PHONE } from "@/data/cars";
+import { getBrandsWithCounts, getPublicVehicles } from "@/lib/public.functions";
+import { mapDbVehicle, type DbVehicle } from "@/lib/vehicle-map";
+import { whatsappLink, EMAIL, PHONE, type Car } from "@/data/cars";
 import { posts } from "@/data/blog";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import heroVideo from "@/assets/hero-video.mp4.asset.json";
@@ -31,6 +32,15 @@ import showroomInterior from "@/assets/showroom-interior.jpg";
 import sellImg from "@/assets/sell-your-car.jpg";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const res = await getPublicVehicles();
+    const all = (res.vehicles as unknown as DbVehicle[]).map(mapDbVehicle);
+    const featured = all
+      .filter((c) => c.featured && !c.sold)
+      .sort((a, b) => b.year - a.year);
+    const feed = all.slice(0, 6);
+    return { featured, feed };
+  },
   head: () => ({
     meta: [
       { title: "Luxury Car Sales Dubai | Luxury Car Gallery" },
@@ -246,6 +256,7 @@ function BrandsSection() {
 
 /* SECTION 3 — FEATURED INVENTORY */
 function FeaturedSection() {
+  const { featured } = Route.useLoaderData() as { featured: Car[]; feed: Car[] };
   return (
     <section className="mx-auto max-w-7xl px-5 py-12">
       <div className="flex flex-wrap items-end justify-between gap-6">
@@ -268,7 +279,7 @@ function FeaturedSection() {
         </p>
       </Reveal>
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {featuredCars.slice(0, 6).map((car, i) => (
+        {featured.slice(0, 6).map((car, i) => (
           <Reveal key={car.slug} delay={(i % 3) * 0.08}>
             <CarCard car={car} />
           </Reveal>
@@ -334,6 +345,7 @@ function BrowseByBrandSection() {
 }
 
 function ThreeSixtySection() {
+  const { featured } = Route.useLoaderData() as { featured: Car[]; feed: Car[] };
   return (
     <section className="relative overflow-hidden py-24">
       <div className="absolute inset-0 bg-grain" />
@@ -367,7 +379,7 @@ function ThreeSixtySection() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <VehicleShowcase />
+          <VehicleShowcase vehicles={featured} />
         </Reveal>
       </div>
 
@@ -499,7 +511,8 @@ function FinanceSection() {
 }
 
 function SocialSection() {
-  const feed = [cars[0], cars[2], cars[5], cars[10], cars[1], cars[6]];
+  const { feed } = Route.useLoaderData() as { featured: Car[]; feed: Car[] };
+
   return (
     <section className="mx-auto max-w-7xl px-5 py-12">
       <SectionHeading

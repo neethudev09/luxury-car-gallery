@@ -7,16 +7,22 @@ import { Car360Viewer } from "@/components/Car360Viewer";
 import { FinanceCalculator } from "@/components/FinanceCalculator";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
+import { formatPrice, whatsappLink, PHONE } from "@/data/cars";
 import { useCompare } from "@/lib/compare";
-import { getPublicFeatureFlags } from "@/lib/public.functions";
+import { getPublicFeatureFlags, getPublicVehicle } from "@/lib/public.functions";
+import { mapDbVehicle, type DbVehicle } from "@/lib/vehicle-map";
 
 export const Route = createFileRoute("/cars/$slug")({
   loader: async ({ params }) => {
-    const car = getCar(params.slug);
-    if (!car) throw notFound();
+    const res = await getPublicVehicle({ data: { slug: params.slug } });
+    if (!res.vehicle) throw notFound();
+    const car = mapDbVehicle(res.vehicle as unknown as DbVehicle);
+    const related = (res.related as unknown as DbVehicle[]).map(mapDbVehicle);
+    const dbFaqs = Array.isArray((res.vehicle as { faqs?: unknown }).faqs)
+      ? ((res.vehicle as { faqs: { q?: string; a?: string; question?: string; answer?: string }[] }).faqs)
+      : [];
     const flags = await getPublicFeatureFlags();
-    return { car, viewer360Enabled: flags.viewer_360_enabled };
+    return { car, related, dbFaqs, viewer360Enabled: flags.viewer_360_enabled };
   },
   head: ({ loaderData }) => {
     const car = loaderData?.car;
@@ -101,8 +107,10 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 function VehiclePage() {
-  const { car, viewer360Enabled } = Route.useLoaderData() as {
+  const { car, related, dbFaqs, viewer360Enabled } = Route.useLoaderData() as {
     car: import("@/data/cars").Car;
+    related: import("@/data/cars").Car[];
+    dbFaqs: { q?: string; a?: string; question?: string; answer?: string }[];
     viewer360Enabled: boolean;
   };
   const { toggleCompare, toggleSaved, isCompared, isSaved } = useCompare();
@@ -110,7 +118,6 @@ function VehiclePage() {
   const saved = isSaved(car.slug);
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const related = cars.filter((c) => c.brandSlug === car.brandSlug && c.slug !== car.slug).slice(0, 3);
   const gallery = car.images && car.images.length > 0 ? car.images : [car.image, car.image, car.image, car.image];
   const [active, setActive] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -123,7 +130,11 @@ function VehiclePage() {
     el.scrollBy({ left: dir * w * 0.8, behavior: "smooth" });
   };
 
-  const faqs = buildFaqs(car);
+  const faqs =
+    dbFaqs && dbFaqs.length > 0
+      ? dbFaqs.map((f) => ({ q: f.q ?? f.question ?? "", a: f.a ?? f.answer ?? "" })).filter((f) => f.q && f.a)
+      : buildFaqs(car);
+
 
   return (
     <div className="pt-28">

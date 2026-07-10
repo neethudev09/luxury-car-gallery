@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Hand, Gauge, Calendar } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { featuredCars } from "@/data/cars";
+import { featuredCars, type Car } from "@/data/cars";
 
 const aed = (n: number) =>
   new Intl.NumberFormat("en-AE", { style: "currency", currency: "AED", maximumFractionDigits: 0 }).format(n);
@@ -15,8 +15,8 @@ const aed = (n: number) =>
  * a mirrored reflection — a premium dealership viewing experience rather than a
  * rendered configurator.
  */
-export function VehicleShowcase() {
-  const cars = featuredCars.length ? featuredCars : [];
+export function VehicleShowcase({ vehicles }: { vehicles?: Car[] }) {
+  const cars = vehicles && vehicles.length ? vehicles : featuredCars;
   const [index, setIndex] = useState(0);
   const drag = useRef<{ startX: number; moved: boolean } | null>(null);
 
