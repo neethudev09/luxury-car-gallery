@@ -100,6 +100,22 @@ export function MediaLibrary() {
   const [form, setForm] = useState<Media>(emptyRecord);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [flipping, setFlipping] = useState(false);
+
+  const flipCurrent = async () => {
+    if (!form.url) return;
+    setFlipping(true);
+    try {
+      const { flipImageHorizontally } = await import("@/lib/flip-image");
+      const newUrl = await flipImageHorizontally(form.url);
+      setForm((f) => ({ ...f, url: newUrl }));
+      toast.success("Image flipped — Save to keep the change");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not flip image");
+    } finally {
+      setFlipping(false);
+    }
+  };
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
