@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@/lib/server-compat";
@@ -47,6 +47,13 @@ const emptyRecord: Media = { url: "", title: "", folder: "general", alt: "", cap
 
 function Thumb({ url, alt }: { url: string; alt: string }) {
   const [broken, setBroken] = useState(false);
+  const [retry, setRetry] = useState(0);
+
+  useEffect(() => {
+    setBroken(false);
+    setRetry(0);
+  }, [url]);
+
   if (broken || !url) {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-1 bg-muted text-muted-foreground">
@@ -55,12 +62,16 @@ function Thumb({ url, alt }: { url: string; alt: string }) {
       </div>
     );
   }
+  const src = retry === 0 ? url : `${url}${url.includes("?") ? "&" : "?"}retry=${retry}`;
   return (
     <img
-      src={url}
+      src={src}
       alt={alt}
       loading="lazy"
-      onError={() => setBroken(true)}
+      onError={() => {
+        if (retry < 2) setRetry((value) => value + 1);
+        else setBroken(true);
+      }}
       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
     />
   );
