@@ -105,6 +105,12 @@ function Home() {
 
 /* SECTION 1 — HERO */
 function Hero() {
+  const { carsAvailable, brandsAvailable } = Route.useLoaderData();
+  const stats = [
+    { label: "Cars Available", value: carsAvailable, suffix: "+" },
+    { label: "Brands Available", value: brandsAvailable, suffix: "" },
+    ...staticStats,
+  ];
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
