@@ -30,6 +30,35 @@ export const getPublicVehicles = createServerFn({ method: "GET" }).handler(async
   return { vehicles: data ?? [] };
 });
 
+// A single vehicle plus related vehicles (same brand), fully from the CMS.
+export const getPublicVehicle = createServerFn({ method: "GET" })
+  .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(200) }).parse(d))
+  .handler(async ({ data }) => {
+    const supabaseAdmin = supabase;
+    const { data: vehicle } = await supabaseAdmin
+      .from("vehicles")
+      .select(
+        "slug,title,brand,brand_slug,model,year,price,mileage,fuel,transmission,body_type,exterior_colour,interior_colour,engine,horsepower,torque,top_speed,accel,description,features,specs,image,gallery,video_url,featured,new_arrival,sold,availability,faqs,seo_title,meta_description,canonical_url,og_image,noindex",
+      )
+      .eq("slug", data.slug)
+      .eq("published", true)
+      .maybeSingle();
+    if (!vehicle) return { vehicle: null, related: [] };
+
+    const { data: related } = await supabaseAdmin
+      .from("vehicles")
+      .select(
+        "slug,title,brand,brand_slug,model,year,price,mileage,fuel,transmission,body_type,exterior_colour,interior_colour,engine,horsepower,image,gallery,featured,new_arrival,sold,availability",
+      )
+      .eq("brand_slug", vehicle.brand_slug)
+      .eq("published", true)
+      .neq("slug", data.slug)
+      .order("sort_order", { ascending: true })
+      .limit(3);
+
+    return { vehicle, related: related ?? [] };
+  });
+
 // Brands with live "available" counts computed directly from the inventory.
 // A vehicle counts as available when published, not sold and not reserved.
 export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(async () => {
