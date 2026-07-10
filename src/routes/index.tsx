@@ -77,12 +77,11 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const stats = [
-  { label: "Cars Available", value: 86, suffix: "+" },
-  { label: "Brands Available", value: 11, suffix: "" },
+const staticStats = [
   { label: "Years In Business", value: 15, suffix: "" },
   { label: "Cars Sold", value: 2400, suffix: "+" },
 ];
+
 
 function Home() {
   return (
