@@ -102,6 +102,10 @@ export const saveVehicle = createServerFn({ method: "POST" })
   .handler(async ({ context, data }) => {
     const { supabase } = context;
     const { id, ...fields } = data;
+    // Keep the inventory thumbnail in sync with the first gallery image.
+    if (fields.gallery && fields.gallery.length > 0) {
+      fields.image = fields.gallery[0];
+    }
     if (id) {
       const { data: updated, error } = await supabase
         .from("vehicles")
