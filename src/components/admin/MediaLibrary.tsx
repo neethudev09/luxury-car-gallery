@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@/lib/server-compat";
 import { toast } from "sonner";
-import { Plus, Trash2, Loader2, ImageOff, Search, UploadCloud } from "lucide-react";
+import { Plus, Trash2, Loader2, ImageOff, Search, UploadCloud, FlipHorizontal2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -100,6 +100,22 @@ export function MediaLibrary() {
   const [form, setForm] = useState<Media>(emptyRecord);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [flipping, setFlipping] = useState(false);
+
+  const flipCurrent = async () => {
+    if (!form.url) return;
+    setFlipping(true);
+    try {
+      const { flipImageHorizontally } = await import("@/lib/flip-image");
+      const newUrl = await flipImageHorizontally(form.url);
+      setForm((f) => ({ ...f, url: newUrl }));
+      toast.success("Image flipped — Save to keep the change");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not flip image");
+    } finally {
+      setFlipping(false);
+    }
+  };
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -352,9 +368,15 @@ export function MediaLibrary() {
                 onChange={(e) => set("url", e.target.value)}
               />
               {form.url ? (
-                <div className="aspect-video w-full overflow-hidden rounded-md border border-border">
-                  <Thumb url={form.url} alt="preview" />
-                </div>
+                <>
+                  <div className="aspect-video w-full overflow-hidden rounded-md border border-border">
+                    <Thumb url={form.url} alt="preview" />
+                  </div>
+                  <Button type="button" variant="outline" size="sm" onClick={flipCurrent} disabled={flipping}>
+                    {flipping ? <Loader2 className="h-4 w-4 animate-spin" /> : <FlipHorizontal2 className="h-4 w-4" />}
+                    Flip horizontally
+                  </Button>
+                </>
               ) : null}
             </div>
             <div className="space-y-1.5">
