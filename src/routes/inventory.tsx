@@ -46,7 +46,22 @@ export const Route = createFileRoute("/inventory")({
 type Status = "all" | "available" | "sold" | "featured" | "latest";
 
 function Inventory() {
+  const { cars } = Route.useLoaderData() as { cars: Car[] };
+  const uniq = (arr: (string | number)[]) => Array.from(new Set(arr.filter(Boolean)));
+  const brands = useMemo(() => {
+    const seen = new Map<string, string>();
+    cars.forEach((c) => seen.set(c.brandSlug, c.brand));
+    return Array.from(seen, ([slug, name]) => ({ slug, name })).sort((a, b) => a.name.localeCompare(b.name));
+  }, [cars]);
+  const models = useMemo(() => (uniq(cars.map((c) => c.model)) as string[]).sort(), [cars]);
+  const years = useMemo(() => (uniq(cars.map((c) => c.year)) as number[]).sort((a, b) => b - a), [cars]);
+  const bodyTypes = useMemo(() => (uniq(cars.map((c) => c.bodyType)) as string[]).sort(), [cars]);
+  const transmissions = useMemo(() => (uniq(cars.map((c) => c.transmission)) as string[]).sort(), [cars]);
+  const fuelTypes = useMemo(() => (uniq(cars.map((c) => c.fuel)) as string[]).sort(), [cars]);
+  const exteriorColours = useMemo(() => (uniq(cars.map((c) => c.exteriorColour)) as string[]).sort(), [cars]);
+  const interiorColours = useMemo(() => (uniq(cars.map((c) => c.interiorColour)) as string[]).sort(), [cars]);
   const search = Route.useSearch();
+
   const [q, setQ] = useState("");
   const [brand, setBrand] = useState("all");
   const [model, setModel] = useState("all");
