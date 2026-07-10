@@ -34,12 +34,25 @@ import sellImg from "@/assets/sell-your-car.jpg";
 export const Route = createFileRoute("/")({
   loader: async () => {
     const res = await getPublicVehicles();
-    const all = (res.vehicles as unknown as DbVehicle[]).map(mapDbVehicle);
+    const raw = res.vehicles as unknown as DbVehicle[];
+    const all = raw.map(mapDbVehicle);
     const featured = all
       .filter((c) => c.featured && !c.sold)
       .sort((a, b) => b.year - a.year);
     const feed = all.slice(0, 6);
-    return { featured, feed };
+
+    // Live inventory counts — a vehicle is "available" when published (already
+    // filtered by getPublicVehicles), not sold and availability === "available".
+    const availableVehicles = raw.filter(
+      (v) => !v.sold && (v.availability ?? "available").toLowerCase() === "available",
+    );
+    const carsAvailable = availableVehicles.length;
+    const brandsAvailable = new Set(
+      availableVehicles.map((v) => (v.brand_slug || v.brand || "").toLowerCase()).filter(Boolean),
+    ).size;
+
+    return { featured, feed, carsAvailable, brandsAvailable };
+
   },
   head: () => ({
     meta: [
