@@ -306,6 +306,7 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 
 function GalleryEditor({ title, items, onChange }: { title: string; items: string[]; onChange: (g: string[]) => void }) {
   const [url, setUrl] = useState("");
+  const [flipping, setFlipping] = useState<number | null>(null);
   const add = () => {
     if (!url.trim()) return;
     onChange([...items, url.trim()]);
@@ -318,6 +319,21 @@ function GalleryEditor({ title, items, onChange }: { title: string; items: strin
     const next = [...items];
     [next[i], next[j]] = [next[j], next[i]];
     onChange(next);
+  };
+  const flip = async (i: number) => {
+    setFlipping(i);
+    try {
+      const { flipImageHorizontally } = await import("@/lib/flip-image");
+      const newUrl = await flipImageHorizontally(items[i]);
+      const next = [...items];
+      next[i] = newUrl;
+      onChange(next);
+      toast.success("Image flipped");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not flip image");
+    } finally {
+      setFlipping(null);
+    }
   };
   return (
     <Card>
@@ -334,6 +350,9 @@ function GalleryEditor({ title, items, onChange }: { title: string; items: strin
             <div key={i} className="flex items-center gap-2 rounded-lg border border-border p-2">
               <img src={src} alt="" className="h-12 w-16 rounded object-cover" />
               <span className="flex-1 truncate text-xs text-muted-foreground">{src}</span>
+              <Button type="button" variant="ghost" size="icon" title="Flip horizontally" disabled={flipping === i} onClick={() => flip(i)}>
+                {flipping === i ? <Loader2 className="h-4 w-4 animate-spin" /> : <FlipHorizontal2 className="h-4 w-4" />}
+              </Button>
               <Button type="button" variant="ghost" size="icon" onClick={() => move(i, -1)}><ArrowUp className="h-4 w-4" /></Button>
               <Button type="button" variant="ghost" size="icon" onClick={() => move(i, 1)}><ArrowDown className="h-4 w-4" /></Button>
               <Button type="button" variant="ghost" size="icon" onClick={() => remove(i)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
@@ -344,3 +363,4 @@ function GalleryEditor({ title, items, onChange }: { title: string; items: strin
     </Card>
   );
 }
+
