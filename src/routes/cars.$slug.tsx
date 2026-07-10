@@ -37,9 +37,16 @@ export const Route = createFileRoute("/cars/$slug")({
         },
         { property: "og:title", content: `${car?.year} ${car?.title}` },
         { property: "og:image", content: car?.image },
+        { property: "twitter:image", content: car?.image },
+        { property: "og:url", content: `/cars/${car?.slug}` },
         { property: "og:type", content: "product" },
       ],
-      links: [{ rel: "canonical", href: `/cars/${car?.slug}` }],
+      links: [
+        { rel: "canonical", href: `/cars/${car?.slug}` },
+        ...(car?.image
+          ? [{ rel: "preload", as: "image" as const, href: car.image, fetchpriority: "high" }]
+          : []),
+      ],
       scripts: car
         ? [
             {
