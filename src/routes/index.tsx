@@ -379,7 +379,7 @@ function ThreeSixtySection() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <VehicleShowcase />
+          <VehicleShowcase vehicles={featured} />
         </Reveal>
       </div>
 
