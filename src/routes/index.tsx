@@ -345,6 +345,7 @@ function BrowseByBrandSection() {
 }
 
 function ThreeSixtySection() {
+  const { featured } = Route.useLoaderData() as { featured: Car[]; feed: Car[] };
   return (
     <section className="relative overflow-hidden py-24">
       <div className="absolute inset-0 bg-grain" />
