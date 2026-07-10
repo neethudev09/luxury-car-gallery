@@ -88,6 +88,56 @@ export function MediaLibrary() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Media>(emptyRecord);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const slugify = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\.[^.]+$/, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "")
+      .slice(0, 60);
+
+  const uploadFiles = async (files: FileList | File[]) => {
+    const images = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (images.length === 0) {
+      toast.error("Only image files are supported");
+      return;
+    }
+    setUploading(true);
+    let ok = 0;
+    for (const file of images) {
+      try {
+        const ext = file.name.split(".").pop() ?? "jpg";
+        const path = `uploads/${Date.now()}-${slugify(file.name)}.${ext}`;
+        const { error: upErr } = await supabase.storage
+          .from("media")
+          .upload(path, file, { cacheControl: "31536000", upsert: false });
+        if (upErr) throw upErr;
+        const { data: pub } = supabase.storage.from("media").getPublicUrl(path);
+        const title = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+        await saveFn({
+          data: {
+            url: pub.publicUrl,
+            title,
+            alt: title,
+            folder: folder !== "all" ? folder : "uploads",
+            caption: "",
+          } as Record<string, unknown>,
+        });
+        ok += 1;
+      } catch (e) {
+        toast.error(`${file.name}: ${e instanceof Error ? e.message : "upload failed"}`);
+      }
+    }
+    if (ok > 0) {
+      toast.success(`${ok} image${ok > 1 ? "s" : ""} uploaded`);
+      qc.invalidateQueries({ queryKey: ["media"] });
+    }
+    setUploading(false);
+  };
 
   const folders = useMemo(() => {
     const set = new Set<string>();
