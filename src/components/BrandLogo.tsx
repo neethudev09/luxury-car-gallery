@@ -70,7 +70,16 @@ export function BrandLogo({
 }) {
   const fallback = logos[slug];
   const url = src || fallback?.url;
-  if (!url) return null;
+  if (!url) {
+    return (
+      <span
+        aria-label={`${name ?? slug} logo`}
+        className={`${className ?? ""} flex items-center justify-center text-center text-xl font-semibold uppercase tracking-[0.28em] text-gold`}
+      >
+        {name ?? slug.replace(/-/g, " ")}
+      </span>
+    );
+  }
 
   const tone = whiteLogos.has(slug)
     ? "brightness-0 invert opacity-95" // crisp white silhouette, always readable
