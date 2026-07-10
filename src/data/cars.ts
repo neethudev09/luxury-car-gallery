@@ -214,6 +214,7 @@ const heroImageIndex: Record<string, number> = {
   "range-rover-autobiography-long-wheel-base-2024": 12,
   "rolls-royce-phantom-2019": 6,
   "tesla-cybertruck-2024": 3,
+  "porsche-911-carrera-gts-2023": 13,
 };
 
 const base: CarBase[] = [
@@ -369,6 +370,27 @@ const base: CarBase[] = [
     sold: false,
     description:
       "Ferrari 812 GTS (2024). European spec, finished in Verde over Cuoio / Alcantara. 690 km. Presented by Luxury Car Gallery, Dubai.",
+    features: fmtFeatures,
+  },
+  {
+    slug: "porsche-911-carrera-gts-2023",
+    title: "Porsche 911 Carrera GTS",
+    brand: "Porsche",
+    brandSlug: "porsche",
+    model: "911 Carrera GTS",
+    year: 2023,
+    price: 750000,
+    mileage: 16310,
+    fuel: "Petrol",
+    transmission: "Automatic",
+    bodyType: "Convertible",
+    exteriorColour: "Black",
+    interiorColour: "Red",
+    image: carPlaceholder,
+    featured: false,
+    sold: false,
+    description:
+      "Porsche 911 Carrera GTS (2023). European spec, finished in Black over Red. 16,310 km. Presented by Luxury Car Gallery, Dubai.",
     features: fmtFeatures,
   },
   {
