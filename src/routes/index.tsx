@@ -256,6 +256,7 @@ function BrandsSection() {
 
 /* SECTION 3 — FEATURED INVENTORY */
 function FeaturedSection() {
+  const { featured } = Route.useLoaderData() as { featured: Car[]; feed: Car[] };
   return (
     <section className="mx-auto max-w-7xl px-5 py-12">
       <div className="flex flex-wrap items-end justify-between gap-6">
