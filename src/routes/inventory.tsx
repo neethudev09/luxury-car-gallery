@@ -4,17 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { CarCard } from "@/components/CarCard";
 import { Reveal } from "@/components/Reveal";
-import {
-  cars,
-  brands,
-  fuelTypes,
-  transmissions,
-  bodyTypes,
-  years,
-  models,
-  exteriorColours,
-  interiorColours,
-} from "@/data/cars";
+import { getPublicVehicles } from "@/lib/public.functions";
+import { mapDbVehicle, type DbVehicle } from "@/lib/vehicle-map";
+import type { Car } from "@/data/cars";
 
 interface InventorySearch {
   brand?: string;
@@ -30,6 +22,11 @@ export const Route = createFileRoute("/inventory")({
         ? (search.status as Status)
         : undefined,
     };
+  },
+  loader: async () => {
+    const res = await getPublicVehicles();
+    const cars = (res.vehicles as unknown as DbVehicle[]).map(mapDbVehicle);
+    return { cars };
   },
   head: () => ({
     meta: [
