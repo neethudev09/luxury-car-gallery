@@ -736,8 +736,12 @@ export const cars: Car[] = base.map((c) => {
   const hero =
     heroOverrides[c.slug] ??
     (gallery && gallery[heroIdx] ? gallery[heroIdx] : gallery?.[0]);
+  const orderedGallery =
+    gallery && gallery.length && hero
+      ? [hero, ...gallery.filter((g) => g !== hero)]
+      : gallery;
   const withGallery: CarBase =
-    gallery && gallery.length ? { ...c, image: hero as string, images: gallery } : c;
+    gallery && gallery.length ? { ...c, image: hero as string, images: orderedGallery } : c;
   const enriched: Omit<Car, "specs"> = {
     ...withGallery,
     engine: p.engine,
