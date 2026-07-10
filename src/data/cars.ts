@@ -241,6 +241,11 @@ const heroImageIndex: Record<string, number> = {
   "lamborghini-urus-se-2025": 17,
   "lamborghini-urus-mansory-kit-2019": 17,
   "lamborghini-aventador-2012": 8,
+  "mercedes-benz-g63-2022": 8,
+  "mercedes-benz-g63-4x4-amg-2022": 6,
+  "porsche-911-turbo-s-techart-2020": 11,
+  "porsche-cayenne-turbo-gt-2025": 11,
+  "porsche-911-carrera-classic-coupe-1973": 15,
 };
 
 const base: CarBase[] = [
