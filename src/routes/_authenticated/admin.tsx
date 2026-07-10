@@ -20,6 +20,8 @@ import {
   Users,
   Plug,
   Settings as SettingsIcon,
+  Activity,
+
 
 } from "lucide-react";
 import { useServerFn } from "@/lib/server-compat";
