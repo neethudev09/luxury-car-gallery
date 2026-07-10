@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Hand, Gauge, Calendar } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { featuredCars } from "@/data/cars";
+import { featuredCars, type Car } from "@/data/cars";
 
 const aed = (n: number) =>
   new Intl.NumberFormat("en-AE", { style: "currency", currency: "AED", maximumFractionDigits: 0 }).format(n);
