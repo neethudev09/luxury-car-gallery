@@ -37,6 +37,7 @@ import { Route as AuthenticatedAdminMenusIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminMediaIndexRouteImport } from './routes/_authenticated/admin.media.index'
 import { Route as AuthenticatedAdminIntegrationsIndexRouteImport } from './routes/_authenticated/admin.integrations.index'
 import { Route as AuthenticatedAdminHomepageIndexRouteImport } from './routes/_authenticated/admin.homepage.index'
+import { Route as AuthenticatedAdminHealthIndexRouteImport } from './routes/_authenticated/admin.health.index'
 import { Route as AuthenticatedAdminGalleriesIndexRouteImport } from './routes/_authenticated/admin.galleries.index'
 import { Route as AuthenticatedAdminFooterIndexRouteImport } from './routes/_authenticated/admin.footer.index'
 import { Route as AuthenticatedAdminFaqsIndexRouteImport } from './routes/_authenticated/admin.faqs.index'
@@ -194,6 +195,12 @@ const AuthenticatedAdminHomepageIndexRoute =
     path: '/homepage/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminHealthIndexRoute =
+  AuthenticatedAdminHealthIndexRouteImport.update({
+    id: '/health/',
+    path: '/health/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminGalleriesIndexRoute =
   AuthenticatedAdminGalleriesIndexRouteImport.update({
     id: '/galleries/',
@@ -262,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
   '/admin/footer/': typeof AuthenticatedAdminFooterIndexRoute
   '/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
+  '/admin/health/': typeof AuthenticatedAdminHealthIndexRoute
   '/admin/homepage/': typeof AuthenticatedAdminHomepageIndexRoute
   '/admin/integrations/': typeof AuthenticatedAdminIntegrationsIndexRoute
   '/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
@@ -296,6 +304,7 @@ export interface FileRoutesByTo {
   '/admin/faqs': typeof AuthenticatedAdminFaqsIndexRoute
   '/admin/footer': typeof AuthenticatedAdminFooterIndexRoute
   '/admin/galleries': typeof AuthenticatedAdminGalleriesIndexRoute
+  '/admin/health': typeof AuthenticatedAdminHealthIndexRoute
   '/admin/homepage': typeof AuthenticatedAdminHomepageIndexRoute
   '/admin/integrations': typeof AuthenticatedAdminIntegrationsIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaIndexRoute
@@ -334,6 +343,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
   '/_authenticated/admin/footer/': typeof AuthenticatedAdminFooterIndexRoute
   '/_authenticated/admin/galleries/': typeof AuthenticatedAdminGalleriesIndexRoute
+  '/_authenticated/admin/health/': typeof AuthenticatedAdminHealthIndexRoute
   '/_authenticated/admin/homepage/': typeof AuthenticatedAdminHomepageIndexRoute
   '/_authenticated/admin/integrations/': typeof AuthenticatedAdminIntegrationsIndexRoute
   '/_authenticated/admin/media/': typeof AuthenticatedAdminMediaIndexRoute
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/admin/faqs/'
     | '/admin/footer/'
     | '/admin/galleries/'
+    | '/admin/health/'
     | '/admin/homepage/'
     | '/admin/integrations/'
     | '/admin/media/'
@@ -406,6 +417,7 @@ export interface FileRouteTypes {
     | '/admin/faqs'
     | '/admin/footer'
     | '/admin/galleries'
+    | '/admin/health'
     | '/admin/homepage'
     | '/admin/integrations'
     | '/admin/media'
@@ -443,6 +455,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/faqs/'
     | '/_authenticated/admin/footer/'
     | '/_authenticated/admin/galleries/'
+    | '/_authenticated/admin/health/'
     | '/_authenticated/admin/homepage/'
     | '/_authenticated/admin/integrations/'
     | '/_authenticated/admin/media/'
@@ -670,6 +683,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminHomepageIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/health/': {
+      id: '/_authenticated/admin/health/'
+      path: '/health'
+      fullPath: '/admin/health/'
+      preLoaderRoute: typeof AuthenticatedAdminHealthIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/galleries/': {
       id: '/_authenticated/admin/galleries/'
       path: '/galleries'
@@ -731,6 +751,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminFaqsIndexRoute: typeof AuthenticatedAdminFaqsIndexRoute
   AuthenticatedAdminFooterIndexRoute: typeof AuthenticatedAdminFooterIndexRoute
   AuthenticatedAdminGalleriesIndexRoute: typeof AuthenticatedAdminGalleriesIndexRoute
+  AuthenticatedAdminHealthIndexRoute: typeof AuthenticatedAdminHealthIndexRoute
   AuthenticatedAdminHomepageIndexRoute: typeof AuthenticatedAdminHomepageIndexRoute
   AuthenticatedAdminIntegrationsIndexRoute: typeof AuthenticatedAdminIntegrationsIndexRoute
   AuthenticatedAdminMediaIndexRoute: typeof AuthenticatedAdminMediaIndexRoute
@@ -752,6 +773,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminFaqsIndexRoute: AuthenticatedAdminFaqsIndexRoute,
   AuthenticatedAdminFooterIndexRoute: AuthenticatedAdminFooterIndexRoute,
   AuthenticatedAdminGalleriesIndexRoute: AuthenticatedAdminGalleriesIndexRoute,
+  AuthenticatedAdminHealthIndexRoute: AuthenticatedAdminHealthIndexRoute,
   AuthenticatedAdminHomepageIndexRoute: AuthenticatedAdminHomepageIndexRoute,
   AuthenticatedAdminIntegrationsIndexRoute:
     AuthenticatedAdminIntegrationsIndexRoute,
