@@ -71,12 +71,19 @@ export function BrandLogo({
   const fallback = logos[slug];
   const url = src || fallback?.url;
   if (!url) {
+    const monogram = (name ?? slug)
+      .split(/\s+|-/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("");
+
     return (
       <span
         aria-label={`${name ?? slug} logo`}
-        className={`${className ?? ""} flex items-center justify-center text-center text-xl font-semibold uppercase tracking-[0.28em] text-gold`}
+        className={`${className ?? ""} flex items-center justify-center text-center text-3xl font-semibold uppercase tracking-[0.12em] text-gold`}
       >
-        {name ?? slug.replace(/-/g, " ")}
+        {monogram}
       </span>
     );
   }
