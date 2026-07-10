@@ -450,13 +450,13 @@ const base: CarBase[] = [
     fuel: "Petrol",
     transmission: "Automatic",
     bodyType: "SUV",
-    exteriorColour: "Purple With Black Carbon",
-    interiorColour: "tiffany blue",
+    exteriorColour: "Yellow with Black Carbon",
+    interiorColour: "Black / Yellow",
     image: carPlaceholder,
     featured: false,
     sold: false,
     description:
-      "Lamborghini Urus MANSORY KIT (2019). GCC spec, finished in Purple with Black Carbon over tiffany blue. 54,500 km. Presented by Luxury Car Gallery, Dubai.",
+      "Lamborghini Urus MANSORY KIT (2019). GCC spec, finished in Yellow with Black Carbon over Black / Yellow. 54,500 km. Presented by Luxury Car Gallery, Dubai.",
     features: fmtFeatures,
   },
   {
