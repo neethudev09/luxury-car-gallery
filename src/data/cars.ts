@@ -580,7 +580,8 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Black",
     interiorColour: "Blue",
-    image: carPlaceholder,
+    image: cullinanBlackBadgeImages[0],
+    images: cullinanBlackBadgeImages,
     featured: true,
     sold: false,
     description:
