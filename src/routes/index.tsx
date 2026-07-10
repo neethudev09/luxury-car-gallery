@@ -50,10 +50,17 @@ export const Route = createFileRoute("/")({
           "Luxury car sales in Dubai from Luxury Car Gallery. Browse luxury cars, supercars and premium cars for sale, including Ferrari, Lamborghini, Porsche and Rolls-Royce.",
       },
       { property: "og:title", content: "Luxury Car Sales Dubai | Luxury Car Gallery" },
+      { property: "og:description", content: "Luxury cars, supercars and premium cars for sale in Dubai." },
+      { property: "og:url", content: "/" },
       { property: "og:image", content: heroShowroom },
+      { property: "twitter:image", content: heroShowroom },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "/" },
+      { rel: "preload", as: "image", href: heroShowroom, fetchpriority: "high" },
+    ],
   }),
+
   component: Home,
 });
 
