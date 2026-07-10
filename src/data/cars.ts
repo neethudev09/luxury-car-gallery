@@ -215,6 +215,7 @@ const heroImageIndex: Record<string, number> = {
   "rolls-royce-phantom-2019": 6,
   "tesla-cybertruck-2024": 3,
   "porsche-911-carrera-gts-2023": 13,
+  "lamborghini-urus-se-2025": 17,
 };
 
 const base: CarBase[] = [
