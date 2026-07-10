@@ -70,7 +70,23 @@ export function BrandLogo({
 }) {
   const fallback = logos[slug];
   const url = src || fallback?.url;
-  if (!url) return null;
+  if (!url) {
+    const monogram = (name ?? slug)
+      .split(/\s+|-/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("");
+
+    return (
+      <span
+        aria-label={`${name ?? slug} logo`}
+        className={`${className ?? ""} flex items-center justify-center text-center text-3xl font-semibold uppercase tracking-[0.12em] text-gold`}
+      >
+        {monogram}
+      </span>
+    );
+  }
 
   const tone = whiteLogos.has(slug)
     ? "brightness-0 invert opacity-95" // crisp white silhouette, always readable
