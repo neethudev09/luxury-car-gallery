@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-r
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@/lib/server-compat";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, ArrowUp, ArrowDown, FlipHorizontal2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { getVehicleAdmin, saveVehicle } from "@/lib/vehicles.functions";
 import { listBrands } from "@/lib/cms.functions";
