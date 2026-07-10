@@ -264,7 +264,7 @@ const base: CarBase[] = [
     bodyType: "SUV",
     exteriorColour: "Black",
     interiorColour: "Cream white/ Blue",
-    image: bmwX7Hero,
+    image: bmwX7Images[0],
     images: bmwX7Images,
     featured: false,
     sold: false,
