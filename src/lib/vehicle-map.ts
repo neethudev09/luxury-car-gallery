@@ -23,6 +23,13 @@ export interface DbVehicle {
   new_arrival: boolean | null;
   sold: boolean | null;
   availability: string | null;
+  torque?: number | null;
+  top_speed?: number | null;
+  accel?: number | null;
+  description?: string | null;
+  features?: string[] | null;
+  specs?: Record<string, string> | null;
+  video_url?: string | null;
 }
 
 const PLACEHOLDER =
@@ -49,15 +56,16 @@ export function mapDbVehicle(v: DbVehicle): Car {
     interiorColour: v.interior_colour ?? "—",
     engine: v.engine ?? "—",
     horsepower: v.horsepower ?? 0,
-    torque: 0,
-    topSpeed: 0,
-    accel: 0,
+    torque: v.torque ?? 0,
+    topSpeed: v.top_speed ?? 0,
+    accel: v.accel ?? 0,
     image: v.image || v.gallery?.[0] || PLACEHOLDER,
+    images: (v.gallery && v.gallery.length ? v.gallery : undefined),
     featured: !!v.featured,
     newArrival: !!v.new_arrival,
     sold: !!v.sold,
-    description: "",
-    features: [],
-    specs: {},
+    description: v.description ?? "",
+    features: v.features ?? [],
+    specs: v.specs ?? {},
   };
 }
