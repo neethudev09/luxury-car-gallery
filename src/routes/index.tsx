@@ -105,12 +105,36 @@ function Home() {
 
 /* SECTION 1 — HERO */
 function Hero() {
-  const { carsAvailable, brandsAvailable } = Route.useLoaderData();
+  // Fetch counts live at runtime (like BrandsSection) so they always reflect
+  // the current inventory on the deployed static site — loader data would be
+  // baked in at build time and never update until the next rebuild.
+  const fetchVehicles = useServerFn(getPublicVehicles);
+  const { data: vehData } = useQuery({
+    queryKey: ["home-stats-vehicles"],
+    queryFn: () => fetchVehicles(),
+  });
+  const loaderData = Route.useLoaderData();
+  const availableVehicles = (
+    ((vehData?.vehicles as unknown as DbVehicle[]) ?? []).filter(
+      (v) => !v.sold && (v.availability ?? "available").toLowerCase() === "available",
+    )
+  );
+  const carsAvailable = vehData
+    ? availableVehicles.length
+    : loaderData.carsAvailable;
+  const brandsAvailable = vehData
+    ? new Set(
+        availableVehicles
+          .map((v) => (v.brand_slug || v.brand || "").toLowerCase())
+          .filter(Boolean),
+      ).size
+    : loaderData.brandsAvailable;
   const stats = [
     { label: "Cars Available", value: carsAvailable, suffix: "" },
     { label: "Brands Available", value: brandsAvailable, suffix: "" },
     ...staticStats,
   ];
+
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
