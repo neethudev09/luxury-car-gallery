@@ -62,6 +62,35 @@ function VehiclesList() {
 
   const vehicles = data?.vehicles ?? [];
 
+  const [search, setSearch] = useState("");
+  const [brand, setBrand] = useState("all");
+  const [status, setStatus] = useState("all");
+
+  const brands = useMemo(
+    () => Array.from(new Set(vehicles.map((v) => v.brand).filter(Boolean))).sort(),
+    [vehicles],
+  );
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return vehicles.filter((v) => {
+      if (brand !== "all" && v.brand !== brand) return false;
+      if (status === "featured" && !v.featured) return false;
+      if (status === "sold" && !v.sold) return false;
+      if (status === "available" && v.sold) return false;
+      if (status === "published" && !v.published) return false;
+      if (status === "draft" && v.published) return false;
+      if (status === "new_arrival" && !v.new_arrival) return false;
+      if (!q) return true;
+      return (
+        (v.title ?? "").toLowerCase().includes(q) ||
+        (v.brand ?? "").toLowerCase().includes(q) ||
+        (v.model ?? "").toLowerCase().includes(q) ||
+        String(v.year ?? "").includes(q)
+      );
+    });
+  }, [vehicles, search, brand, status]);
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -73,7 +102,46 @@ function VehiclesList() {
         </Button>
       </div>
 
-      <div className="mt-6 rounded-xl border border-border">
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="relative min-w-[220px] flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            className="pl-9"
+            placeholder="Search by title, brand, model or year…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <Select value={brand} onValueChange={setBrand}>
+          <SelectTrigger className="w-44">
+            <SelectValue placeholder="Brand" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All brands</SelectItem>
+            {brands.map((b) => (
+              <SelectItem key={b} value={b}>
+                {b}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select value={status} onValueChange={setStatus}>
+          <SelectTrigger className="w-44">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All statuses</SelectItem>
+            <SelectItem value="available">Available</SelectItem>
+            <SelectItem value="sold">Sold</SelectItem>
+            <SelectItem value="featured">Featured</SelectItem>
+            <SelectItem value="new_arrival">New arrival</SelectItem>
+            <SelectItem value="published">Published</SelectItem>
+            <SelectItem value="draft">Draft</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="mt-4 rounded-xl border border-border">
         <Table>
           <TableHeader>
             <TableRow>
@@ -90,10 +158,10 @@ function VehiclesList() {
             {isLoading && (
               <TableRow><TableCell colSpan={7} className="py-8 text-center text-muted-foreground">Loading…</TableCell></TableRow>
             )}
-            {!isLoading && vehicles.length === 0 && (
-              <TableRow><TableCell colSpan={7} className="py-8 text-center text-muted-foreground">No vehicles yet.</TableCell></TableRow>
+            {!isLoading && filtered.length === 0 && (
+              <TableRow><TableCell colSpan={7} className="py-8 text-center text-muted-foreground">No vehicles found.</TableCell></TableRow>
             )}
-            {vehicles.map((v) => (
+            {filtered.map((v) => (
               <TableRow key={v.id}>
                 <TableCell className="font-medium">{v.title}</TableCell>
                 <TableCell>{v.brand}</TableCell>
