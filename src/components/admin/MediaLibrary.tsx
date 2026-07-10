@@ -211,6 +211,51 @@ export function MediaLibrary() {
         </Button>
       </div>
 
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.files) uploadFiles(e.target.files);
+          e.target.value = "";
+        }}
+      />
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => !uploading && fileInputRef.current?.click()}
+        onKeyDown={(e) => {
+          if ((e.key === "Enter" || e.key === " ") && !uploading) fileInputRef.current?.click();
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragOver(false);
+          if (e.dataTransfer.files) uploadFiles(e.dataTransfer.files);
+        }}
+        className={`mt-6 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
+          dragOver ? "border-gold bg-gold/5" : "border-border hover:border-gold/60"
+        } ${uploading ? "pointer-events-none opacity-60" : ""}`}
+      >
+        {uploading ? (
+          <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
+        ) : (
+          <UploadCloud className="h-7 w-7 text-muted-foreground" />
+        )}
+        <p className="text-sm font-medium">
+          {uploading ? "Uploading…" : "Drag & drop images here, or click to browse"}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Uploaded images are added to the library and available across the site.
+        </p>
+      </div>
+
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
