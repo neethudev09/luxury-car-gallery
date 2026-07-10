@@ -107,7 +107,7 @@ function Home() {
 function Hero() {
   const { carsAvailable, brandsAvailable } = Route.useLoaderData();
   const stats = [
-    { label: "Cars Available", value: carsAvailable, suffix: "+" },
+    { label: "Cars Available", value: carsAvailable, suffix: "" },
     { label: "Brands Available", value: brandsAvailable, suffix: "" },
     ...staticStats,
   ];
