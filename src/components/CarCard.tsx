@@ -31,6 +31,7 @@ export function CarCard({ car }: { car: Car }) {
             src={car.image}
             alt={`${car.year} ${car.title} for sale in Dubai`}
             loading="lazy"
+            decoding="async"
             width={1024}
             height={768}
             onError={(event) => {

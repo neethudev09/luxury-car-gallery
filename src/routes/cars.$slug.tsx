@@ -37,9 +37,16 @@ export const Route = createFileRoute("/cars/$slug")({
         },
         { property: "og:title", content: `${car?.year} ${car?.title}` },
         { property: "og:image", content: car?.image },
+        { property: "twitter:image", content: car?.image },
+        { property: "og:url", content: `/cars/${car?.slug}` },
         { property: "og:type", content: "product" },
       ],
-      links: [{ rel: "canonical", href: `/cars/${car?.slug}` }],
+      links: [
+        { rel: "canonical", href: `/cars/${car?.slug}` },
+        ...(car?.image
+          ? [{ rel: "preload", as: "image" as const, href: car.image, fetchpriority: "high" }]
+          : []),
+      ],
       scripts: car
         ? [
             {
@@ -148,7 +155,7 @@ function VehiclePage() {
         {/* Gallery */}
         <div>
           <div className="relative overflow-hidden rounded-2xl border border-border shadow-luxury">
-            <img src={gallery[active]} alt={car.title} width={1024} height={768} className="aspect-[4/3] w-full object-cover" />
+            <img src={gallery[active]} alt={car.title} width={1024} height={768} loading="eager" fetchPriority="high" decoding="async" className="aspect-[4/3] w-full object-cover" />
             <div className="absolute left-4 top-4 flex gap-2">
               {car.featured && <span className="rounded-full bg-gold px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-primary-foreground">Featured</span>}
               {car.sold && <span className="rounded-full bg-destructive px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-destructive-foreground">Sold</span>}
