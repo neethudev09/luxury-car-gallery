@@ -7,16 +7,22 @@ import { Car360Viewer } from "@/components/Car360Viewer";
 import { FinanceCalculator } from "@/components/FinanceCalculator";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { getCar, cars, formatPrice, whatsappLink, PHONE } from "@/data/cars";
+import { formatPrice, whatsappLink, PHONE } from "@/data/cars";
 import { useCompare } from "@/lib/compare";
-import { getPublicFeatureFlags } from "@/lib/public.functions";
+import { getPublicFeatureFlags, getPublicVehicle } from "@/lib/public.functions";
+import { mapDbVehicle, type DbVehicle } from "@/lib/vehicle-map";
 
 export const Route = createFileRoute("/cars/$slug")({
   loader: async ({ params }) => {
-    const car = getCar(params.slug);
-    if (!car) throw notFound();
+    const res = await getPublicVehicle({ data: { slug: params.slug } });
+    if (!res.vehicle) throw notFound();
+    const car = mapDbVehicle(res.vehicle as unknown as DbVehicle);
+    const related = (res.related as unknown as DbVehicle[]).map(mapDbVehicle);
+    const dbFaqs = Array.isArray((res.vehicle as { faqs?: unknown }).faqs)
+      ? ((res.vehicle as { faqs: { q?: string; a?: string; question?: string; answer?: string }[] }).faqs)
+      : [];
     const flags = await getPublicFeatureFlags();
-    return { car, viewer360Enabled: flags.viewer_360_enabled };
+    return { car, related, dbFaqs, viewer360Enabled: flags.viewer_360_enabled };
   },
   head: ({ loaderData }) => {
     const car = loaderData?.car;
