@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@/lib/server-compat";
 import {
   Search,
   Phone,
@@ -27,17 +29,19 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  brands,
+  brands as fallbackBrands,
   featuredCars,
   carForBrand,
   formatPrice,
   whatsappLink,
   PHONE,
 } from "@/data/cars";
+import { getBrandsWithCounts } from "@/lib/public.functions";
 import { posts } from "@/data/blog";
 import { BrandLogo } from "@/components/BrandLogo";
 import showroom from "@/assets/showroom-interior.jpg";
 import lcgLogo from "@/assets/lcg-logo.png.asset.json";
+
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
