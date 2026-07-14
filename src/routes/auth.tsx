@@ -19,7 +19,6 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,21 +34,10 @@ function AuthPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success("Signed in");
-        navigate({ to: "/admin" });
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: window.location.origin + "/admin" },
-        });
-        if (error) throw error;
-        toast.success("Account created. You can now sign in.");
-        setMode("login");
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      toast.success("Signed in");
+      navigate({ to: "/admin" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Authentication failed");
     } finally {
@@ -60,7 +48,7 @@ function AuthPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 pt-24">
       <div className="glass w-full max-w-md rounded-3xl p-10">
-        <h1 className="text-3xl">{mode === "login" ? "Staff Login" : "Create Account"}</h1>
+        <h1 className="text-3xl">Staff Login</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Access the Luxury Car Gallery Dubai management dashboard.
         </p>
@@ -84,15 +72,12 @@ function AuthPage() {
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Please wait…" : mode === "login" ? "Sign In" : "Sign Up"}
+            {loading ? "Please wait…" : "Sign In"}
           </Button>
         </form>
-        <button
-          onClick={() => setMode(mode === "login" ? "signup" : "login")}
-          className="mt-6 text-sm text-muted-foreground hover:text-foreground"
-        >
-          {mode === "login" ? "Need an account? Sign up" : "Already have an account? Sign in"}
-        </button>
+        <p className="mt-6 text-xs text-muted-foreground">
+          Accounts are created by the super admin. Contact your administrator if you need access.
+        </p>
         <div className="mt-4">
           <Link to="/" className="text-sm text-muted-foreground hover:underline">← Back to site</Link>
         </div>
