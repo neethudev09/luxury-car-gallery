@@ -246,9 +246,23 @@ function MobileLink({
 
 /* ---------------- CARS MEGA (dynamic featured panel) ---------------- */
 function CarsMega({ onNavigate }: { onNavigate: () => void }) {
-  const [active, setActive] = useState(brands[0].slug);
+  const fetchBrands = useServerFn(getBrandsWithCounts);
+  const { data } = useQuery({
+    queryKey: ["brands-with-counts"],
+    queryFn: () => fetchBrands(),
+  });
+  const brands = (data?.brands && data.brands.length > 0)
+    ? data.brands.map((b) => ({
+        name: b.name,
+        slug: b.slug,
+        available: b.available ?? 0,
+        sold: b.sold ?? 0,
+      }))
+    : fallbackBrands;
+  const [active, setActive] = useState<string>(brands[0]?.slug ?? fallbackBrands[0].slug);
   const brand = brands.find((b) => b.slug === active) ?? brands[0];
   const feature = carForBrand(active) ?? featuredCars[0];
+
 
   const quickLinks = [
     { label: "All Cars For Sale", to: "/inventory", Icon: Tag },
