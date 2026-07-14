@@ -180,14 +180,16 @@ export function Header() {
             className="absolute inset-x-0 top-full hidden lg:block"
             onMouseEnter={() => enter(open)}
           >
-            <div className="glass-strong relative overflow-hidden border-y border-gold/15 shadow-luxury">
+            <div className="glass-strong relative overflow-hidden border-y border-gold/15 bg-background/85 shadow-luxury backdrop-blur-2xl">
               <img
                 src={showroom}
                 alt=""
                 aria-hidden
-                className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.05] grayscale"
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.04] grayscale"
               />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background/90" />
               <div className="gold-line absolute inset-x-0 top-0 h-px" />
+
               <div className="relative mx-auto max-w-7xl px-6 py-9">
                 {open === "cars" && <CarsMega onNavigate={() => setOpen(null)} />}
                 {open === "media" && <MediaMega />}
