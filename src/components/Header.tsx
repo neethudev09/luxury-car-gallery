@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@/lib/server-compat";
 import {
   Search,
   Phone,
@@ -27,17 +29,19 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  brands,
+  brands as fallbackBrands,
   featuredCars,
   carForBrand,
   formatPrice,
   whatsappLink,
   PHONE,
 } from "@/data/cars";
+import { getBrandsWithCounts } from "@/lib/public.functions";
 import { posts } from "@/data/blog";
 import { BrandLogo } from "@/components/BrandLogo";
 import showroom from "@/assets/showroom-interior.jpg";
 import lcgLogo from "@/assets/lcg-logo.png.asset.json";
+
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
@@ -176,14 +180,16 @@ export function Header() {
             className="absolute inset-x-0 top-full hidden lg:block"
             onMouseEnter={() => enter(open)}
           >
-            <div className="glass-strong relative overflow-hidden border-y border-gold/15 shadow-luxury">
+            <div className="glass-strong relative overflow-hidden border-y border-gold/15 bg-background/85 shadow-luxury backdrop-blur-2xl">
               <img
                 src={showroom}
                 alt=""
                 aria-hidden
-                className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.05] grayscale"
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.04] grayscale"
               />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background/90" />
               <div className="gold-line absolute inset-x-0 top-0 h-px" />
+
               <div className="relative mx-auto max-w-7xl px-6 py-9">
                 {open === "cars" && <CarsMega onNavigate={() => setOpen(null)} />}
                 {open === "media" && <MediaMega />}
@@ -242,9 +248,23 @@ function MobileLink({
 
 /* ---------------- CARS MEGA (dynamic featured panel) ---------------- */
 function CarsMega({ onNavigate }: { onNavigate: () => void }) {
-  const [active, setActive] = useState(brands[0].slug);
+  const fetchBrands = useServerFn(getBrandsWithCounts);
+  const { data } = useQuery({
+    queryKey: ["brands-with-counts"],
+    queryFn: () => fetchBrands(),
+  });
+  const brands = (data?.brands && data.brands.length > 0)
+    ? data.brands.map((b) => ({
+        name: b.name,
+        slug: b.slug,
+        available: b.available ?? 0,
+        sold: b.sold ?? 0,
+      }))
+    : fallbackBrands;
+  const [active, setActive] = useState<string>(brands[0]?.slug ?? fallbackBrands[0].slug);
   const brand = brands.find((b) => b.slug === active) ?? brands[0];
   const feature = carForBrand(active) ?? featuredCars[0];
+
 
   const quickLinks = [
     { label: "All Cars For Sale", to: "/inventory", Icon: Tag },

@@ -76,13 +76,20 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
       .eq("published", true),
   ]);
 
-  const counts = new Map<string, number>();
+  const availCounts = new Map<string, number>();
+  const soldCounts = new Map<string, number>();
+  let totalAvailable = 0;
+  let totalSold = 0;
   for (const v of vehicles ?? []) {
     const slug = (v.brand_slug ?? "").toLowerCase();
     if (!slug) continue;
     const avail = (v.availability ?? "available").toLowerCase();
-    if (!v.sold && avail === "available") {
-      counts.set(slug, (counts.get(slug) ?? 0) + 1);
+    if (v.sold) {
+      soldCounts.set(slug, (soldCounts.get(slug) ?? 0) + 1);
+      totalSold += 1;
+    } else if (avail === "available") {
+      availCounts.set(slug, (availCounts.get(slug) ?? 0) + 1);
+      totalAvailable += 1;
     }
   }
 
@@ -90,16 +97,18 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
     brands: (brands ?? []).map((b) => ({
       name: b.name,
       slug: b.slug,
-      // Only pass a purpose-made light/section logo as-is. The standard (often
-      // dark) logo is NOT used directly on the dark section — the frontend
-      // falls back to the bundled asset and applies a light treatment.
       logo: b.logo_section || b.logo_light || null,
       country: b.country,
       featured: b.featured,
-      available: counts.get((b.slug ?? "").toLowerCase()) ?? 0,
+      available: availCounts.get((b.slug ?? "").toLowerCase()) ?? 0,
+      sold: soldCounts.get((b.slug ?? "").toLowerCase()) ?? 0,
     })),
+    totalAvailable,
+    totalSold,
+    brandsAvailable: Array.from(availCounts.keys()).length,
   };
 });
+
 
 // A single brand plus its published inventory, filtered straight from the CMS.
 export const getPublicBrandPage = createServerFn({ method: "GET" })
