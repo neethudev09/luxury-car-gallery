@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Phone, Mail, MapPin, Check } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { EMAIL, PHONE, whatsappLink } from "@/data/cars";
+import { FaqSection } from "@/components/FaqSection";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -56,6 +57,7 @@ function Contact() {
           </div>
         </Reveal>
       </div>
+      <FaqSection />
       <style>{`.cfield{width:100%;border-radius:0.5rem;border:1px solid var(--border);background:var(--card);padding:0.75rem 0.95rem;font-size:0.875rem;outline:none}.cfield:focus{border-color:var(--gold)}`}</style>
     </div>
   );

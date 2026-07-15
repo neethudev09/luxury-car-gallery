@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CountUp, Reveal, SectionHeading } from "@/components/Reveal";
 import { Award, ShieldCheck, Globe2, Gem } from "lucide-react";
 import showroom from "@/assets/showroom-interior.jpg";
+import { FaqSection } from "@/components/FaqSection";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -63,6 +64,7 @@ function About() {
           <Link to="/inventory" className="inline-flex rounded-full bg-gold px-7 py-3.5 text-sm font-medium uppercase tracking-widest text-primary-foreground shadow-gold transition-transform hover:scale-105">View Inventory</Link>
         </div>
       </div>
+      <FaqSection />
     </div>
   );
 }
