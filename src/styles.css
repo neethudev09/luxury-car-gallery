@@ -115,6 +115,28 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  a,
+  button,
+  select,
+  summary,
+  [role="button"],
+  label[for],
+  input[type="button"],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  input[type="reset"],
+  input[type="submit"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  select:disabled,
+  input:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 500;

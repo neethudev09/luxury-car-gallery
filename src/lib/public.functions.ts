@@ -10,11 +10,16 @@ export const getPublicBrands = createServerFn({ method: "GET" }).handler(async (
   const supabaseAdmin = supabase;
   const { data } = await supabaseAdmin
     .from("brands")
-    .select("name,slug,logo,hero_image,country,available,sold,featured,seo_title,meta_description")
+    .select("name,slug,logo,logo_menu,logo_section,logo_light,logo_dark,hero_image,country,available,sold,featured,seo_title,meta_description")
     .eq("published", true)
     .order("sort_order", { ascending: true })
     .order("name", { ascending: true });
-  return { brands: data ?? [] };
+  return {
+    brands: (data ?? []).map((b) => ({
+      ...b,
+      logo: b.logo_menu || b.logo_section || b.logo_light || b.logo || b.logo_dark || null,
+    })),
+  };
 });
 
 export const getPublicVehicles = createServerFn({ method: "GET" }).handler(async () => {
@@ -66,7 +71,7 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
   const [{ data: brands }, { data: vehicles }] = await Promise.all([
     supabaseAdmin
       .from("brands")
-      .select("name,slug,logo,logo_section,logo_light,country,featured,sort_order")
+      .select("name,slug,logo,logo_menu,logo_section,logo_light,logo_dark,country,featured,sort_order")
       .eq("published", true)
       .order("sort_order", { ascending: true })
       .order("name", { ascending: true }),
@@ -97,7 +102,7 @@ export const getBrandsWithCounts = createServerFn({ method: "GET" }).handler(asy
     brands: (brands ?? []).map((b) => ({
       name: b.name,
       slug: b.slug,
-      logo: b.logo_section || b.logo_light || null,
+      logo: b.logo_menu || b.logo_section || b.logo_light || b.logo || b.logo_dark || null,
       country: b.country,
       featured: b.featured,
       available: availCounts.get((b.slug ?? "").toLowerCase()) ?? 0,
@@ -117,7 +122,7 @@ export const getPublicBrandPage = createServerFn({ method: "GET" })
     const supabaseAdmin = supabase;
     const { data: brand } = await supabaseAdmin
       .from("brands")
-      .select("name,slug,logo,hero_image,country,description,seo_title,meta_description")
+      .select("name,slug,logo,logo_menu,logo_section,logo_light,logo_dark,hero_image,country,description,seo_title,meta_description")
       .eq("slug", data.slug)
       .eq("published", true)
       .maybeSingle();
@@ -137,7 +142,14 @@ export const getPublicBrandPage = createServerFn({ method: "GET" })
       (v) => !v.sold && (v.availability ?? "available").toLowerCase() === "available",
     ).length;
 
-    return { brand, vehicles: vehicles ?? [], available };
+    return {
+      brand: {
+        ...brand,
+        logo: brand.logo_menu || brand.logo_section || brand.logo_light || brand.logo || brand.logo_dark || null,
+      },
+      vehicles: vehicles ?? [],
+      available,
+    };
   });
 
 

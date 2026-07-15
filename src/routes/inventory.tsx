@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { CarCard } from "@/components/CarCard";
 import { Reveal } from "@/components/Reveal";
-import { getPublicVehicles } from "@/lib/public.functions";
+import { getPublicPage, getPublicVehicles } from "@/lib/public.functions";
 import { mapDbVehicle, type DbVehicle } from "@/lib/vehicle-map";
 import type { Car } from "@/data/cars";
 
@@ -24,19 +24,19 @@ export const Route = createFileRoute("/inventory")({
     };
   },
   loader: async () => {
-    const res = await getPublicVehicles();
+    const [res, pageRes] = await Promise.all([getPublicVehicles(), getPublicPage({ data: { slug: "inventory" } })]);
     const cars = (res.vehicles as unknown as DbVehicle[]).map(mapDbVehicle);
-    return { cars };
+    return { cars, page: pageRes.page };
   },
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
-      { title: "Luxury Car Inventory For Sale in Dubai | Luxury Car Gallery Dubai" },
+      { title: loaderData?.page?.seo_title || "Luxury Car Inventory For Sale in Dubai | Luxury Car Gallery Dubai" },
       {
         name: "description",
-        content:
+        content: loaderData?.page?.meta_description ||
           "Browse our full inventory of luxury cars and supercars for sale in Dubai. Filter by brand, model, price, year, mileage, fuel type, colour and more.",
       },
-      { property: "og:title", content: "Luxury Car Inventory | Luxury Car Gallery Dubai" },
+      { property: "og:title", content: loaderData?.page?.seo_title || "Luxury Car Inventory | Luxury Car Gallery Dubai" },
     ],
     links: [{ rel: "canonical", href: "/inventory" }],
   }),
@@ -46,7 +46,10 @@ export const Route = createFileRoute("/inventory")({
 type Status = "all" | "available" | "sold" | "featured" | "latest";
 
 function Inventory() {
-  const { cars } = Route.useLoaderData() as { cars: Car[] };
+  const { cars, page } = Route.useLoaderData() as {
+    cars: Car[];
+    page: { title: string; content: string | null } | null;
+  };
   const uniq = (arr: (string | number)[]) => Array.from(new Set(arr.filter(Boolean)));
   const brands = useMemo(() => {
     const seen = new Map<string, string>();
@@ -127,6 +130,8 @@ function Inventory() {
     setMaxPrice(2100000);
     setMaxMileage(100000);
   };
+
+  const introText = page?.content?.trim() || `${cars.length} curated vehicles. Use the filters to find your perfect match.`;
 
   const FilterPanel = (
     <div className="space-y-1">
@@ -251,9 +256,9 @@ function Inventory() {
       <div className="border-b border-border/60 bg-grain">
         <div className="mx-auto max-w-7xl px-5 py-12">
           <span className="text-xs uppercase tracking-luxury text-gold">Inventory</span>
-          <h1 className="mt-3 text-4xl md:text-5xl">Cars For Sale In Dubai</h1>
+          <h1 className="mt-3 text-4xl md:text-5xl">{page?.title || "Cars For Sale In Dubai"}</h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            {cars.length} curated vehicles. Use the filters to find your perfect match.
+            {introText}
           </p>
         </div>
       </div>
