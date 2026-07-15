@@ -100,6 +100,7 @@ export function MediaLibrary() {
   const [form, setForm] = useState<Media>(emptyRecord);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [replacing, setReplacing] = useState(false);
   const [flipping, setFlipping] = useState(false);
 
   const flipCurrent = async () => {
@@ -118,6 +119,7 @@ export function MediaLibrary() {
   };
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const replaceInputRef = useRef<HTMLInputElement>(null);
 
   const slugify = (s: string) =>
     s
@@ -164,6 +166,48 @@ export function MediaLibrary() {
       qc.invalidateQueries({ queryKey: ["media"] });
     }
     setUploading(false);
+  };
+
+  const replaceCurrentImage = async (files: FileList | null) => {
+    const file = files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files are supported");
+      return;
+    }
+
+    setReplacing(true);
+    try {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const safeFolder = slugify(form.folder || "uploads") || "uploads";
+      const path = `${safeFolder}/${Date.now()}-${slugify(file.name)}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("media")
+        .upload(path, file, { cacheControl: "31536000", upsert: false });
+      if (upErr) throw upErr;
+
+      const { data: pub } = supabase.storage.from("media").getPublicUrl(path);
+      const title = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+      const nextForm = {
+        ...form,
+        url: pub.publicUrl,
+        title: form.title || title,
+        alt: form.alt || title,
+      };
+
+      setForm(nextForm);
+      if (form.id) {
+        await saveFn({ data: nextForm as Record<string, unknown> });
+        qc.invalidateQueries({ queryKey: ["media"] });
+        toast.success("Image replaced and references updated");
+      } else {
+        toast.success("Replacement uploaded — Save to keep it");
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Replacement upload failed");
+    } finally {
+      setReplacing(false);
+    }
   };
 
   const folders = useMemo(() => {
@@ -359,6 +403,16 @@ export function MediaLibrary() {
           <DialogHeader>
             <DialogTitle>{form.id ? "Edit image" : "New image"}</DialogTitle>
           </DialogHeader>
+          <input
+            ref={replaceInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              replaceCurrentImage(e.target.files);
+              e.target.value = "";
+            }}
+          />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5 sm:col-span-2">
               <Label>Image URL</Label>
@@ -372,10 +426,22 @@ export function MediaLibrary() {
                   <div className="aspect-video w-full overflow-hidden rounded-md border border-border">
                     <Thumb url={form.url} alt="preview" />
                   </div>
-                  <Button type="button" variant="outline" size="sm" onClick={flipCurrent} disabled={flipping}>
-                    {flipping ? <Loader2 className="h-4 w-4 animate-spin" /> : <FlipHorizontal2 className="h-4 w-4" />}
-                    Flip horizontally
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button type="button" variant="outline" size="sm" onClick={flipCurrent} disabled={flipping || replacing}>
+                      {flipping ? <Loader2 className="h-4 w-4 animate-spin" /> : <FlipHorizontal2 className="h-4 w-4" />}
+                      Flip horizontally
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => replaceInputRef.current?.click()}
+                      disabled={replacing || flipping}
+                    >
+                      {replacing ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                      Replace image
+                    </Button>
+                  </div>
                 </>
               ) : null}
             </div>
