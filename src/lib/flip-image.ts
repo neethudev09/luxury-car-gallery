@@ -47,8 +47,7 @@ export async function flipImageHorizontally(src: string): Promise<string> {
     if (error) throw new Error(error.message);
 
     const { data } = supabase.storage.from("media").getPublicUrl(existingPath);
-    // Cache-bust so the admin UI shows the flipped version right away.
-    return `${data.publicUrl}?v=${Date.now()}`;
+    return data.publicUrl;
   }
 
   // External image — upload a fresh copy.
