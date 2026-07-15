@@ -148,13 +148,13 @@ export const saveMedia = createServerFn({ method: "POST" })
         .select("id,logo,logo_light,logo_dark,logo_menu,logo_section,hero_image");
       if (brandsError) throw new Error(brandsError.message);
       for (const brand of brands ?? []) {
-        const update: Record<string, unknown> = {};
+        const update: Record<string, string | null> = {};
         for (const field of ["logo", "logo_light", "logo_dark", "logo_menu", "logo_section", "hero_image"] as const) {
           const replaced = replaceString(brand[field], oldValues, nextUrl);
-          if (replaced !== brand[field]) update[field] = replaced;
+          if (replaced !== brand[field]) update[field] = replaced as string | null;
         }
         if (Object.keys(update).length) {
-          const { error: updateError } = await context.supabase.from("brands").update(update).eq("id", brand.id);
+          const { error: updateError } = await context.supabase.from("brands").update(update as never).eq("id", brand.id);
           if (updateError) throw new Error(updateError.message);
         }
       }
@@ -167,14 +167,14 @@ export const saveMedia = createServerFn({ method: "POST" })
         const update: Record<string, unknown> = {};
         for (const field of ["image", "og_image"] as const) {
           const replaced = replaceString(vehicle[field], oldValues, nextUrl);
-          if (replaced !== vehicle[field]) update[field] = replaced;
+          if (replaced !== vehicle[field]) update[field] = replaced as string | null;
         }
         for (const field of ["gallery", "interior_gallery", "exterior_gallery", "detail_gallery", "wheel_gallery"] as const) {
           const replaced = replaceJson(vehicle[field], oldValues, nextUrl);
           if (!sameJson(replaced, vehicle[field])) update[field] = replaced;
         }
         if (Object.keys(update).length) {
-          const { error: updateError } = await context.supabase.from("vehicles").update(update).eq("id", vehicle.id);
+          const { error: updateError } = await context.supabase.from("vehicles").update(update as never).eq("id", vehicle.id);
           if (updateError) throw new Error(updateError.message);
         }
       }
@@ -184,13 +184,13 @@ export const saveMedia = createServerFn({ method: "POST" })
         .select("id,cover_image,og_image");
       if (postsError) throw new Error(postsError.message);
       for (const post of posts ?? []) {
-        const update: Record<string, unknown> = {};
+        const update: Record<string, string | null> = {};
         for (const field of ["cover_image", "og_image"] as const) {
           const replaced = replaceString(post[field], oldValues, nextUrl);
-          if (replaced !== post[field]) update[field] = replaced;
+          if (replaced !== post[field]) update[field] = replaced as string | null;
         }
         if (Object.keys(update).length) {
-          const { error: updateError } = await context.supabase.from("blog_posts").update(update).eq("id", post.id);
+          const { error: updateError } = await context.supabase.from("blog_posts").update(update as never).eq("id", post.id);
           if (updateError) throw new Error(updateError.message);
         }
       }
@@ -200,7 +200,10 @@ export const saveMedia = createServerFn({ method: "POST" })
       for (const page of pages ?? []) {
         const replaced = replaceString(page.og_image, oldValues, nextUrl);
         if (replaced !== page.og_image) {
-          const { error: updateError } = await context.supabase.from("pages").update({ og_image: replaced }).eq("id", page.id);
+          const { error: updateError } = await context.supabase
+            .from("pages")
+            .update({ og_image: replaced as string | null })
+            .eq("id", page.id);
           if (updateError) throw new Error(updateError.message);
         }
       }
@@ -210,7 +213,10 @@ export const saveMedia = createServerFn({ method: "POST" })
       for (const gallery of galleries ?? []) {
         const replaced = replaceJson(gallery.items, oldValues, nextUrl);
         if (!sameJson(replaced, gallery.items)) {
-          const { error: updateError } = await context.supabase.from("galleries").update({ items: replaced }).eq("id", gallery.id);
+          const { error: updateError } = await context.supabase
+            .from("galleries")
+            .update({ items: replaced as never })
+            .eq("id", gallery.id);
           if (updateError) throw new Error(updateError.message);
         }
       }
@@ -222,7 +228,7 @@ export const saveMedia = createServerFn({ method: "POST" })
         if (!sameJson(replaced, setting.value)) {
           const { error: updateError } = await context.supabase
             .from("site_settings")
-            .update({ value: replaced })
+            .update({ value: replaced as never })
             .eq("key", setting.key);
           if (updateError) throw new Error(updateError.message);
         }
