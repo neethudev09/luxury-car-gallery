@@ -4,6 +4,7 @@ import { Upload, Check } from "lucide-react";
 import { Reveal, SectionHeading } from "@/components/Reveal";
 import { brands, whatsappLink } from "@/data/cars";
 import sellImg from "@/assets/sell-your-car.jpg";
+import { FaqSection } from "@/components/FaqSection";
 
 export const Route = createFileRoute("/sell")({
   head: () => ({
@@ -90,6 +91,7 @@ function Sell() {
           </div>
         </Reveal>
       </div>
+      <FaqSection category="Selling" />
       <style>{`.field{width:100%;border-radius:0.5rem;border:1px solid var(--border);background:var(--card);padding:0.65rem 0.85rem;font-size:0.875rem;outline:none}.field:focus{border-color:var(--gold)}`}</style>
     </div>
   );
