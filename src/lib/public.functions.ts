@@ -241,9 +241,23 @@ export const getPublicFeatureFlags = createServerFn({ method: "GET" }).handler(a
     .maybeSingle();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const v = (data?.value ?? {}) as Record<string, any>;
-  const viewer_360_enabled = v.viewer_360_enabled === true || v.viewer_360_enabled === "true";
-  return { viewer_360_enabled };
+  const on = (key: string, fallback = false) =>
+    v[key] === undefined || v[key] === null ? fallback : v[key] === true || v[key] === "true";
+  const viewer_360_enabled = on("viewer_360_enabled");
+  // Navigation visibility flags. Image Gallery + Blog are always on; the
+  // remaining mega-menu entries default to hidden and can be switched back
+  // on from the CMS (Settings → Menu visibility).
+  const nav = {
+    media_video_gallery: on("nav_media_video_gallery"),
+    media_360_cars: on("nav_media_360_cars"),
+    media_showroom_tour: on("nav_media_showroom_tour"),
+    news_news: on("nav_news_news"),
+    news_buying_guides: on("nav_news_buying_guides"),
+    news_market_updates: on("nav_news_market_updates"),
+  };
+  return { viewer_360_enabled, nav };
 });
+
 
 // Search-engine indexing flag stored in site_settings (key "indexing").
 // Defaults to NOT indexed (noindex) until explicitly enabled in the CRM.
