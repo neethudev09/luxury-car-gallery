@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>/</loc><changefreq>weekly</changefreq></url>
+  <url><loc>/inventory</loc><changefreq>weekly</changefreq></url>
+  <url><loc>/showroom</loc><changefreq>weekly</changefreq></url>
+  <url><loc>/media</loc><changefreq>weekly</changefreq></url>
+  <url><loc>/blog</loc><changefreq>weekly</changefreq></url>
+  <url><loc>/sell</loc><changefreq>monthly</changefreq></url>
+  <url><loc>/about</loc><changefreq>monthly</changefreq></url>
+  <url><loc>/contact</loc><changefreq>monthly</changefreq></url>
+  <url><loc>/compare</loc><changefreq>monthly</changefreq></url>
+</urlset>

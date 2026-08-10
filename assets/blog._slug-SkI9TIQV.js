@@ -1,0 +1,1 @@
+import{j as r}from"./index-CQOQOeCX.js";const e=({error:o})=>r.jsxs("div",{className:"pt-28 mx-auto max-w-3xl px-5 py-10",role:"alert",children:["Unable to load this article: ",o.message]});export{e as errorComponent};

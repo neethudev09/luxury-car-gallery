@@ -1,0 +1,1 @@
+import{j as e,L as t}from"./index-CQOQOeCX.js";const o=()=>e.jsxs("div",{className:"flex min-h-screen flex-col items-center justify-center gap-4 px-4 pt-28 text-center",children:[e.jsx("h1",{className:"text-4xl",children:"Vehicle not found"}),e.jsx(t,{to:"/inventory",className:"text-gold underline",children:"Back to inventory"})]});export{o as notFoundComponent};
