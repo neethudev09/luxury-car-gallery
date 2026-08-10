@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, GitCompare, Heart, Phone, RotateCcw } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CarCard } from "@/components/CarCard";
@@ -129,6 +129,7 @@ function VehiclePage() {
   const [active, setActive] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [show360, setShow360] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   const scrollThumbs = (dir: number) => {
     const el = scrollRef.current;
@@ -136,6 +137,23 @@ function VehiclePage() {
     const w = el.clientWidth;
     el.scrollBy({ left: dir * w * 0.8, behavior: "smooth" });
   };
+
+  // Auto-advance the gallery every 2 seconds
+  useEffect(() => {
+    if (paused || gallery.length < 2) return;
+    const id = setInterval(() => setActive((i) => (i + 1) % gallery.length), 2000);
+    return () => clearInterval(id);
+  }, [paused, gallery.length]);
+
+  // Keep the active thumbnail in view
+  useEffect(() => {
+    const el = scrollRef.current;
+    const thumb = el?.children[active] as HTMLElement | undefined;
+    if (!el || !thumb) return;
+    const left = thumb.offsetLeft - el.clientWidth / 2 + thumb.clientWidth / 2;
+    el.scrollTo({ left, behavior: "smooth" });
+  }, [active]);
+
 
   const faqs =
     dbFaqs && dbFaqs.length > 0
@@ -153,7 +171,8 @@ function VehiclePage() {
 
       <div className="mx-auto mt-6 grid max-w-7xl gap-10 px-5 lg:grid-cols-[1.3fr_1fr]">
         {/* Gallery */}
-        <div>
+        <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+
           <div className="relative overflow-hidden rounded-2xl border border-border shadow-luxury">
             <img src={gallery[active]} alt={car.title} width={1024} height={768} loading="eager" fetchPriority="high" decoding="async" className="aspect-[4/3] w-full object-cover" />
             <div className="absolute left-4 top-4 flex gap-2">
@@ -178,7 +197,7 @@ function VehiclePage() {
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <div ref={scrollRef} className="flex gap-3 overflow-x-auto pb-2 px-10">
+            <div ref={scrollRef} className="no-scrollbar flex gap-3 overflow-x-auto pb-2 px-10">
               {gallery.map((g, i) => (
                 <button
                   key={i}
