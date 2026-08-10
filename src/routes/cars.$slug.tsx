@@ -171,7 +171,8 @@ function VehiclePage() {
 
       <div className="mx-auto mt-6 grid max-w-7xl gap-10 px-5 lg:grid-cols-[1.3fr_1fr]">
         {/* Gallery */}
-        <div>
+        <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+
           <div className="relative overflow-hidden rounded-2xl border border-border shadow-luxury">
             <img src={gallery[active]} alt={car.title} width={1024} height={768} loading="eager" fetchPriority="high" decoding="async" className="aspect-[4/3] w-full object-cover" />
             <div className="absolute left-4 top-4 flex gap-2">
