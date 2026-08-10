@@ -197,7 +197,7 @@ function VehiclePage() {
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <div ref={scrollRef} className="flex gap-3 overflow-x-auto pb-2 px-10">
+            <div ref={scrollRef} className="no-scrollbar flex gap-3 overflow-x-auto pb-2 px-10">
               {gallery.map((g, i) => (
                 <button
                   key={i}
