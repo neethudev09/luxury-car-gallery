@@ -36,7 +36,7 @@ import {
   whatsappLink,
   PHONE,
 } from "@/data/cars";
-import { getBrandsWithCounts } from "@/lib/public.functions";
+import { getBrandsWithCounts, getPublicFeatureFlags } from "@/lib/public.functions";
 import { posts } from "@/data/blog";
 import { BrandLogo } from "@/components/BrandLogo";
 import showroom from "@/assets/showroom-interior.jpg";
@@ -56,11 +56,36 @@ const navItems = [
   { label: "About", key: "about" },
 ] as const;
 
+export interface NavFlags {
+  media_video_gallery: boolean;
+  media_360_cars: boolean;
+  media_showroom_tour: boolean;
+  news_news: boolean;
+  news_buying_guides: boolean;
+  news_market_updates: boolean;
+}
+
+const DEFAULT_NAV_FLAGS: NavFlags = {
+  media_video_gallery: false,
+  media_360_cars: false,
+  media_showroom_tour: false,
+  news_news: false,
+  news_buying_guides: false,
+  news_market_updates: false,
+};
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fetchFlags = useServerFn(getPublicFeatureFlags);
+  const { data: flags } = useQuery({
+    queryKey: ["public-feature-flags"],
+    queryFn: () => fetchFlags(),
+    staleTime: 60_000,
+  });
+  const nav: NavFlags = flags?.nav ?? DEFAULT_NAV_FLAGS;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -192,8 +217,8 @@ export function Header() {
 
               <div className="relative mx-auto max-w-7xl px-6 py-9">
                 {open === "cars" && <CarsMega onNavigate={() => setOpen(null)} />}
-                {open === "media" && <MediaMega />}
-                {open === "news" && <NewsMega />}
+                {open === "media" && <MediaMega nav={nav} />}
+                {open === "news" && <NewsMega nav={nav} />}
                 {open === "about" && <AboutMega />}
               </div>
             </div>
@@ -467,39 +492,41 @@ function LinkMega({
   );
 }
 
-function MediaMega() {
+function MediaMega({ nav }: { nav: NavFlags }) {
+  const links: MegaLink[] = [
+    { label: "Image Gallery", desc: "High-resolution photography", to: "/media", Icon: Images },
+  ];
+  if (nav.media_video_gallery) links.push({ label: "Video Gallery", desc: "Cinematic vehicle films", to: "/media", Icon: Play });
+  if (nav.media_360_cars) links.push({ label: "360° Car Views", desc: "Spin & inspect every angle", to: "/media", Icon: RotateCcw });
+  if (nav.media_showroom_tour) links.push({ label: "360° Showroom Tour", desc: "Walk our Dubai floor", to: "/showroom", Icon: Compass });
   return (
     <LinkMega
       eyebrow="Media & Experiences"
-      links={[
-        { label: "Image Gallery", desc: "High-resolution photography", to: "/media", Icon: Images },
-        { label: "Video Gallery", desc: "Cinematic vehicle films", to: "/media", Icon: Play },
-        { label: "360° Car Views", desc: "Spin & inspect every angle", to: "/media", Icon: RotateCcw },
-        { label: "360° Showroom Tour", desc: "Walk our Dubai floor", to: "/showroom", Icon: Compass },
-      ]}
+      links={links}
       feature={{
         eyebrow: "Latest Showroom",
         title: "Step Inside The Gallery",
         desc: "Immersive 360° walkthrough of our latest arrivals.",
         image: showroom,
-        to: "/showroom",
-        cta: "Start Tour",
+        to: nav.media_showroom_tour ? "/showroom" : "/media",
+        cta: nav.media_showroom_tour ? "Start Tour" : "View Gallery",
       }}
     />
   );
 }
 
-function NewsMega() {
+function NewsMega({ nav }: { nav: NavFlags }) {
   const latest = posts[0];
+  const links: MegaLink[] = [
+    { label: "Blog", desc: "Stories from the showroom", to: "/blog", Icon: BookOpen },
+  ];
+  if (nav.news_news) links.unshift({ label: "News", desc: "Dubai automotive headlines", to: "/blog", Icon: Newspaper });
+  if (nav.news_buying_guides) links.push({ label: "Buying Guides", desc: "Buy smarter in the UAE", to: "/blog", Icon: ShieldCheck });
+  if (nav.news_market_updates) links.push({ label: "Market Updates", desc: "Values & trends", to: "/blog", Icon: TrendingUp });
   return (
     <LinkMega
       eyebrow="Editorial"
-      links={[
-        { label: "News", desc: "Dubai automotive headlines", to: "/blog", Icon: Newspaper },
-        { label: "Blog", desc: "Stories from the showroom", to: "/blog", Icon: BookOpen },
-        { label: "Buying Guides", desc: "Buy smarter in the UAE", to: "/blog", Icon: ShieldCheck },
-        { label: "Market Updates", desc: "Values & trends", to: "/blog", Icon: TrendingUp },
-      ]}
+      links={links}
       feature={{
         eyebrow: "Latest Article",
         title: latest.title,

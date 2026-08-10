@@ -1,11 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SettingsEditor } from "@/components/admin/SettingsEditor";
 import { Viewer360Toggle } from "@/components/admin/Viewer360Toggle";
+import { MenuVisibilityToggles } from "@/components/admin/MenuVisibilityToggles";
 
 export const Route = createFileRoute("/_authenticated/admin/settings/")({
   component: () => (
     <div>
+      <MenuVisibilityToggles />
       <Viewer360Toggle />
+
       <SettingsEditor
         settingKey="general"
         title="Settings"
