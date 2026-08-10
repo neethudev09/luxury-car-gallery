@@ -129,6 +129,7 @@ function VehiclePage() {
   const [active, setActive] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [show360, setShow360] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   const scrollThumbs = (dir: number) => {
     const el = scrollRef.current;
@@ -136,6 +137,23 @@ function VehiclePage() {
     const w = el.clientWidth;
     el.scrollBy({ left: dir * w * 0.8, behavior: "smooth" });
   };
+
+  // Auto-advance the gallery every 2 seconds
+  useEffect(() => {
+    if (paused || gallery.length < 2) return;
+    const id = setInterval(() => setActive((i) => (i + 1) % gallery.length), 2000);
+    return () => clearInterval(id);
+  }, [paused, gallery.length]);
+
+  // Keep the active thumbnail in view
+  useEffect(() => {
+    const el = scrollRef.current;
+    const thumb = el?.children[active] as HTMLElement | undefined;
+    if (!el || !thumb) return;
+    const left = thumb.offsetLeft - el.clientWidth / 2 + thumb.clientWidth / 2;
+    el.scrollTo({ left, behavior: "smooth" });
+  }, [active]);
+
 
   const faqs =
     dbFaqs && dbFaqs.length > 0
