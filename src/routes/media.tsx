@@ -56,8 +56,9 @@ function Media() {
   const images = useMemo(() => {
     const out: GalleryImage[] = [];
     cars.forEach((c) => {
-      const gallery = c.gallery?.length ? c.gallery : c.image ? [c.image] : [];
-      gallery.forEach((src, i) => {
+      const gallery = c.images?.length ? c.images : c.image ? [c.image] : [];
+      gallery.forEach((src: string, i: number) => {
+
         out.push({
           src,
           alt: `${c.title} — photo ${i + 1}`,
